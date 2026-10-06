@@ -1,10 +1,28 @@
-# 🌟 Kids Islamic Good-Deeds App — Core Specification & Blueprint
+# 🌟 Kids Islamic good-deeds app — core specification and blueprint
 
 A polished, modern, child-friendly mobile app for children roughly ages 4–10, focused on **daily good deeds, Islamic manners, positive habits, family interaction, and encouragement**.
 
 The app is built as a **fun daily adventure**, rather than a school task, chore tracker, or punitive system.
 
-## Core Concept
+> This is the product blueprint, not a release checklist. Requirements below describe the intended experience; the status snapshot distinguishes implemented flows from partial or planned work. See [README.md](README.md) for the short project overview and [PROJECT_CONTEXT_SUMMARY.md](PROJECT_CONTEXT_SUMMARY.md) for the engineering handoff.
+
+## Implementation status snapshot
+
+Reviewed 2026-10-06 against the Flutter source and interactive web preview.
+
+| Area                                                        | Status      | Current implementation                                                                                                                                         |
+| ----------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Onboarding, child profiles, faceless avatars, pattern locks | Implemented | Flutter screens and state actions are present.                                                                                                                 |
+| Nightly check-in and daily results                          | Implemented | Scored answers, feedback, and result flow are present.                                                                                                         |
+| Parent dashboard, habit and reward controls                 | Partial     | Main UI and editing flows exist; state is memory-only.                                                                                                         |
+| Scratch rewards and learning screens                        | Partial     | Interactive screens exist; real audio playback is incomplete.                                                                                                  |
+| Journey and reports                                         | Partial     | Trend chart and date details use demo values.                                                                                                                  |
+| Device persistence                                          | Planned     | App state is not saved across process restarts.                                                                                                                |
+| Voice feedback                                              | Partial     | Web preview uses browser speech synthesis and generated chimes; Flutter currently shows a snackbar instead of playing a recording. No audio clips are bundled. |
+
+Treat the remaining sections as product requirements unless the implementation status above says otherwise.
+
+## Core concept
 
 Every night, the family gathers together for a short **“Today’s Good Deeds”** session.
 
@@ -42,7 +60,7 @@ The system calculates the child's daily score automatically.
 
 ---
 
-## Visual Style
+## Visual style
 
 Create a visual identity that combines:
 
@@ -99,7 +117,7 @@ For example, a star can sparkle, bounce, rotate, or glow, but should not have ey
 
 ---
 
-## Main Navigation
+## Main navigation
 
 Use a very simple bottom navigation suitable for children.
 
@@ -117,7 +135,7 @@ This allows the application to grow later without redesigning the whole app.
 
 ---
 
-## Screen 1 — Child Home / Today
+## Screen 1 — child home / today
 
 Create a beautiful home screen.
 
@@ -162,7 +180,7 @@ Background ambient sounds and short voice feedback are allowed.
 
 ---
 
-## Screen 2 — Nightly Family Check-In
+## Screen 2 — nightly family check-in
 
 This is the most important screen.
 
@@ -226,7 +244,7 @@ Instead say:
 
 ---
 
-## Customizable Daily Checklist
+## Customizable daily checklist
 
 Parents can completely customize the list.
 
@@ -270,7 +288,7 @@ Parents can add, edit, delete, reorder, enable, or disable items.
 
 ---
 
-## Screen 3 — Daily Results
+## Screen 3 — daily results
 
 After completing the nightly check-in, show a celebration screen.
 
@@ -295,7 +313,7 @@ Example:
 
 Then show:
 
-### Today's Total
+### Today's total
 
 **18 Points**
 
@@ -311,13 +329,13 @@ Avoid making the child feel like their worth depends on their score.
 
 ---
 
-## Screen 4 — Family Leaderboard
+## Screen 4 — family leaderboard
 
 Allow multiple children.
 
 Example:
 
-## 🌟 Family Stars
+## 🌟 Family stars
 
 🥇 Maimun — 124 points  
 🥈 Mabrur — 117 points  
@@ -341,13 +359,13 @@ Parents should be able to disable the competitive leaderboard completely if desi
 
 ---
 
-## Screen 5 — Scratch Card Rewards
+## Screen 5 — scratch card rewards
 
 After reaching a reward threshold, the child receives a mystery reward.
 
 Instead of immediately revealing it, show:
 
-## 🎁 You Earned a Reward!
+## 🎁 You earned a reward!
 
 A large colorful scratch card.
 
@@ -402,7 +420,7 @@ The reward system should be configurable without encouraging excessive food cons
 
 ---
 
-## Screen 6 — Monthly Journey / Calendar
+## Screen 6 — monthly journey / calendar
 
 Create a beautiful calendar view.
 
@@ -436,7 +454,7 @@ Use visual charts, stars, plants, or a journey path rather than business-style a
 
 ---
 
-## Screen 7 — Parent Dashboard
+## Screen 7 — parent dashboard
 
 Create a separate parent area.
 
@@ -451,7 +469,7 @@ The parent dashboard should look more mature while still matching the app's visu
 - Birthday/age
 - Individual settings
 
-### Daily Habits
+### Daily habits
 
 - Add habit
 - Edit habit
@@ -496,7 +514,7 @@ The parent dashboard should look more mature while still matching the app's visu
 
 ---
 
-## Splash Walkthrough & Help Guide
+## Splash walkthrough and help guide
 
 The app includes a visual **5-Slide Onboarding Walkthrough** introducing parents and children to the app's core concepts:
 
@@ -507,14 +525,15 @@ The app includes a visual **5-Slide Onboarding Walkthrough** introducing parents
 5. **👨‍👩‍👧 Parent Control & Pattern Locks**: 4-digit parent PIN protection and 3x3 secret pattern locks for children.
 
 **Where Shown**:
+
 - **First Launch**: Automatically presented before initial parent PIN and child setup.
 - **Help Menu**: Accessible anytime from Parent Dashboard (`❓ App Guide & Walkthrough`) and Child Profile.
 
 ---
 
-## First-Time Launch & Parent Onboarding
+## First-time launch and parent onboarding
 
-On initial launch (first time app is opened), the app MUST NOT pre-load hardcoded children. 
+On initial launch (first time app is opened), the app MUST NOT pre-load hardcoded children.
 
 Instead, the app opens directly into **First-Time Parent Setup**:
 
@@ -526,7 +545,7 @@ Parents can add, edit, or remove children anytime from the **Parent Dashboard ->
 
 ---
 
-## Parent Security
+## Parent security
 
 During first-time setup, allow parents to protect the parent dashboard using:
 
@@ -543,7 +562,7 @@ Children should not be able to access parent settings accidentally.
 
 ---
 
-## Screen 8 — Child Profile
+## Screen 8 — child profile
 
 Create a fun profile screen.
 
@@ -574,7 +593,7 @@ Achievements should be configurable and expandable later.
 
 ---
 
-## Streak System
+## Streak system
 
 Add an optional streak system.
 
@@ -596,7 +615,7 @@ Parents should be able to disable streaks.
 
 ---
 
-## Islamic Motivation
+## Islamic motivation
 
 The app can occasionally provide short, age-appropriate Islamic reminders.
 
@@ -633,7 +652,7 @@ The app should communicate that good deeds are done **for Allah**, while points 
 
 ---
 
-## Future Learning Section
+## Future learning section
 
 Design the architecture so the following can be added later:
 
@@ -689,7 +708,7 @@ but make the navigation and visual architecture ready for them.
 
 ---
 
-## Gamification System
+## Gamification system
 
 Use a light progression system.
 
@@ -709,7 +728,7 @@ Parents should be able to customize level names and thresholds.
 
 ---
 
-## Animation Design
+## Animation design
 
 Use subtle, delightful animations.
 
@@ -736,7 +755,7 @@ No talking animated animals with faces.
 
 ---
 
-## Sound Design
+## Sound design
 
 NO background music.
 
@@ -760,7 +779,7 @@ Parents can completely disable sounds.
 
 ---
 
-## UX Principles
+## UX principles
 
 The application should be:
 
@@ -783,7 +802,7 @@ The parent dashboard can contain more advanced configuration.
 
 ---
 
-## Important Product Philosophy
+## Important product philosophy
 
 The app should NOT feel like:
 
@@ -809,7 +828,7 @@ The central emotional loop should be:
 
 ---
 
-## Primary Mockup Screens
+## Primary mockup screens
 
 Create a cohesive high-fidelity mobile UI mockup showing these screens together:
 
@@ -832,7 +851,8 @@ Make the final result look like a **real production-quality children's mobile ap
 
 The design should be **vibrant, engaging, and delightfully interactive for kids, with full creative design freedom for maximum child engagement, interactive micro-animations, and visual-first controls simple enough for a 3-year-old child to use independently.**
 
-### Key Security & UX Features:
+### Key security and UX features
+
 - **Parent PIN Gate**: Navigation bar shows only Home (`🌅`) and Parent Menu (`👨‍👩‍👧`) icons before parent PIN entry. Re-entering parent menu always prompts for PIN lock.
 - **PIN Keypad Feedback**: Cleared initial input with animated button press highlights (`transform: scale(0.92)`) so users clearly see which digit is tapped.
 - **2-Step Confirmation**: Both Parent PIN updates and Child Pattern creation require a 2-step confirmation step to ensure inputs match before saving.
