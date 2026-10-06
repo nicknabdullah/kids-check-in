@@ -98,7 +98,7 @@ class _ParentAuthScreenState extends State<ParentAuthScreen> {
                 ),
                 const SizedBox(height: 12),
                 const Text(
-                  'Parent Dashboard Lock',
+                  'Parent dashboard lock',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class _ParentAuthScreenState extends State<ParentAuthScreen> {
                 ),
                 const SizedBox(height: 4),
                 const Text(
-                  'Enter 4-digit Parent PIN (Default: 1234)',
+                  'Enter 4-digit parent PIN (default: 1234)',
                   style: TextStyle(fontSize: 12, color: AppColors.textMuted),
                   textAlign: TextAlign.center,
                 ),

@@ -25,67 +25,99 @@ class ParentDashboardScreen extends StatelessWidget {
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setDialogState) {
-            return AlertDialog(
-              title: const Text('Add Sibling / Child'),
-              content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    FacelessAvatarWidget(config: avatarConfig, size: 80),
-                    const SizedBox(height: 12),
-                    TextField(
-                      controller: nameController,
-                      decoration: const InputDecoration(labelText: 'Child Name'),
-                    ),
-                    TextField(
-                      controller: ageController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'Age'),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ChoiceChip(
-                          label: const Text('Boy 👦'),
-                          selected: avatarConfig.gender == 'boy',
-                          onSelected: (_) => setDialogState(() => avatarConfig = avatarConfig.copyWith(gender: 'boy')),
+            return Dialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+              child: Padding(
+                padding: const EdgeInsets.all(22.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        '👶 Add sibling or child',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                      ),
+                      const SizedBox(height: 16),
+                      FacelessAvatarWidget(config: avatarConfig, size: 84),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          labelText: 'Child name',
+                          filled: true,
+                          fillColor: AppColors.softTealBg,
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
                         ),
-                        const SizedBox(width: 8),
-                        ChoiceChip(
-                          label: const Text('Girl 👧'),
-                          selected: avatarConfig.gender == 'girl',
-                          onSelected: (_) => setDialogState(() => avatarConfig = avatarConfig.copyWith(gender: 'girl')),
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: ageController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Age',
+                          filled: true,
+                          fillColor: AppColors.softTealBg,
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      const SizedBox(height: 14),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ChoiceChip(
+                            label: const Text('Boy 👦'),
+                            selected: avatarConfig.gender == 'boy',
+                            onSelected: (_) => setDialogState(() => avatarConfig = avatarConfig.copyWith(gender: 'boy')),
+                          ),
+                          const SizedBox(width: 10),
+                          ChoiceChip(
+                            label: const Text('Girl 👧'),
+                            selected: avatarConfig.gender == 'girl',
+                            onSelected: (_) => setDialogState(() => avatarConfig = avatarConfig.copyWith(gender: 'girl')),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Cancel'),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryTeal,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                              ),
+                              onPressed: () {
+                                if (nameController.text.trim().isNotEmpty) {
+                                  final appState = Provider.of<AppStateProvider>(context, listen: false);
+                                  appState.addChild(
+                                    ChildModel(
+                                      id: DateTime.now().millisecondsSinceEpoch.toString(),
+                                      name: nameController.text.trim(),
+                                      age: int.tryParse(ageController.text) ?? 6,
+                                      avatar: avatarConfig,
+                                      specialTitle: 'Good deeds explorer 🌟',
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: const Text('Add child'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (nameController.text.trim().isNotEmpty) {
-                      final appState = Provider.of<AppStateProvider>(context, listen: false);
-                      appState.addChild(
-                        ChildModel(
-                          id: DateTime.now().millisecondsSinceEpoch.toString(),
-                          name: nameController.text.trim(),
-                          age: int.tryParse(ageController.text) ?? 6,
-                          avatar: avatarConfig,
-                          specialTitle: 'Good Deeds Explorer 🌟',
-                        ),
-                      );
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: const Text('Add Child'),
-                ),
-              ],
             );
           },
         );
@@ -306,14 +338,14 @@ class ParentDashboardScreen extends StatelessWidget {
               child: Column(
                 children: [
                   SwitchListTile(
-                    title: const Text('Competitive Leaderboard'),
+                    title: const Text('Competitive leaderboard'),
                     subtitle: const Text('Allow sibling points ranking'),
                     value: appState.isLeaderboardEnabled,
                     onChanged: (val) => appState.toggleLeaderboard(val),
                   ),
                   const Divider(height: 1),
                   SwitchListTile(
-                    title: const Text('Sound Effects & Voice Prompts'),
+                    title: const Text('Sound effects and voice prompts'),
                     subtitle: const Text('Play gentle encouraging audio tones'),
                     value: appState.isSoundEnabled,
                     onChanged: (val) => appState.toggleSound(val),
@@ -321,8 +353,8 @@ class ParentDashboardScreen extends StatelessWidget {
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.lock_reset_rounded, color: AppColors.primaryTeal),
-                    title: const Text('Change Parent Security PIN'),
-                    subtitle: const Text('Update the 4-digit security code (with confirmation)'),
+                    title: const Text('Change parent security PIN'),
+                    subtitle: const Text('Update the 4-digit security PIN'),
                     trailing: const Icon(Icons.chevron_right_rounded),
                     onTap: () {
                       final pinController = TextEditingController();
@@ -333,70 +365,92 @@ class ParentDashboardScreen extends StatelessWidget {
                         context: context,
                         builder: (ctx) => StatefulBuilder(
                           builder: (ctx, setDialogState) {
-                            return AlertDialog(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                              title: Text(isConfirmStep ? 'Confirm New Parent PIN' : 'Enter New Parent PIN'),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    isConfirmStep
-                                        ? 'Re-enter your new 4-digit PIN to confirm:'
-                                        : 'Enter a new 4-digit security code:',
-                                    style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  TextField(
-                                    controller: isConfirmStep ? confirmController : pinController,
-                                    keyboardType: TextInputType.number,
-                                    maxLength: 4,
-                                    autofocus: true,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(fontSize: 26, letterSpacing: 10, fontWeight: FontWeight.bold, color: AppColors.primaryTeal),
-                                    decoration: InputDecoration(
-                                      hintText: '••••',
-                                      filled: true,
-                                      fillColor: AppColors.softTealBg,
-                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                            return Dialog(
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(24.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      isConfirmStep ? '🔒 Confirm new parent PIN' : '🔒 Change parent PIN',
+                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              actions: [
-                                TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    if (!isConfirmStep) {
-                                      if (pinController.text.length == 4) {
-                                        setDialogState(() => isConfirmStep = true);
-                                      } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('PIN must be exactly 4 digits!')),
-                                        );
-                                      }
-                                    } else {
-                                      if (confirmController.text == pinController.text) {
-                                        appState.updateParentPin(confirmController.text);
-                                        Navigator.pop(ctx);
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('✨ MashaAllah! Parent PIN updated successfully!')),
-                                        );
-                                      } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('❌ PINs do not match! Please try again.')),
-                                        );
-                                        setDialogState(() {
-                                          pinController.clear();
-                                          confirmController.clear();
-                                          isConfirmStep = false;
-                                        });
-                                      }
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryTeal),
-                                  child: Text(isConfirmStep ? 'Confirm PIN' : 'Next Step'),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      isConfirmStep
+                                          ? 'Re-enter your new 4-digit PIN to confirm:'
+                                          : 'Enter a new 4-digit security code:',
+                                      style: const TextStyle(fontSize: 13, color: AppColors.textMuted),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    TextField(
+                                      controller: isConfirmStep ? confirmController : pinController,
+                                      keyboardType: TextInputType.number,
+                                      maxLength: 4,
+                                      autofocus: true,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(fontSize: 28, letterSpacing: 10, fontWeight: FontWeight.bold, color: AppColors.primaryTeal),
+                                      decoration: InputDecoration(
+                                        hintText: '••••',
+                                        filled: true,
+                                        fillColor: AppColors.softTealBg,
+                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextButton(
+                                            onPressed: () => Navigator.pop(ctx),
+                                            child: const Text('Cancel'),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              if (!isConfirmStep) {
+                                                if (pinController.text.length == 4) {
+                                                  setDialogState(() => isConfirmStep = true);
+                                                } else {
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                    const SnackBar(content: Text('PIN must be exactly 4 digits!')),
+                                                  );
+                                                }
+                                              } else {
+                                                if (confirmController.text == pinController.text) {
+                                                  appState.updateParentPin(confirmController.text);
+                                                  Navigator.pop(ctx);
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                    const SnackBar(content: Text('✨ MashaAllah! Parent PIN updated successfully!')),
+                                                  );
+                                                } else {
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                    const SnackBar(content: Text('❌ PINs do not match! Please try again.')),
+                                                  );
+                                                  setDialogState(() {
+                                                    pinController.clear();
+                                                    confirmController.clear();
+                                                    isConfirmStep = false;
+                                                  });
+                                                }
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: AppColors.primaryTeal,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                              padding: const EdgeInsets.symmetric(vertical: 12),
+                                            ),
+                                            child: Text(isConfirmStep ? 'Confirm PIN' : 'Next step'),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             );
                           },
                         ),
@@ -406,39 +460,60 @@ class ParentDashboardScreen extends StatelessWidget {
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.delete_forever_rounded, color: Colors.red),
-                    title: const Text('Reset All Application Data', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-                    subtitle: const Text('Clear all children profiles, points, history & restore app to fresh'),
+                    title: const Text('Reset all application data', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                    subtitle: const Text('Clear all children profiles, points, history and restore app to fresh'),
                     trailing: const Icon(Icons.chevron_right_rounded, color: Colors.red),
                     onTap: () {
                       showDialog(
                         context: context,
-                        builder: (ctx) => AlertDialog(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                          title: const Row(
-                            children: [
-                              Icon(Icons.warning_amber_rounded, color: Colors.red, size: 28),
-                              SizedBox(width: 8),
-                              Text('Reset All Data?'),
-                            ],
-                          ),
-                          content: const Text(
-                            'Are you sure you want to reset all data?\n\nThis will permanently delete all children profiles, streak history, and custom rewards, restoring the app to factory fresh state.',
-                            style: TextStyle(fontSize: 14),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(ctx),
-                              child: const Text('Cancel'),
+                        builder: (ctx) => Dialog(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.warning_amber_rounded, color: Colors.red, size: 48),
+                                const SizedBox(height: 12),
+                                const Text(
+                                  'Reset all data?',
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                                ),
+                                const SizedBox(height: 12),
+                                const Text(
+                                  'Are you sure you want to reset all data?\n\nThis will permanently delete all children profiles, streak history, and custom rewards, restoring the app to factory fresh state.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 13, color: AppColors.textMuted),
+                                ),
+                                const SizedBox(height: 20),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextButton(
+                                        onPressed: () => Navigator.pop(ctx),
+                                        child: const Text('Cancel'),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                          padding: const EdgeInsets.symmetric(vertical: 12),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(ctx);
+                                          appState.resetAllData();
+                                        },
+                                        child: const Text('Yes, reset all'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                              onPressed: () {
-                                Navigator.pop(ctx);
-                                appState.resetAllData();
-                              },
-                              child: const Text('Yes, Reset All Data'),
-                            ),
-                          ],
+                          ),
                         ),
                       );
                     },

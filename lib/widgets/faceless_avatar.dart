@@ -78,11 +78,27 @@ class _FacelessHeadAvatarPainter extends CustomPainter {
 
     if (config.gender == 'girl') {
       // FEMALE AVATAR (Graceful Hijab or Cute Girl Hair - NO BEARD EFFECT!)
-      if (config.hasHeadwear || config.hairStyleIndex <= 3) {
+      if (config.hasHeadwear || [1, 2, 3, 6, 7].contains(config.hairStyleIndex)) {
         // Soft Hijab Frame
-        final hijabColor = config.hairStyleIndex == 2
-            ? const Color(0xFFEC407A)
-            : (config.hairStyleIndex == 3 ? const Color(0xFFFFB300) : const Color(0xFF4DB6AC));
+        final Color hijabColor;
+        switch (config.hairStyleIndex) {
+          case 2:
+            hijabColor = const Color(0xFFEC407A); // Rose
+            break;
+          case 3:
+            hijabColor = const Color(0xFFFFB300); // Crown Gold
+            break;
+          case 6:
+            hijabColor = const Color(0xFF9575CD); // Lavender
+            break;
+          case 7:
+            hijabColor = const Color(0xFF42A5F5); // Ocean Blue
+            break;
+          case 1:
+          default:
+            hijabColor = const Color(0xFF4DB6AC); // Emerald
+            break;
+        }
 
         // Hijab Backing
         canvas.drawCircle(Offset(50 * scale, 48 * scale), 34 * scale, Paint()..color = hijabColor);
@@ -116,8 +132,40 @@ class _FacelessHeadAvatarPainter extends CustomPainter {
           ..cubicTo(60 * scale, 32 * scale, 40 * scale, 32 * scale, 24 * scale, 44 * scale)
           ..close();
         canvas.drawPath(bangs, hairPaint);
+      } else if (config.hairStyleIndex == 8) {
+        // Cute High Bun 👱‍♀️
+        canvas.drawCircle(Offset(50 * scale, 18 * scale), 13 * scale, hairPaint);
+        canvas.drawCircle(Offset(50 * scale, 26 * scale), 5 * scale, Paint()..color = const Color(0xFFFFB300));
+
+        // Ears and Face
+        canvas.drawCircle(Offset(22 * scale, 50 * scale), 5 * scale, skinPaint);
+        canvas.drawCircle(Offset(78 * scale, 50 * scale), 5 * scale, skinPaint);
+        canvas.drawCircle(Offset(50 * scale, 48 * scale), 26 * scale, skinPaint);
+
+        // Forehead Bangs
+        final bangs = Path()
+          ..moveTo(24 * scale, 44 * scale)
+          ..cubicTo(35 * scale, 24 * scale, 65 * scale, 24 * scale, 76 * scale, 44 * scale)
+          ..cubicTo(60 * scale, 32 * scale, 40 * scale, 32 * scale, 24 * scale, 44 * scale)
+          ..close();
+        canvas.drawPath(bangs, hairPaint);
+      } else if (config.hairStyleIndex == 9) {
+        // Long Flowing Hair 💁‍♀️
+        final longHair = Path()
+          ..moveTo(20 * scale, 40 * scale)
+          ..lineTo(16 * scale, 76 * scale)
+          ..lineTo(32 * scale, 76 * scale)
+          ..lineTo(32 * scale, 55 * scale)
+          ..lineTo(68 * scale, 55 * scale)
+          ..lineTo(68 * scale, 76 * scale)
+          ..lineTo(84 * scale, 76 * scale)
+          ..lineTo(80 * scale, 40 * scale)
+          ..close();
+        canvas.drawPath(longHair, hairPaint);
+        canvas.drawCircle(Offset(50 * scale, 46 * scale), 30 * scale, hairPaint);
+        canvas.drawCircle(Offset(50 * scale, 48 * scale), 26 * scale, skinPaint);
       } else {
-        // Soft Bob Cut
+        // Soft Bob Cut (Index 5)
         canvas.drawCircle(Offset(50 * scale, 46 * scale), 30 * scale, hairPaint);
         canvas.drawCircle(Offset(50 * scale, 48 * scale), 26 * scale, skinPaint);
       }
@@ -128,16 +176,17 @@ class _FacelessHeadAvatarPainter extends CustomPainter {
       canvas.drawCircle(Offset(79 * scale, 50 * scale), 5 * scale, skinPaint);
       canvas.drawCircle(Offset(50 * scale, 48 * scale), 27 * scale, skinPaint);
 
-      if (config.hasHeadwear) {
-        // Kufi Cap
+      if (config.hasHeadwear || config.hairStyleIndex == 8) {
+        // Kufi Cap (Index 8 or hasHeadwear)
         final capPath = Path()
           ..addArc(Rect.fromCircle(center: Offset(50 * scale, 44 * scale), radius: 29 * scale), 3.14, 3.14);
-        canvas.drawPath(capPath, Paint()..color = headwearColor);
+        final capColor = config.hairStyleIndex == 8 ? const Color(0xFFECEFF1) : headwearColor;
+        canvas.drawPath(capPath, Paint()..color = capColor);
         canvas.drawLine(
           Offset(21 * scale, 44 * scale),
           Offset(79 * scale, 44 * scale),
           Paint()
-            ..color = Colors.white.withOpacity(0.6)
+            ..color = const Color(0xFF00897B).withValues(alpha: 0.7)
             ..strokeWidth = 3 * scale,
         );
       } else {
@@ -171,6 +220,21 @@ class _FacelessHeadAvatarPainter extends CustomPainter {
               ..cubicTo(30 * scale, 18 * scale, 70 * scale, 22 * scale, 78 * scale, 44 * scale)
               ..close();
             canvas.drawPath(sidePart, hairPaint);
+            break;
+          case 6: // Wavy Waves
+            final wavePath = Path()
+              ..moveTo(22 * scale, 44 * scale)
+              ..cubicTo(28 * scale, 20 * scale, 40 * scale, 24 * scale, 50 * scale, 18 * scale)
+              ..cubicTo(60 * scale, 14 * scale, 72 * scale, 22 * scale, 78 * scale, 44 * scale)
+              ..close();
+            canvas.drawPath(wavePath, hairPaint);
+            break;
+          case 7: // Neat Combed
+            final combedPath = Path()
+              ..moveTo(22 * scale, 44 * scale)
+              ..cubicTo(26 * scale, 18 * scale, 74 * scale, 20 * scale, 78 * scale, 44 * scale)
+              ..close();
+            canvas.drawPath(combedPath, hairPaint);
             break;
           case 1:
           default: // Short Crop

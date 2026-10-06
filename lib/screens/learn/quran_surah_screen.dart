@@ -149,16 +149,41 @@ class _QuranSurahScreenState extends State<QuranSurahScreen> {
 
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: const Text('🎉 MASHAALLAH! 🎉'),
-        content: Text('Great job ${appState.activeChild.name}! You unlocked the Quran Star Badge for memorizing ${currentSurah.title}!'),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Hooray! ⭐'),
+      builder: (_) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('⭐', style: TextStyle(fontSize: 48)),
+              const SizedBox(height: 12),
+              const Text(
+                'MashaAllah! 🎉',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textDark),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Great job ${appState.activeChild.name}! You unlocked the Quran star badge for memorizing ${currentSurah.title}!',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14, color: AppColors.textMuted),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryTeal,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Hooray! ⭐'),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -169,7 +194,7 @@ class _QuranSurahScreenState extends State<QuranSurahScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('📖 Quran for Kids (Male Qari)'),
+        title: const Text('📖 Quran for kids (male Qari)'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

@@ -33,7 +33,7 @@ class DailyResultsScreen extends StatelessWidget {
 
               // Celebration Header
               const Text(
-                '🌟 What a Day!',
+                '🌟 What a day!',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -139,10 +139,10 @@ class DailyResultsScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('⭐ Today\'s Total: ',
+                        const Text('⭐ Today\'s total: ',
                             style: TextStyle(fontSize: 18, color: AppColors.textDark)),
                         Text(
-                          '$totalPointsToday Points',
+                          '$totalPointsToday points',
                           style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
@@ -172,7 +172,7 @@ class DailyResultsScreen extends StatelessWidget {
                           ),
                         );
                       },
-                      child: const Text('🎁 Open Scratch Reward'),
+                      child: const Text('🎁 Open scratch reward'),
                     ),
                   ),
                   const SizedBox(width: 12),

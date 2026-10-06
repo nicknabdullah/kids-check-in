@@ -14,62 +14,72 @@ class MonthlyJourneyScreen extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: Row(
-          children: [
-            const Icon(Icons.calendar_today_rounded, color: AppColors.primaryTeal),
-            const SizedBox(width: 10),
-            Text('August $dayNum, 2026'),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Child: $childName', style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryTeal)),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.softGoldBg,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      builder: (_) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+        child: Padding(
+          padding: const EdgeInsets.all(22.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  const Text('Daily score earned:', style: TextStyle(fontSize: 13)),
-                  Text('🌟 +$score pts', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textGold)),
+                  const Icon(Icons.calendar_today_rounded, color: AppColors.primaryTeal),
+                  const SizedBox(width: 10),
+                  Text('August $dayNum, 2026', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textDark)),
                 ],
               ),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.softTealBg,
-                borderRadius: BorderRadius.circular(16),
+              const SizedBox(height: 14),
+              Text('Child: $childName', style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryTeal)),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.softGoldBg,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Daily score earned:', style: TextStyle(fontSize: 13)),
+                    Text('🌟 +$score pts', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textGold)),
+                  ],
+                ),
               ),
-              child: Row(
-                children: [
-                  const Text('🎁 Gift unlocked: ', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                  Expanded(child: Text(reward, style: const TextStyle(fontSize: 13, color: AppColors.primaryTeal))),
-                ],
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.softTealBg,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  children: [
+                    const Text('🎁 Gift unlocked: ', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                    Expanded(child: Text(reward, style: const TextStyle(fontSize: 13, color: AppColors.primaryTeal))),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 14),
-            const Text('Completed deeds:', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 6),
-            const Text('• Morning Dua recited 👍\n• Prayed Salah on time 🕌\n• Helped clean up toys 🧸', style: TextStyle(fontSize: 12, color: AppColors.textMuted, height: 1.5)),
-          ],
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryTeal),
-            child: const Text('Close'),
+              const SizedBox(height: 14),
+              const Text('Completed deeds:', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 6),
+              const Text('• Morning Dua recited 👍\n• Prayed Salah on time 🕌\n• Helped clean up toys 🧸', style: TextStyle(fontSize: 12, color: AppColors.textMuted, height: 1.5)),
+              const SizedBox(height: 18),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryTeal,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                  child: const Text('Close'),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

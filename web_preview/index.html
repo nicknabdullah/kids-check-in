@@ -1,60 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kids Islamic Good-Deeds App — Interactive Web Preview</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css">
-</head>
-<body>
-  <div class="web-container">
-    <!-- Header Banner -->
-    <header class="header">
-      <div class="header-content">
-        <h1>🌟 Kids Good-Deeds App</h1>
-        <span class="badge">Live Flutter Web Preview</span>
-      </div>
-      <p class="subtitle">Interactive prototype mirroring the Flutter app codebase</p>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kids Islamic Good-Deeds App — Interactive Web Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Cabin+Sketch:wght@400;700&family=Fredoka:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="web-container">
+      <!-- Header Banner -->
+      <header class="header">
+        <div class="header-content">
+          <h1>🌟 Kids good deeds app</h1>
+          <span class="badge">Live Flutter web preview</span>
+        </div>
+        <p class="subtitle">
+          Interactive prototype mirroring the Flutter app codebase
+        </p>
+      </header>
 
-    <!-- Phone Device Shell -->
-    <main class="phone-frame">
-      <div class="phone-notch"></div>
-      
-      <!-- App Screen Canvas Container -->
-      <div id="app-viewport" class="app-viewport">
-        <!-- Screens rendered dynamically via main.js -->
-      </div>
+      <!-- Phone Device Shell -->
+      <main class="phone-frame">
+        <div class="phone-notch"></div>
 
-      <!-- Floating Bottom Navigation -->
-      <nav class="bottom-nav">
-        <button class="nav-item active" data-tab="today">
-          <span class="nav-icon">🌅</span>
-          <span class="nav-label">Today</span>
-        </button>
-        <button class="nav-item" data-tab="journey">
-          <span class="nav-icon">📅</span>
-          <span class="nav-label">Journey</span>
-        </button>
-        <button class="nav-item" data-tab="rewards">
-          <span class="nav-icon">🎁</span>
-          <span class="nav-label">Rewards</span>
-        </button>
-        <button class="nav-item" data-tab="learn">
-          <span class="nav-icon">📖</span>
-          <span class="nav-label">Learn</span>
-        </button>
-        <button class="nav-item" data-tab="parent">
-          <span class="nav-icon">👨‍👩‍👧</span>
-          <span class="nav-label">Parent</span>
-        </button>
-      </nav>
-    </main>
-  </div>
+        <!-- App Screen Canvas Container -->
+        <div id="app-viewport" class="app-viewport">
+          <!-- Screens rendered dynamically via main.js -->
+        </div>
 
-  <script type="module" src="./main.js"></script>
-</body>
+        <!-- Floating Bottom Navigation -->
+        <nav class="bottom-nav">
+          <button class="nav-item active" data-tab="today">
+            <span class="nav-icon">🌅</span>
+            <span class="nav-label">Today</span>
+          </button>
+          <button class="nav-item" data-tab="journey">
+            <span class="nav-icon">📅</span>
+            <span class="nav-label">Journey</span>
+          </button>
+          <button class="nav-item" data-tab="rewards">
+            <span class="nav-icon">🎁</span>
+            <span class="nav-label">Rewards</span>
+          </button>
+          <button class="nav-item" data-tab="learn">
+            <span class="nav-icon">📖</span>
+            <span class="nav-label">Learn</span>
+          </button>
+          <button class="nav-item" data-tab="parent">
+            <span class="nav-icon">👨‍👩‍👧</span>
+            <span class="nav-label">Parent</span>
+          </button>
+        </nav>
+      </main>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
 </html>

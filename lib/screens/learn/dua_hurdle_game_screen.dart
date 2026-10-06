@@ -153,19 +153,44 @@ class _DuaHurdleGameScreenState extends State<DuaHurdleGameScreen>
       // Completed All Hurdles!
       showDialog(
         context: context,
-        builder: (_) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-          title: const Text('🏆 DUA CHAMPION! 🏆'),
-          content: const Text('MashaAllah! You completed all Dua Hurdles today! Earned +50 Bonus Stars!'),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-              child: const Text('Hooray! 🎉'),
+        builder: (_) => Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('🏆', style: TextStyle(fontSize: 48)),
+                const SizedBox(height: 12),
+                const Text(
+                  'Dua champion! 🌟',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'MashaAllah! You completed all Dua hurdles today! Earned +50 bonus stars!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, color: AppColors.textMuted),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryTeal,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Hooray! 🎉'),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       );
     }
@@ -178,7 +203,7 @@ class _DuaHurdleGameScreenState extends State<DuaHurdleGameScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🤲 Dua Hurdle Quest'),
+        title: const Text('🤲 Dua hurdle quest'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

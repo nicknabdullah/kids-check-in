@@ -44,7 +44,7 @@ class ChildHomeScreen extends StatelessWidget {
                             builder: (_) => Dialog(
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
                               child: PatternLockWidget(
-                                title: 'Draw ${child.name}\'s Secret Pattern ⭐',
+                                title: 'Draw ${child.name}\'s secret pattern ⭐',
                                 onPatternComplete: (drawnPattern) {
                                   if (drawnPattern == child.patternLock) {
                                     appState.setActiveChild(child.id);

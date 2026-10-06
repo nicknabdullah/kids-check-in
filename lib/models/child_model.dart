@@ -7,7 +7,7 @@ class AvatarConfig {
   final Color outfitColor;
   final Color hairColor;
   final Color headwearColor;
-  final int hairStyleIndex; // 1 to 5
+  final int hairStyleIndex; // 1 to 9 (Boys 1-8, Girls 1-9)
   final int eyeGlassesIndex; // 1 to 5 (1: Clean, 2: Round, 3: Square, 4: Sunglasses, 5: Star)
   final bool hasHeadwear;
   final bool hasBackpack;

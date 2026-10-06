@@ -12,33 +12,31 @@ import 'screens/parent/parent_dashboard_screen.dart';
 import 'screens/parent/splash_walkthrough_screen.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AppStateProvider()),
-      ],
-      child: const KidsGoodDeedsApp(),
-    ),
-  );
+  runApp(const KidsGoodDeedsApp());
 }
 
 /// Root Application Widget
 class KidsGoodDeedsApp extends StatelessWidget {
-  const KidsGoodDeedsApp({Key? key}) : super(key: key);
+  const KidsGoodDeedsApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kids Good Deeds App',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      home: Consumer<AppStateProvider>(
-        builder: (context, appState, child) {
-          if (appState.isFirstTimeLaunch) {
-            return const SplashWalkthroughScreen();
-          }
-          return const MainNavigationWrapper();
-        },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AppStateProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Kids good deeds app',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        home: Consumer<AppStateProvider>(
+          builder: (context, appState, child) {
+            if (appState.isFirstTimeLaunch) {
+              return const SplashWalkthroughScreen();
+            }
+            return const MainNavigationWrapper();
+          },
+        ),
       ),
     );
   }

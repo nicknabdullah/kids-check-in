@@ -35,7 +35,7 @@ class LearnScreen extends StatelessWidget {
 
             // 1. Playable Feature: Short Quran Surahs (Male Qari)
             _GameLaunchCard(
-              title: '📖 Short Quran surahs (Male Qari)',
+              title: '📖 Short Quran surahs (male Qari)',
               desc: 'Listen, repeat and memorize short Juz Amma surahs with Male Qari audio!',
               emoji: '🕌',
               color: const Color(0xFFFFF8E1),

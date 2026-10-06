@@ -20,46 +20,80 @@ class _RewardCustomizationScreenState extends State<RewardCustomizationScreen> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('Add Custom Reward'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Reward Title (e.g. Family Outing)'),
-              ),
-              TextField(
-                controller: pointsController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Points Required'),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (titleController.text.isNotEmpty) {
-                  final appState = Provider.of<AppStateProvider>(context, listen: false);
-                  appState.addReward(
-                    RewardModel(
-                      id: DateTime.now().millisecondsSinceEpoch.toString(),
-                      title: titleController.text,
-                      iconEmoji: '🎁',
-                      requiredPoints: int.tryParse(pointsController.text) ?? 50,
-                      isUnlocked: true,
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+          child: Padding(
+            padding: const EdgeInsets.all(22.0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    '🎁 Add custom reward',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: titleController,
+                    decoration: InputDecoration(
+                      labelText: 'Reward title (e.g. Family outing)',
+                      filled: true,
+                      fillColor: AppColors.softTealBg,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
                     ),
-                  );
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text('Add Reward'),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: pointsController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Points required',
+                      filled: true,
+                      fillColor: AppColors.softTealBg,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Cancel'),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryTeal,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                          ),
+                          onPressed: () {
+                            if (titleController.text.isNotEmpty) {
+                              final appState = Provider.of<AppStateProvider>(context, listen: false);
+                              appState.addReward(
+                                RewardModel(
+                                  id: DateTime.now().millisecondsSinceEpoch.toString(),
+                                  title: titleController.text,
+                                  iconEmoji: '🎁',
+                                  requiredPoints: int.tryParse(pointsController.text) ?? 50,
+                                  isUnlocked: true,
+                                ),
+                              );
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: const Text('Add reward'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         );
       },
     );
@@ -71,12 +105,12 @@ class _RewardCustomizationScreenState extends State<RewardCustomizationScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Customize Scratch Rewards'),
+        title: const Text('Customize scratch rewards'),
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: AppColors.primaryTeal,
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Add Reward'),
+        label: const Text('Add reward'),
         onPressed: () => _showAddRewardDialog(context),
       ),
       body: ListView.builder(

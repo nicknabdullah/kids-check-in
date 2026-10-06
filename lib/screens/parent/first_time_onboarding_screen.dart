@@ -51,7 +51,7 @@ class _FirstTimeOnboardingScreenState extends State<FirstTimeOnboardingScreen> {
                   const Text('🌟 Assalamu Alaikum!',
                       style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: AppColors.textDark)),
                   const SizedBox(height: 6),
-                  const Text('Welcome to Kids Good-Deeds App',
+                  const Text('Welcome to Kids good-deeds app',
                       style: TextStyle(fontSize: 15, color: AppColors.primaryTeal, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 20),
 
@@ -59,7 +59,7 @@ class _FirstTimeOnboardingScreenState extends State<FirstTimeOnboardingScreen> {
                     // Step 1: Set Parent Security PIN
                     const Icon(Icons.security_rounded, size: 48, color: AppColors.primaryTeal),
                     const SizedBox(height: 12),
-                    const Text('Step 1: Set Parent Security PIN',
+                    const Text('Step 1: Set parent security PIN',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textDark)),
                     const SizedBox(height: 6),
                     const Text('This PIN protects parent controls and reward customization.',
@@ -70,27 +70,35 @@ class _FirstTimeOnboardingScreenState extends State<FirstTimeOnboardingScreen> {
                       keyboardType: TextInputType.number,
                       maxLength: 4,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 26, letterSpacing: 12, fontWeight: FontWeight.bold, color: AppColors.primaryTeal),
+                      style: const TextStyle(fontSize: 32, letterSpacing: 16, fontWeight: FontWeight.bold, color: AppColors.primaryTeal),
                       decoration: InputDecoration(
-                        labelText: '4-Digit PIN Code',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+                        filled: true,
+                        fillColor: AppColors.softTealBg,
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide.none),
                       ),
                     ),
                     const SizedBox(height: 20),
+                    if (_errorMessage.isNotEmpty)
+                      Text(_errorMessage, style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 10),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryTeal, minimumSize: const Size(double.infinity, 52)),
+                      style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryTeal, minimumSize: const Size(double.infinity, 54)),
                       onPressed: () {
                         if (_pinController.text.length == 4) {
-                          setState(() => _currentStep = 2);
+                          appState.updateParentPin(_pinController.text);
+                          setState(() {
+                            _currentStep = 2;
+                            _errorMessage = '';
+                          });
                         } else {
-                          setState(() => _errorMessage = 'Please enter a 4-digit PIN code.');
+                          setState(() => _errorMessage = 'PIN must be 4 digits!');
                         }
                       },
-                      child: const Text('Next: Add Your Child ➡️'),
+                      child: const Text('Next step ➔', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     ),
                   ] else ...[
                     // Step 2: Add First Child Profile
-                    const Text('Step 2: Add Your Child',
+                    const Text('Step 2: Add your child',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textDark)),
                     const SizedBox(height: 16),
                     FacelessAvatarWidget(config: _avatarConfig, size: 100),
@@ -98,7 +106,7 @@ class _FirstTimeOnboardingScreenState extends State<FirstTimeOnboardingScreen> {
                     TextField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        labelText: 'Child\'s Name (e.g. Maryam / Bilal)',
+                        labelText: 'Child\'s name (e.g. Maryam / Bilal)',
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                       ),
                     ),
@@ -107,7 +115,7 @@ class _FirstTimeOnboardingScreenState extends State<FirstTimeOnboardingScreen> {
                       controller: _ageController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: 'Child\'s Age (e.g. 6)',
+                        labelText: 'Child\'s age (e.g. 6)',
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                       ),
                     ),

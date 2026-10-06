@@ -32,7 +32,7 @@ class _ScratchRewardScreenState extends State<ScratchRewardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mystery Reward'),
+        title: const Text('Mystery reward'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -42,7 +42,7 @@ class _ScratchRewardScreenState extends State<ScratchRewardScreen> {
           child: Column(
             children: [
               const Text(
-                '🎁 You Earned a Reward!',
+                '🎁 You earned a reward!',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,

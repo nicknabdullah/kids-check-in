@@ -42,7 +42,7 @@ class _StickerGardenScreenState extends State<StickerGardenScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🌸 My Good-Deed Garden'),
+        title: const Text('🌸 My good-deed garden'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

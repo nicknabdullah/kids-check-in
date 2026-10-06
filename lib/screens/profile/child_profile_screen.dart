@@ -17,7 +17,7 @@ class ChildProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Profile'),
+        title: const Text('My profile'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

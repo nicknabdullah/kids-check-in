@@ -38,6 +38,12 @@ class _AvatarCustomizerScreenState extends State<AvatarCustomizerScreen> {
     {'index': 3, 'label': 'Spiky Cut 🧑', 'emoji': '🧑'},
     {'index': 4, 'label': 'Buzz Cut 💈', 'emoji': '💈'},
     {'index': 5, 'label': 'Side Part 👦', 'emoji': '👨'},
+    {'index': 6, 'label': 'Wavy Waves 🌊', 'emoji': '🌊'},
+    {'index': 7, 'label': 'Neat Combed 👦', 'emoji': '👦'},
+    {'index': 8, 'label': 'Sunnah Kufi 🕌', 'emoji': '🕌'},
+    {'index': 9, 'label': 'Fade Cut ✂️', 'emoji': '👦'},
+    {'index': 10, 'label': 'Afro 🦱', 'emoji': '🦱'},
+    {'index': 11, 'label': 'Long Top 💇‍♂️', 'emoji': '👨'},
   ];
 
   final List<Map<String, dynamic>> _femaleHairStyles = const [
@@ -46,6 +52,13 @@ class _AvatarCustomizerScreenState extends State<AvatarCustomizerScreen> {
     {'index': 3, 'label': 'Crown Hijab 👑', 'emoji': '👑'},
     {'index': 4, 'label': 'Twin Tails 👧', 'emoji': '👧'},
     {'index': 5, 'label': 'Bob Cut 💇‍♀️', 'emoji': '💇‍♀️'},
+    {'index': 6, 'label': 'Lavender Hijab 💜', 'emoji': '💜'},
+    {'index': 7, 'label': 'Ocean Hijab 🌊', 'emoji': '🌊'},
+    {'index': 8, 'label': 'Cute High Bun 👱‍♀️', 'emoji': '👱‍♀️'},
+    {'index': 9, 'label': 'Long Flowing Hair 💁‍♀️', 'emoji': '💁‍♀️'},
+    {'index': 10, 'label': 'Pigtails 👧', 'emoji': '👧'},
+    {'index': 11, 'label': 'Ponytail 👱‍♀️', 'emoji': '👱‍♀️'},
+    {'index': 12, 'label': 'Curly Hair 🦱', 'emoji': '🦱'},
   ];
 
   final List<Map<String, dynamic>> _eyeGlassesStyles = const [
@@ -105,9 +118,9 @@ class _AvatarCustomizerScreenState extends State<AvatarCustomizerScreen> {
                 crossAxisSpacing: 8,
                 children: [
                   _buildCategoryTabCard('gender', '👦👧', 'Gender'),
-                  _buildCategoryTabCard('hairStyle', '💇‍♂️', 'Style'),
-                  _buildCategoryTabCard('hairColor', '🎨', 'Color'),
-                  _buildCategoryTabCard('skinTone', '🖐️', 'Skin'),
+                  _buildCategoryTabCard('hairStyle', '💇‍♂️', 'Hair style'),
+                  _buildCategoryTabCard('hairColor', '🎨', 'Hair color'),
+                  _buildCategoryTabCard('skinTone', '🖐️', 'Skin tone'),
                   _buildCategoryTabCard('eyeGlasses', '👓', 'Glasses'),
                 ],
               ),
@@ -220,7 +233,14 @@ class _AvatarCustomizerScreenState extends State<AvatarCustomizerScreen> {
               style['label'],
               style['emoji'],
               isSelected,
-              () => setState(() => _config = _config.copyWith(hairStyleIndex: style['index'])),
+              () => setState(() {
+                final isBoyKufi = _config.gender == 'boy' && style['index'] == 8;
+                final isGirlHijab = _config.gender == 'girl' && [1, 2, 3, 6, 7].contains(style['index']);
+                _config = _config.copyWith(
+                  hairStyleIndex: style['index'],
+                  hasHeadwear: isBoyKufi || isGirlHijab,
+                );
+              }),
             );
           },
         );

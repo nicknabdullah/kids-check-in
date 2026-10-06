@@ -122,7 +122,7 @@ class _AlphabetBubbleGameScreenState extends State<AlphabetBubbleGameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🎈 Alphabet Bubble Pop'),
+        title: const Text('🎈 Alphabet bubble pop'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

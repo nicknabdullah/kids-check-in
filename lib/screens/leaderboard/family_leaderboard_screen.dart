@@ -22,7 +22,7 @@ class FamilyLeaderboardScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              '🌟 Family Stars',
+              '🌟 Family stars',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -127,7 +127,7 @@ class FamilyLeaderboardScreen extends StatelessWidget {
 
               // Special Strength Category Recognition (No Child Left Out!)
               const Text(
-                '🎖️ Special Strengths Champions',
+                '🎖️ Special strengths champions',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -145,25 +145,25 @@ class FamilyLeaderboardScreen extends StatelessWidget {
                 childAspectRatio: 1.3,
                 children: const [
                   _CategoryBadgeCard(
-                    title: 'Kindness Champion',
+                    title: 'Kindness champion',
                     emoji: '🤝',
                     winnerName: 'Maimun',
                     color: Color(0xFFF3E5F5),
                   ),
                   _CategoryBadgeCard(
-                    title: 'Helping Hero',
+                    title: 'Helping hero',
                     emoji: '🦸',
                     winnerName: 'Maryam',
                     color: Color(0xFFE1F5FE),
                   ),
                   _CategoryBadgeCard(
-                    title: 'Good Manners Star',
+                    title: 'Good manners star',
                     emoji: '⭐',
                     winnerName: 'Mabrur',
                     color: Color(0xFFFFF8E1),
                   ),
                   _CategoryBadgeCard(
-                    title: 'Dua Champion',
+                    title: 'Dua champion',
                     emoji: '🤲',
                     winnerName: 'Maimun',
                     color: Color(0xFFE8F5E9),
