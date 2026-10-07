@@ -4,6 +4,15 @@ let activeTab = "today";
 let calendarViewYear = 2026;
 let calendarViewMonth = 8; // 8 = September (0-indexed: 0=Jan, 8=Sept)
 let selectedDateDetails = null;
+const SOUND_ENABLED_KEY = "kids-good-deeds-sound-enabled";
+let isSoundEnabled = (() => {
+  try {
+    return localStorage.getItem(SOUND_ENABLED_KEY) !== "false";
+  } catch (error) {
+    console.warn("Could not read sound preference:", error);
+    return true;
+  }
+})();
 const monthNames = [
   "January",
   "February",
@@ -333,18 +342,55 @@ const eyeGlassesList = [
 ];
 
 // SPEECH SYNTHESIS VOICE OVER FEEDBACK
-function speakGreeting(text) {
-  if ("speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.pitch = 1.2;
-    utterance.rate = 0.95;
-    window.speechSynthesis.speak(utterance);
+function speakGreeting(text, { showUnavailable = false } = {}) {
+  if (!isSoundEnabled) return;
+  if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+    if (showUnavailable) {
+      showInAppAlert({
+        title: "Voice playback unavailable",
+        message: "This browser does not support speech synthesis.",
+        icon: "🔇",
+      });
+    }
+    return;
   }
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.pitch = 0.85;
+  utterance.rate = 0.9;
+
+  const voices = window.speechSynthesis.getVoices();
+  const englishVoices = voices.filter((voice) =>
+    voice.lang.toLowerCase().startsWith("en"),
+  );
+  const maleVoice = englishVoices.find((voice) =>
+    /(^|[^a-z])(male|man|david|daniel|alex|guy)([^a-z]|$)/i.test(voice.name),
+  );
+  if (maleVoice) {
+    utterance.voice = maleVoice;
+    utterance.lang = maleVoice.lang;
+  } else {
+    utterance.lang = "en-US";
+  }
+
+  utterance.onerror = (event) => {
+    console.error("Browser speech synthesis failed:", event.error);
+    if (showUnavailable) {
+      showInAppAlert({
+        title: "Voice playback unavailable",
+        message:
+          "The browser could not start its voice. Check the device speech settings and try again.",
+        icon: "🔇",
+      });
+    }
+  };
+  window.speechSynthesis.speak(utterance);
 }
 
 // SYNTHESIZED SOUND EFFECTS VIA WEB AUDIO API
 function playAudioFeedback(type) {
+  if (!isSoundEnabled) return;
   try {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextClass) return;
@@ -939,7 +985,9 @@ function renderViewport() {
       <!-- SETTINGS -->
       <div class="card">
         <strong style="display:block; margin-bottom:10px; font-size:15px;">⚙️ Settings</strong>
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f0f0f0; font-size:13px;"><span>🔊 Sound effects</span><input type="checkbox" checked style="width:18px; height:18px;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f0f0f0; font-size:13px;"><span>🔊 Sound effects and voice prompts</span><input id="sound-enabled-toggle" type="checkbox" ${isSoundEnabled ? "checked" : ""} aria-label="Enable sound effects and voice prompts" onchange="setSoundEnabled(this.checked)" style="width:18px; height:18px;"></div>
+        <p style="font-size:11px; color:var(--text-muted); margin:6px 0;">Uses browser voices; prefers a male-sounding English voice when identifiable.</p>
+        <button class="btn-primary" style="margin:4px 0 10px;" onclick="testPreviewVoice()">🔊 Test voice</button>
         <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f0f0f0; font-size:13px;"><span>🏆 Family leaderboard</span><input type="checkbox" checked style="width:18px; height:18px;"></div>
         <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:13px;"><span>🔥 Streak counter</span><input type="checkbox" checked style="width:18px; height:18px;"></div>
         <button class="btn-primary" style="margin-top:10px;" onclick="changeParentPinModal()">🔒 Change parent PIN</button>
@@ -1791,6 +1839,38 @@ window.lockParentGate = function () {
   activeChildIndex = -1;
   enteredPinText = "";
   renderViewport();
+};
+
+window.setSoundEnabled = function (enabled) {
+  isSoundEnabled = Boolean(enabled);
+  try {
+    localStorage.setItem(SOUND_ENABLED_KEY, String(isSoundEnabled));
+  } catch (error) {
+    console.error("Could not save sound preference:", error);
+    showInAppAlert({
+      title: "Sound setting not saved",
+      message: "This browser could not save the setting for your next visit.",
+      icon: "⚠️",
+    });
+  }
+  if (!isSoundEnabled && "speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+};
+
+window.testPreviewVoice = function () {
+  if (!isSoundEnabled) {
+    showInAppAlert({
+      title: "Voice is muted",
+      message: "Turn on sound effects and voice prompts to test the voice.",
+      icon: "🔇",
+    });
+    return;
+  }
+  speakGreeting(
+    "Assalamu alaikum! MashaAllah, you are doing great!",
+    { showUnavailable: true },
+  );
 };
 
 window.selectKidFromGrid = function (idx) {

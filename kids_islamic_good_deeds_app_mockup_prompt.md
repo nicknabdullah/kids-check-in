@@ -18,7 +18,7 @@ Reviewed 2026-10-07 against the Flutter source and interactive web preview.
 | Scratch rewards and learning screens                        | Partial     | Interactive screens and device text-to-speech feedback exist; recorded audio is not bundled.                                                                   |
 | Journey and reports                                         | Partial     | Trend chart and date details use demo values.                                                                                                                  |
 | Device persistence                                          | Implemented | Profiles, settings, deeds, rewards, active child, PIN, and check-in history persist with SharedPreferences; PIN is stored unencrypted.                          |
-| Voice feedback                                              | Partial     | Flutter uses device text-to-speech and prefers a male-sounding English voice when available; voice varies by device. The web preview has separate browser speech. |
+| Voice feedback                                              | Partial     | Flutter uses device TTS and the web preview uses browser speech synthesis; both prefer a male-sounding English voice when identifiable, but voice availability varies. |
 | Consistent recorded narration                               | Planned     | No licensed voice recordings are bundled; device voice and availability vary.                                                                              |
 
 Treat the remaining sections as product requirements unless the implementation status above says otherwise.

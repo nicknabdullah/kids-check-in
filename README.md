@@ -22,7 +22,7 @@ A Flutter app and interactive web prototype for a gentle family check-in about d
 
 - The parent PIN is stored in ordinary local preferences and is not encrypted.
 - Journey charts and date details contain demo data rather than summaries calculated from check-ins.
-- Flutter voice feedback uses device text-to-speech and prefers a male-sounding English voice when the device exposes one; use Parent settings → Test voice to hear the selected voice. Voices vary by device, and recordings are not bundled.
+- Flutter voice feedback uses device text-to-speech; the web preview has a matching Parent settings → Test voice control using browser speech synthesis. Both prefer a male-sounding English voice when identifiable, but available voices vary by device/browser and recordings are not bundled.
 - The web preview is a separate prototype and can differ from Flutter behavior.
 
 ## Run it

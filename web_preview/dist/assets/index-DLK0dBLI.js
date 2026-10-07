@@ -1,4 +1,4 @@
-(function(){const e=document.createElement("link").relList;if(e&&e.supports&&e.supports("modulepreload"))return;for(const a of document.querySelectorAll('link[rel="modulepreload"]'))o(a);new MutationObserver(a=>{for(const n of a)if(n.type==="childList")for(const l of n.addedNodes)l.tagName==="LINK"&&l.rel==="modulepreload"&&o(l)}).observe(document,{childList:!0,subtree:!0});function t(a){const n={};return a.integrity&&(n.integrity=a.integrity),a.referrerPolicy&&(n.referrerPolicy=a.referrerPolicy),a.crossOrigin==="use-credentials"?n.credentials="include":a.crossOrigin==="anonymous"?n.credentials="omit":n.credentials="same-origin",n}function o(a){if(a.ep)return;a.ep=!0;const n=t(a);fetch(a.href,n)}})();let x="today",w=2026,m=8,A=null;const G=["January","February","March","April","May","June","July","August","September","October","November","December"];let u=[{id:"1",name:"Ahmad",level:1,points:120,streak:5,title:"Good deeds explorer 🌟",gender:"boy",skinTone:"#f5d0a0",hairColor:"#0e0e0e",hairStyleIndex:1,eyeGlassesIndex:1,outfitColor:"#00897b",headwearColor:"#ffb300",hasHeadwear:!0,patternLock:null,claimedRewards:[{emoji:"🍦",title:"Delicious Ice Cream"},{emoji:"📖",title:"Choose Bedtime Story"}],checkInHistory:{"2026-08-05":{completed:!0,score:16,reward:{emoji:"🍦",title:"Delicious Ice Cream"},details:["Morning Dua recited 🤲","Prayed Salah on time 🕌","Helped clean up toys 🧸"]},"2026-08-10":{completed:!0,score:18,reward:{emoji:"📖",title:"Choose Bedtime Story"},details:["Said Bismillah before eating 🍽️","Gave Salam to family 💬","Listened to Mom ❤️"]},"2026-08-15":{completed:!0,score:20,reward:{emoji:"🤗",title:"Big Warm Bear Hug"},details:["Prayed Salah on time 🕌","Shared toys with sibling 🤝","Recited morning dua 🤲"]},"2026-08-20":{completed:!0,score:15,reward:{emoji:"🎮",title:"Extra Play Time"},details:["Put toys away 🧸","Gave Salam 💬","Listened to parents ❤️"]},"2026-08-25":{completed:!0,score:22,reward:{emoji:"🌳",title:"Family Outing"},details:["Prayed on time 🕌","Morning dua 🤲","Helped clean room 🤝"]},"2026-08-30":{completed:!0,score:19,reward:{emoji:"🍦",title:"Delicious Ice Cream"},details:["Bismillah before eating 🍽️","Gave Salam 💬","Listened to Mom ❤️"]}}},{id:"2",name:"Maryam",level:2,points:210,streak:8,title:"Kindness champion 🌸",gender:"girl",skinTone:"#e0ac69",hairColor:"#4a2e1b",hairStyleIndex:2,eyeGlassesIndex:1,outfitColor:"#e91e63",headwearColor:"#81c784",hasHeadwear:!0,patternLock:null,claimedRewards:[{emoji:"🤗",title:"Big Warm Bear Hug"},{emoji:"🌳",title:"Family Outing"}],checkInHistory:{"2026-08-04":{completed:!0,score:18,reward:{emoji:"🤗",title:"Big Warm Bear Hug"},details:["Gave Salam to family 💬","Prayed Salah on time 🕌","Helped clean up 🧸"]},"2026-08-12":{completed:!0,score:21,reward:{emoji:"🌳",title:"Family Outing"},details:["Morning Dua 🤲","Helped someone 🤝","Shared toys 🧸"]},"2026-08-18":{completed:!0,score:19,reward:{emoji:"📖",title:"Choose Bedtime Story"},details:["Bismillah before eating 🍽️","Prayed on time 🕌","Spoke kindly ❤️"]},"2026-08-28":{completed:!0,score:24,reward:{emoji:"🍦",title:"Delicious Ice Cream"},details:["Recited morning dua 🤲","Listened respectfully ❤️","Helped clean 🧸"]}}}],y=0,B=!1,V="1234",h="",k=[],D=null,I=!1,N=!1,E=!1,j=!1,b=0,$=[];const M=[{emoji:"🤲",text:"Did you recite your morning dua?",points:3,positive:!0,isEnabled:!0},{emoji:"🍽️",text:"Did you say Bismillah before eating?",points:2,positive:!0,isEnabled:!0},{emoji:"💬",text:"Did you give Salam to family?",points:2,positive:!0,isEnabled:!0},{emoji:"🤝",text:"Did you help someone today?",points:3,positive:!0,isEnabled:!0},{emoji:"🕌",text:"Did you pray Salah on time?",points:4,positive:!0,isEnabled:!0},{emoji:"❤️",text:"Did you listen respectfully to parents?",points:3,positive:!0,isEnabled:!0},{emoji:"🧸",text:"Did you put your toys away?",points:2,positive:!0,isEnabled:!0},{emoji:"🕊️",text:"Did you fight or argue with anyone?",points:2,positive:!1,isEnabled:!0}];let C=[{emoji:"🍦",title:"Delicious Ice Cream",requiredPoints:50,probability:.25},{emoji:"📖",title:"Choose Bedtime Story",requiredPoints:40,probability:.3},{emoji:"🤗",title:"Big Warm Bear Hug",requiredPoints:30,probability:.35},{emoji:"🎮",title:"Extra Play Time",requiredPoints:60,probability:.15},{emoji:"🌳",title:"Family Outing",requiredPoints:100,probability:.05}],g="hairStyle",p={gender:"boy",skinTone:"#f5d0a0",hairColor:"#0e0e0e",hairStyleIndex:1,eyeGlassesIndex:1,headwearColor:"#ffb300"};const ee=[{color:"#f5d0a0",name:"Fair"},{color:"#e0ac69",name:"Tan"},{color:"#c68642",name:"Olive"},{color:"#8d5524",name:"Bronze"},{color:"#5c3317",name:"Mahogany"}],te=[{color:"#0e0e0e",name:"Black"},{color:"#4a2e1b",name:"Brown"},{color:"#d4a359",name:"Blonde"}],ie=[{index:1,label:"Short Crop 💇‍♂️",emoji:"👦"},{index:2,label:"Curly Top 🦱",emoji:"🦱"},{index:3,label:"Spiky Cut 🧑",emoji:"🧑"},{index:4,label:"Buzz Cut 💈",emoji:"💈"},{index:5,label:"Side Part 👦",emoji:"👨"},{index:6,label:"Wavy Waves 🌊",emoji:"🌊"},{index:7,label:"Neat Combed 👦",emoji:"👦"},{index:8,label:"Sunnah Kufi 🕌",emoji:"🕌"}],ne=[{index:1,label:"Emerald Hijab 🧕",emoji:"🧕"},{index:2,label:"Rose Hijab 🌸",emoji:"🌸"},{index:3,label:"Crown Hijab 👑",emoji:"👑"},{index:4,label:"Twin Tails 👧",emoji:"👧"},{index:5,label:"Bob Cut 💇‍♀️",emoji:"💇‍♀️"},{index:6,label:"Lavender Hijab 💜",emoji:"💜"},{index:7,label:"Ocean Hijab 🌊",emoji:"🌊"},{index:8,label:"Cute High Bun 👱‍♀️",emoji:"👱‍♀️"},{index:9,label:"Long Flowing Hair 💁‍♀️",emoji:"💁‍♀️"}],oe=[{index:1,label:"Clean 🌟",emoji:"✨"},{index:2,label:"Round 👓",emoji:"👓"},{index:3,label:"Square 🤓",emoji:"🤓"},{index:4,label:"Shades 🕶️",emoji:"🕶️"},{index:5,label:"Star ⭐",emoji:"⭐"}];function T(i){if("speechSynthesis"in window){window.speechSynthesis.cancel();const e=new SpeechSynthesisUtterance(i);e.pitch=1.2,e.rate=.95,window.speechSynthesis.speak(e)}}function R(i){try{const e=window.AudioContext||window.webkitAudioContext;if(!e)return;const t=new e;if(i==="yes")[523.25,659.25,783.99,1046.5].forEach((a,n)=>{const l=t.createOscillator(),r=t.createGain();l.type="triangle",l.frequency.setValueAtTime(a,t.currentTime+n*.07),r.gain.setValueAtTime(.28,t.currentTime+n*.07),r.gain.exponentialRampToValueAtTime(.001,t.currentTime+n*.07+.32),l.connect(r),r.connect(t.destination),l.start(t.currentTime+n*.07),l.stop(t.currentTime+n*.07+.33)});else if(i==="tried")[659.25,987.77].forEach((a,n)=>{const l=t.createOscillator(),r=t.createGain();l.type="sine",l.frequency.setValueAtTime(a,t.currentTime+n*.09),r.gain.setValueAtTime(.24,t.currentTime+n*.09),r.gain.exponentialRampToValueAtTime(.001,t.currentTime+n*.09+.38),l.connect(r),r.connect(t.destination),l.start(t.currentTime+n*.09),l.stop(t.currentTime+n*.09+.39)});else if(i==="notToday"){const o=t.createOscillator(),a=t.createGain();o.type="sine",o.frequency.setValueAtTime(280,t.currentTime),o.frequency.exponentialRampToValueAtTime(160,t.currentTime+.35),a.gain.setValueAtTime(.18,t.currentTime),a.gain.exponentialRampToValueAtTime(.001,t.currentTime+.38),o.connect(a),a.connect(t.destination),o.start(t.currentTime),o.stop(t.currentTime+.4)}}catch(e){console.warn("AudioContext playback error:",e)}}function H(i,e,t){const o=document.querySelector(".phone-frame")||document.getElementById("app-viewport");if(!o)return;const a=document.createElement("div");if(a.className="cheerful-overlay-active",a.style.cssText=`
+(function(){const e=document.createElement("link").relList;if(e&&e.supports&&e.supports("modulepreload"))return;for(const a of document.querySelectorAll('link[rel="modulepreload"]'))o(a);new MutationObserver(a=>{for(const n of a)if(n.type==="childList")for(const r of n.addedNodes)r.tagName==="LINK"&&r.rel==="modulepreload"&&o(r)}).observe(document,{childList:!0,subtree:!0});function t(a){const n={};return a.integrity&&(n.integrity=a.integrity),a.referrerPolicy&&(n.referrerPolicy=a.referrerPolicy),a.crossOrigin==="use-credentials"?n.credentials="include":a.crossOrigin==="anonymous"?n.credentials="omit":n.credentials="same-origin",n}function o(a){if(a.ep)return;a.ep=!0;const n=t(a);fetch(a.href,n)}})();let g="today",w=2026,h=8,E=null;const Z="kids-good-deeds-sound-enabled";let L=(()=>{try{return localStorage.getItem(Z)!=="false"}catch(i){return console.warn("Could not read sound preference:",i),!0}})();const N=["January","February","March","April","May","June","July","August","September","October","November","December"];let u=[{id:"1",name:"Ahmad",level:1,points:120,streak:5,title:"Good deeds explorer 🌟",gender:"boy",skinTone:"#f5d0a0",hairColor:"#0e0e0e",hairStyleIndex:1,eyeGlassesIndex:1,outfitColor:"#00897b",headwearColor:"#ffb300",hasHeadwear:!0,patternLock:null,claimedRewards:[{emoji:"🍦",title:"Delicious Ice Cream"},{emoji:"📖",title:"Choose Bedtime Story"}],checkInHistory:{"2026-08-05":{completed:!0,score:16,reward:{emoji:"🍦",title:"Delicious Ice Cream"},details:["Morning Dua recited 🤲","Prayed Salah on time 🕌","Helped clean up toys 🧸"]},"2026-08-10":{completed:!0,score:18,reward:{emoji:"📖",title:"Choose Bedtime Story"},details:["Said Bismillah before eating 🍽️","Gave Salam to family 💬","Listened to Mom ❤️"]},"2026-08-15":{completed:!0,score:20,reward:{emoji:"🤗",title:"Big Warm Bear Hug"},details:["Prayed Salah on time 🕌","Shared toys with sibling 🤝","Recited morning dua 🤲"]},"2026-08-20":{completed:!0,score:15,reward:{emoji:"🎮",title:"Extra Play Time"},details:["Put toys away 🧸","Gave Salam 💬","Listened to parents ❤️"]},"2026-08-25":{completed:!0,score:22,reward:{emoji:"🌳",title:"Family Outing"},details:["Prayed on time 🕌","Morning dua 🤲","Helped clean room 🤝"]},"2026-08-30":{completed:!0,score:19,reward:{emoji:"🍦",title:"Delicious Ice Cream"},details:["Bismillah before eating 🍽️","Gave Salam 💬","Listened to Mom ❤️"]}}},{id:"2",name:"Maryam",level:2,points:210,streak:8,title:"Kindness champion 🌸",gender:"girl",skinTone:"#e0ac69",hairColor:"#4a2e1b",hairStyleIndex:2,eyeGlassesIndex:1,outfitColor:"#e91e63",headwearColor:"#81c784",hasHeadwear:!0,patternLock:null,claimedRewards:[{emoji:"🤗",title:"Big Warm Bear Hug"},{emoji:"🌳",title:"Family Outing"}],checkInHistory:{"2026-08-04":{completed:!0,score:18,reward:{emoji:"🤗",title:"Big Warm Bear Hug"},details:["Gave Salam to family 💬","Prayed Salah on time 🕌","Helped clean up 🧸"]},"2026-08-12":{completed:!0,score:21,reward:{emoji:"🌳",title:"Family Outing"},details:["Morning Dua 🤲","Helped someone 🤝","Shared toys 🧸"]},"2026-08-18":{completed:!0,score:19,reward:{emoji:"📖",title:"Choose Bedtime Story"},details:["Bismillah before eating 🍽️","Prayed on time 🕌","Spoke kindly ❤️"]},"2026-08-28":{completed:!0,score:24,reward:{emoji:"🍦",title:"Delicious Ice Cream"},details:["Recited morning dua 🤲","Listened respectfully ❤️","Helped clean 🧸"]}}}],y=0,R=!1,K="1234",v="",k=[],B=null,I=!1,q=!1,A=!1,j=!1,b=0,$=[];const M=[{emoji:"🤲",text:"Did you recite your morning dua?",points:3,positive:!0,isEnabled:!0},{emoji:"🍽️",text:"Did you say Bismillah before eating?",points:2,positive:!0,isEnabled:!0},{emoji:"💬",text:"Did you give Salam to family?",points:2,positive:!0,isEnabled:!0},{emoji:"🤝",text:"Did you help someone today?",points:3,positive:!0,isEnabled:!0},{emoji:"🕌",text:"Did you pray Salah on time?",points:4,positive:!0,isEnabled:!0},{emoji:"❤️",text:"Did you listen respectfully to parents?",points:3,positive:!0,isEnabled:!0},{emoji:"🧸",text:"Did you put your toys away?",points:2,positive:!0,isEnabled:!0},{emoji:"🕊️",text:"Did you fight or argue with anyone?",points:2,positive:!1,isEnabled:!0}];let S=[{emoji:"🍦",title:"Delicious Ice Cream",requiredPoints:50,probability:.25},{emoji:"📖",title:"Choose Bedtime Story",requiredPoints:40,probability:.3},{emoji:"🤗",title:"Big Warm Bear Hug",requiredPoints:30,probability:.35},{emoji:"🎮",title:"Extra Play Time",requiredPoints:60,probability:.15},{emoji:"🌳",title:"Family Outing",requiredPoints:100,probability:.05}],m="hairStyle",p={gender:"boy",skinTone:"#f5d0a0",hairColor:"#0e0e0e",hairStyleIndex:1,eyeGlassesIndex:1,headwearColor:"#ffb300"};const ie=[{color:"#f5d0a0",name:"Fair"},{color:"#e0ac69",name:"Tan"},{color:"#c68642",name:"Olive"},{color:"#8d5524",name:"Bronze"},{color:"#5c3317",name:"Mahogany"}],ne=[{color:"#0e0e0e",name:"Black"},{color:"#4a2e1b",name:"Brown"},{color:"#d4a359",name:"Blonde"}],oe=[{index:1,label:"Short Crop 💇‍♂️",emoji:"👦"},{index:2,label:"Curly Top 🦱",emoji:"🦱"},{index:3,label:"Spiky Cut 🧑",emoji:"🧑"},{index:4,label:"Buzz Cut 💈",emoji:"💈"},{index:5,label:"Side Part 👦",emoji:"👨"},{index:6,label:"Wavy Waves 🌊",emoji:"🌊"},{index:7,label:"Neat Combed 👦",emoji:"👦"},{index:8,label:"Sunnah Kufi 🕌",emoji:"🕌"}],ae=[{index:1,label:"Emerald Hijab 🧕",emoji:"🧕"},{index:2,label:"Rose Hijab 🌸",emoji:"🌸"},{index:3,label:"Crown Hijab 👑",emoji:"👑"},{index:4,label:"Twin Tails 👧",emoji:"👧"},{index:5,label:"Bob Cut 💇‍♀️",emoji:"💇‍♀️"},{index:6,label:"Lavender Hijab 💜",emoji:"💜"},{index:7,label:"Ocean Hijab 🌊",emoji:"🌊"},{index:8,label:"Cute High Bun 👱‍♀️",emoji:"👱‍♀️"},{index:9,label:"Long Flowing Hair 💁‍♀️",emoji:"💁‍♀️"}],re=[{index:1,label:"Clean 🌟",emoji:"✨"},{index:2,label:"Round 👓",emoji:"👓"},{index:3,label:"Square 🤓",emoji:"🤓"},{index:4,label:"Shades 🕶️",emoji:"🕶️"},{index:5,label:"Star ⭐",emoji:"⭐"}];function z(i,{showUnavailable:e=!1}={}){if(!L)return;if(!("speechSynthesis"in window)||!("SpeechSynthesisUtterance"in window)){e&&x({title:"Voice playback unavailable",message:"This browser does not support speech synthesis.",icon:"🔇"});return}window.speechSynthesis.cancel();const t=new SpeechSynthesisUtterance(i);t.pitch=.85,t.rate=.9;const n=window.speechSynthesis.getVoices().filter(r=>r.lang.toLowerCase().startsWith("en")).find(r=>/(^|[^a-z])(male|man|david|daniel|alex|guy)([^a-z]|$)/i.test(r.name));n?(t.voice=n,t.lang=n.lang):t.lang="en-US",t.onerror=r=>{console.error("Browser speech synthesis failed:",r.error),e&&x({title:"Voice playback unavailable",message:"The browser could not start its voice. Check the device speech settings and try again.",icon:"🔇"})},window.speechSynthesis.speak(t)}function H(i){if(L)try{const e=window.AudioContext||window.webkitAudioContext;if(!e)return;const t=new e;if(i==="yes")[523.25,659.25,783.99,1046.5].forEach((a,n)=>{const r=t.createOscillator(),l=t.createGain();r.type="triangle",r.frequency.setValueAtTime(a,t.currentTime+n*.07),l.gain.setValueAtTime(.28,t.currentTime+n*.07),l.gain.exponentialRampToValueAtTime(.001,t.currentTime+n*.07+.32),r.connect(l),l.connect(t.destination),r.start(t.currentTime+n*.07),r.stop(t.currentTime+n*.07+.33)});else if(i==="tried")[659.25,987.77].forEach((a,n)=>{const r=t.createOscillator(),l=t.createGain();r.type="sine",r.frequency.setValueAtTime(a,t.currentTime+n*.09),l.gain.setValueAtTime(.24,t.currentTime+n*.09),l.gain.exponentialRampToValueAtTime(.001,t.currentTime+n*.09+.38),r.connect(l),l.connect(t.destination),r.start(t.currentTime+n*.09),r.stop(t.currentTime+n*.09+.39)});else if(i==="notToday"){const o=t.createOscillator(),a=t.createGain();o.type="sine",o.frequency.setValueAtTime(280,t.currentTime),o.frequency.exponentialRampToValueAtTime(160,t.currentTime+.35),a.gain.setValueAtTime(.18,t.currentTime),a.gain.exponentialRampToValueAtTime(.001,t.currentTime+.38),o.connect(a),a.connect(t.destination),o.start(t.currentTime),o.stop(t.currentTime+.4)}}catch(e){console.warn("AudioContext playback error:",e)}}function G(i,e,t){const o=document.querySelector(".phone-frame")||document.getElementById("app-viewport");if(!o)return;const a=document.createElement("div");if(a.className="cheerful-overlay-active",a.style.cssText=`
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -17,24 +17,24 @@
         <div style="font-size:16px; font-weight:700; color:var(--text-dark);">${e}</div>
         <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">Every day is a fresh blessing! 🌱</div>
       </div>
-    `;else{const n=i==="balloons"?["🎈","🎉","🎊","✨","🎈","🌟"]:["🌟","⭐","✨","💫","🌟","⭐"];let l="";for(let d=0;d<14;d++){const S=n[d%n.length],U=6+Math.random()*88,_=65+Math.random()*25,J=18+Math.random()*20,X=Math.random()*.35,Q=1.2+Math.random()*.5;l+=`
-        <div style="position:absolute; left:${U}%; top:${_}%; font-size:${J}px; animation:floatParticle ${Q}s ease-out ${X}s forwards;">
-          ${S}
+    `;else{const n=i==="balloons"?["🎈","🎉","🎊","✨","🎈","🌟"]:["🌟","⭐","✨","💫","🌟","⭐"];let r="";for(let d=0;d<14;d++){const T=n[d%n.length],J=6+Math.random()*88,X=65+Math.random()*25,Q=18+Math.random()*20,ee=Math.random()*.35,te=1.2+Math.random()*.5;r+=`
+        <div style="position:absolute; left:${J}%; top:${X}%; font-size:${Q}px; animation:floatParticle ${te}s ease-out ${ee}s forwards;">
+          ${T}
         </div>
-      `}const r=i==="balloons"?"linear-gradient(135deg, #e8f5e9, #c8e6c9)":"linear-gradient(135deg, #fff9c4, #fff59d)",s=i==="balloons"?"#81c784":"#ffd54f",c=i==="balloons"?"#2e7d32":"#f57f17";a.innerHTML=`
-      ${l}
-      <div style="text-align:center; animation:cheerfulBannerPop 1.5s ease forwards; background:${r}; border:2.5px solid ${s}; padding:18px 24px; border-radius:24px; box-shadow:0 12px 30px rgba(0,0,0,0.16); max-width:85%; z-index:2;">
+      `}const l=i==="balloons"?"linear-gradient(135deg, #e8f5e9, #c8e6c9)":"linear-gradient(135deg, #fff9c4, #fff59d)",s=i==="balloons"?"#81c784":"#ffd54f",c=i==="balloons"?"#2e7d32":"#f57f17";a.innerHTML=`
+      ${r}
+      <div style="text-align:center; animation:cheerfulBannerPop 1.5s ease forwards; background:${l}; border:2.5px solid ${s}; padding:18px 24px; border-radius:24px; box-shadow:0 12px 30px rgba(0,0,0,0.16); max-width:85%; z-index:2;">
         <div style="font-size:52px; margin-bottom:4px;">${t}</div>
         <div style="font-size:18px; font-weight:700; color:${c};">${e}</div>
       </div>
-    `}o.appendChild(a),setTimeout(()=>{a.style.opacity="0",setTimeout(()=>a.remove(),350)},1300)}function v({title:i,message:e,icon:t="✨",buttonText:o="Got it!"}){return new Promise(a=>{const n=document.createElement("div");n.className="in-app-modal-overlay",n.innerHTML=`
+    `}o.appendChild(a),setTimeout(()=>{a.style.opacity="0",setTimeout(()=>a.remove(),350)},1300)}function x({title:i,message:e,icon:t="✨",buttonText:o="Got it!"}){return new Promise(a=>{const n=document.createElement("div");n.className="in-app-modal-overlay",n.innerHTML=`
       <div class="in-app-modal-card">
         <div class="in-app-modal-icon">${t}</div>
         <h3 class="in-app-modal-title">${i}</h3>
         <p class="in-app-modal-body">${e}</p>
         <button class="btn-primary in-app-btn-confirm" style="width:100%; padding:12px; font-size:15px; border-radius:16px;">${o}</button>
       </div>
-    `,document.body.appendChild(n),n.querySelector(".in-app-btn-confirm").addEventListener("click",()=>{n.remove(),a()})})}function F({title:i,message:e,icon:t="❓",confirmText:o="Yes",cancelText:a="Cancel",danger:n=!1,onConfirm:l,onCancel:r}){return new Promise(s=>{const c=document.createElement("div");c.className="in-app-modal-overlay",c.innerHTML=`
+    `,document.body.appendChild(n),n.querySelector(".in-app-btn-confirm").addEventListener("click",()=>{n.remove(),a()})})}function F({title:i,message:e,icon:t="❓",confirmText:o="Yes",cancelText:a="Cancel",danger:n=!1,onConfirm:r,onCancel:l}){return new Promise(s=>{const c=document.createElement("div");c.className="in-app-modal-overlay",c.innerHTML=`
       <div class="in-app-modal-card">
         <div class="in-app-modal-icon ${n?"danger":""}">${t}</div>
         <h3 class="in-app-modal-title">${i}</h3>
@@ -44,7 +44,7 @@
           <button class="btn-primary in-app-btn-confirm" style="flex:1; padding:12px; font-size:14px; border-radius:16px; ${n?"background:#e53935;":""}">${o}</button>
         </div>
       </div>
-    `,document.body.appendChild(c),c.querySelector(".in-app-btn-cancel").addEventListener("click",()=>{c.remove(),r&&r(),s(!1)}),c.querySelector(".in-app-btn-confirm").addEventListener("click",()=>{c.remove(),l&&l(),s(!0)})})}function P(i="boy",e="#f5d0a0",t="#0e0e0e",o=1,a=1,n="#ffb300",l=!0){const r=i==="girl"?"#e91e63":"#00897b";let s="";if(i==="girl")if(l||o<=3||o===6||o===7){let d="#4db6ac";o===2?d="#ec407a":o===3?d="#ffb300":o===6?d="#9575cd":o===7&&(d="#42a5f5"),s=`
+    `,document.body.appendChild(c),c.querySelector(".in-app-btn-cancel").addEventListener("click",()=>{c.remove(),l&&l(),s(!1)}),c.querySelector(".in-app-btn-confirm").addEventListener("click",()=>{c.remove(),r&&r(),s(!0)})})}function D(i="boy",e="#f5d0a0",t="#0e0e0e",o=1,a=1,n="#ffb300",r=!0){const l=i==="girl"?"#e91e63":"#00897b";let s="";if(i==="girl")if(r||o<=3||o===6||o===7){let d="#4db6ac";o===2?d="#ec407a":o===3?d="#ffb300":o===6?d="#9575cd":o===7&&(d="#42a5f5"),s=`
         <circle cx="50" cy="48" r="34" fill="${d}" />
         <ellipse cx="50" cy="50" rx="22" ry="26" fill="${e}" />
         <path d="M 28 42 C 35 22 65 22 72 42 C 60 28 40 28 28 42 Z" fill="${d}" />
@@ -69,7 +69,7 @@
       `:s=`
         <circle cx="50" cy="46" r="30" fill="${t}" />
         <circle cx="50" cy="48" r="26" fill="${e}" />
-      `;else if(l||o===8)s=`
+      `;else if(r||o===8)s=`
         <circle cx="21" cy="50" r="5" fill="${e}" />
         <circle cx="79" cy="50" r="5" fill="${e}" />
         <circle cx="50" cy="48" r="27" fill="${e}" />
@@ -93,36 +93,36 @@
                     <line x1="47" y1="45" x2="53" y2="45" stroke="#212121" stroke-width="3" />`;break;case 5:c=`<circle cx="38" cy="48" r="9" fill="#ffb300" />
                     <circle cx="62" cy="48" r="9" fill="#ffb300" />`;break}return`
     <svg class="faceless-avatar-svg" viewBox="0 0 100 100">
-      <path d="M 15 100 C 30 75 70 75 85 100 Z" fill="${r}" />
+      <path d="M 15 100 C 30 75 70 75 85 100 Z" fill="${l}" />
       <rect x="40" y="65" width="20" height="15" fill="${e}" />
       ${s}
       ${c}
     </svg>
-  `}window.tapPinKey=function(i){const e=document.getElementById(`pin-btn-${i}`);e&&(e.style.transform="scale(0.9)",e.style.background="var(--primary-teal)",e.style.color="white",setTimeout(()=>{e.style.transform="scale(1)",e.style.background="#f9f9f9",e.style.color="black"},150)),i==="C"?h="":i==="✓"?Y():h.length<4&&(h+=i,h.length===4&&Y()),Z()};function Y(){h===V?(B=!0,h="",x="parent",f(),K()):setTimeout(()=>{v({title:"Incorrect PIN",message:"Incorrect parent PIN! Default PIN code is: 1234",icon:"🔒"}),h="",Z()},150)}function Z(){const i=document.getElementById("pin-display-bullets");i&&(i.innerHTML=[0,1,2,3].map(e=>`
-      <div style="width:16px; height:16px; border-radius:50%; background:${e<h.length?"var(--primary-teal)":"#e0e0e0"}; border:2px solid ${e<h.length?"var(--primary-teal)":"#bdbdbd"};"></div>
-    `).join(""))}function K(){const i=document.querySelector(".bottom-nav");if(!i)return;const e=y>=0;i.innerHTML=e?`
-    <button class="nav-item ${x==="today"?"active":""}" data-tab="today" onclick="switchTab('today')">
+  `}window.tapPinKey=function(i){const e=document.getElementById(`pin-btn-${i}`);e&&(e.style.transform="scale(0.9)",e.style.background="var(--primary-teal)",e.style.color="white",setTimeout(()=>{e.style.transform="scale(1)",e.style.background="#f9f9f9",e.style.color="black"},150)),i==="C"?v="":i==="✓"?U():v.length<4&&(v+=i,v.length===4&&U()),_()};function U(){v===K?(R=!0,v="",g="parent",f(),W()):setTimeout(()=>{x({title:"Incorrect PIN",message:"Incorrect parent PIN! Default PIN code is: 1234",icon:"🔒"}),v="",_()},150)}function _(){const i=document.getElementById("pin-display-bullets");i&&(i.innerHTML=[0,1,2,3].map(e=>`
+      <div style="width:16px; height:16px; border-radius:50%; background:${e<v.length?"var(--primary-teal)":"#e0e0e0"}; border:2px solid ${e<v.length?"var(--primary-teal)":"#bdbdbd"};"></div>
+    `).join(""))}function W(){const i=document.querySelector(".bottom-nav");if(!i)return;const e=y>=0;i.innerHTML=e?`
+    <button class="nav-item ${g==="today"?"active":""}" data-tab="today" onclick="switchTab('today')">
       <span class="nav-icon">🌅</span>
       <span class="nav-label">Today</span>
     </button>
-    <button class="nav-item ${x==="journey"?"active":""}" data-tab="journey" onclick="switchTab('journey')">
+    <button class="nav-item ${g==="journey"?"active":""}" data-tab="journey" onclick="switchTab('journey')">
       <span class="nav-icon">📅</span>
       <span class="nav-label">Journey</span>
     </button>
-    <button class="nav-item ${x==="learn"?"active":""}" data-tab="learn" onclick="switchTab('learn')">
+    <button class="nav-item ${g==="learn"?"active":""}" data-tab="learn" onclick="switchTab('learn')">
       <span class="nav-icon">📖</span>
       <span class="nav-label">Learn</span>
     </button>
   `:`
-    <button class="nav-item ${x==="today"?"active":""}" data-tab="today" onclick="switchTab('today')">
+    <button class="nav-item ${g==="today"?"active":""}" data-tab="today" onclick="switchTab('today')">
       <span class="nav-icon">🏠</span>
       <span class="nav-label">Home</span>
     </button>
-    <button class="nav-item ${x==="parent"?"active":""}" data-tab="parent" onclick="switchTab('parent')">
+    <button class="nav-item ${g==="parent"?"active":""}" data-tab="parent" onclick="switchTab('parent')">
       <span class="nav-icon">👨‍👩‍👧</span>
       <span class="nav-label">Parent Menu</span>
     </button>
-  `}window.switchTab=function(i){i==="parent"&&!B&&(h=""),i!=="today"&&(E||j)&&(E=!1,j=!1,$=[],b=0,window.currentCheckInReward=null),x=i,f(),K()};function f(){const i=document.getElementById("app-viewport");if(K(),i.classList.toggle("checkin-active",E&&x==="today"),x==="parent"&&!B){i.innerHTML=`
+  `}window.switchTab=function(i){i==="parent"&&!R&&(v=""),i!=="today"&&(A||j)&&(A=!1,j=!1,$=[],b=0,window.currentCheckInReward=null),g=i,f(),W()};function f(){const i=document.getElementById("app-viewport");if(W(),i.classList.toggle("checkin-active",A&&g==="today"),g==="parent"&&!R){i.innerHTML=`
       <div style="text-align:center; padding:16px 0;">
         <div style="font-size:54px; margin-bottom:8px;">🔒</div>
         <h2 style="font-size:22px; color:var(--text-dark);">Parent PIN login</h2>
@@ -132,7 +132,7 @@
       <div class="card" style="text-align:center; padding:24px 16px;">
         <div style="display:flex; justify-content:center; gap:12px; margin-bottom:20px;" id="pin-display-bullets">
           ${[0,1,2,3].map(t=>`
-            <div style="width:16px; height:16px; border-radius:50%; background:${t<h.length?"var(--primary-teal)":"#e0e0e0"}; border:2px solid ${t<h.length?"var(--primary-teal)":"#bdbdbd"};"></div>
+            <div style="width:16px; height:16px; border-radius:50%; background:${t<v.length?"var(--primary-teal)":"#e0e0e0"}; border:2px solid ${t<v.length?"var(--primary-teal)":"#bdbdbd"};"></div>
           `).join("")}
         </div>
 
@@ -145,7 +145,7 @@
         </div>
         <div style="margin-top:14px; font-size:12px; font-weight:bold; color:var(--primary-teal);">Default PIN: 1234</div>
       </div>
-    `;return}if(x==="parent"&&B){i.innerHTML=`
+    `;return}if(g==="parent"&&R){i.innerHTML=`
       <h2 style="font-size:22px; margin-bottom:6px;">👨‍👩‍👧 Parent dashboard</h2>
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Children management & security settings</p>
 
@@ -155,7 +155,7 @@
           ${u.length>0?u.map((t,o)=>`
             <div style="background:var(--soft-teal-bg); padding:10px; border-radius:16px; text-align:center;">
               <div style="width:54px; height:54px; margin:0 auto;">
-                ${P(t.gender,t.skinTone,t.hairColor,t.hairStyleIndex,t.eyeGlassesIndex,t.headwearColor,t.hasHeadwear)}
+                ${D(t.gender,t.skinTone,t.hairColor,t.hairStyleIndex,t.eyeGlassesIndex,t.headwearColor,t.hasHeadwear)}
               </div>
               <strong style="display:block; font-size:14px; margin-top:4px;">${t.name}</strong>
               <div style="margin-top:6px; display:flex; justify-content:center; gap:4px;">
@@ -195,7 +195,7 @@
           <strong style="font-size:15px;">🎁 Rewards</strong>
           <button style="border:none; background:var(--primary-teal); color:white; border-radius:12px; padding:4px 12px; font-family:var(--font-fredoka); font-size:12px; cursor:pointer;" onclick="addRewardModal()">+ Add</button>
         </div>
-        ${C.map((t,o)=>`
+        ${S.map((t,o)=>`
           <div style="display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:1px solid #f0f0f0;">
             <span style="font-size:22px;">${t.emoji}</span>
             <div style="flex:1;">
@@ -210,7 +210,9 @@
       <!-- SETTINGS -->
       <div class="card">
         <strong style="display:block; margin-bottom:10px; font-size:15px;">⚙️ Settings</strong>
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f0f0f0; font-size:13px;"><span>🔊 Sound effects</span><input type="checkbox" checked style="width:18px; height:18px;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f0f0f0; font-size:13px;"><span>🔊 Sound effects and voice prompts</span><input id="sound-enabled-toggle" type="checkbox" ${L?"checked":""} aria-label="Enable sound effects and voice prompts" onchange="setSoundEnabled(this.checked)" style="width:18px; height:18px;"></div>
+        <p style="font-size:11px; color:var(--text-muted); margin:6px 0;">Uses browser voices; prefers a male-sounding English voice when identifiable.</p>
+        <button class="btn-primary" style="margin:4px 0 10px;" onclick="testPreviewVoice()">🔊 Test voice</button>
         <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f0f0f0; font-size:13px;"><span>🏆 Family leaderboard</span><input type="checkbox" checked style="width:18px; height:18px;"></div>
         <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:13px;"><span>🔥 Streak counter</span><input type="checkbox" checked style="width:18px; height:18px;"></div>
         <button class="btn-primary" style="margin-top:10px;" onclick="changeParentPinModal()">🔒 Change parent PIN</button>
@@ -236,7 +238,7 @@
         ${u.length>0?u.map((t,o)=>`
           <div class="card" style="text-align:center; cursor:pointer; padding:16px; border:2px solid transparent;" onclick="selectKidFromGrid(${o})">
             <div style="width:76px; height:76px; margin:0 auto 10px auto;">
-              ${P(t.gender,t.skinTone,t.hairColor,t.hairStyleIndex,t.eyeGlassesIndex,t.headwearColor,t.hasHeadwear)}
+              ${D(t.gender,t.skinTone,t.hairColor,t.hairStyleIndex,t.eyeGlassesIndex,t.headwearColor,t.hasHeadwear)}
             </div>
             <strong style="font-size:16px; display:block; color:var(--text-dark);">${t.name}</strong>
             <span style="font-size:11px; color:var(--text-muted);">${t.patternLock?"🔒 Pattern Set":"✨ Tap to create pattern"}</span>
@@ -260,7 +262,7 @@
     `;return}const e=u[y];if(e.requiresPatternLock||!e.patternLock){const t=!e.patternLock;i.innerHTML=`
       <div style="text-align:center; padding:16px 0;">
         <div style="width:76px; height:76px; margin:0 auto 10px auto;">
-          ${P(e.gender,e.skinTone,e.hairColor,e.hairStyleIndex,e.eyeGlassesIndex,e.headwearColor,e.hasHeadwear)}
+          ${D(e.gender,e.skinTone,e.hairColor,e.hairStyleIndex,e.eyeGlassesIndex,e.headwearColor,e.hasHeadwear)}
         </div>
         <h2 style="font-size:20px; color:var(--text-dark);">${I?"Confirm pattern ⭐":t?`Create pattern for ${e.name}`:`Welcome back, ${e.name}!`}</h2>
         <p style="font-size:13px; color:var(--primary-teal); font-weight:700; margin-top:4px;">${I?"Draw pattern again to confirm!":"Drag your finger across stars to draw pattern"}</p>
@@ -285,7 +287,7 @@
       <button style="border:none; background:none; color:var(--text-muted); font-family:var(--font-fredoka); font-size:13px; margin-top:16px; cursor:pointer; width:100%; text-align:center;" onclick="cancelKidSelection()">
         ⬅️ Back to child selection
       </button>
-    `,setTimeout(ae,100);return}if(E&&x==="today"){const t=M.filter(r=>r.isEnabled!==!1),o=t.length,a=t[b],n=o>0?Math.round((b+1)/o*100):0;let l=0;$.forEach(r=>{r.deed.positive?r.answer==="full"?l+=r.deed.points:r.answer==="partial"&&(l+=Math.floor(r.deed.points/2)):r.answer==="full"&&(l-=r.deed.points)}),i.innerHTML=`
+    `,setTimeout(le,100);return}if(A&&g==="today"){const t=M.filter(l=>l.isEnabled!==!1),o=t.length,a=t[b],n=o>0?Math.round((b+1)/o*100):0;let r=0;$.forEach(l=>{l.deed.positive?l.answer==="full"?r+=l.deed.points:l.answer==="partial"&&(r+=Math.floor(l.deed.points/2)):l.answer==="full"&&(r-=l.deed.points)}),i.innerHTML=`
       <!-- Top header bar with cancel and progress -->
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
         <button style="border:none; background:none; font-family:var(--font-fredoka); font-size:13px; font-weight:700; color:var(--text-muted); cursor:pointer; padding:4px 0; display:flex; align-items:center; gap:4px;" onclick="window.cancelCheckIn()">
@@ -336,10 +338,10 @@
       <div class="checkin-score-widget">
         <div id="chalk-delta-anchor" style="position:relative;"></div>
         <div class="checkin-score-value chalk-score-pop" id="checkin-score-value">
-          ${l} pts
+          ${r} pts
         </div>
       </div>
-    `,requestAnimationFrame(()=>{const r=i.querySelector(".checkin-score-widget"),s=i.querySelector("#checkin-btn-group"),c=document.querySelector(".bottom-nav");if(!r||!s||!c)return;const d=i.getBoundingClientRect().top,S=(s.getBoundingClientRect().bottom+c.getBoundingClientRect().top)/2;r.style.bottom="auto",r.style.top=`${S-d+i.scrollTop-r.offsetHeight/2}px`});return}if(window.handleSingleDeedChoice=function(t,o){const a=M.filter(c=>c.isEnabled!==!1),n=a[b],l=document.getElementById("checkin-btn-group");l&&l.querySelectorAll("button").forEach(d=>{d.style.pointerEvents="none",d.style.opacity="0.65"});const r=document.getElementById("chalk-delta-anchor");if(r){const c=document.createElement("div"),d=o>0?"positive":o<0?"negative":"neutral",S=o>0?"+":"";c.className=`chalk-delta-popup ${d}`,c.textContent=`${S}${o} pts`,r.appendChild(c)}const s=document.getElementById("checkin-score-value");if(s){let c=0;$.forEach(d=>{d.deed.positive?d.answer==="full"?c+=d.deed.points:d.answer==="partial"&&(c+=Math.floor(d.deed.points/2)):d.answer==="full"&&(c-=d.deed.points)}),c+=o,s.classList.add("chalk-bump"),setTimeout(()=>{s&&(s.textContent=`${c} pts`)},250)}n.positive?t==="full"?(R("yes"),T("Alhamdulillah!"),H("balloons","Alhamdulillah! Great Job! ✨","🎉")):t==="partial"?(R("tried"),T("MashaAllah!"),H("stars","MashaAllah! Good Effort! 🌱","🌟")):(R("notToday"),T("Tomorrow is another chance, InshaAllah!"),H("droopyRose","Tomorrow is another chance, InshaAllah! 🌱","🥀")):t==="no"?(R("yes"),T("MashaAllah! Excellent self-control!"),H("balloons","MashaAllah! Excellent Self-Control! 💪","🌟")):(R("notToday"),T("Tomorrow is another chance, InshaAllah!"),H("droopyRose","It's okay! Tomorrow is another chance, InshaAllah! 🌱","🥀")),$.push({index:b,deed:n,answer:t}),setTimeout(()=>{b++,b>=a.length&&(E=!1,j=!0),f()},1400)},j&&x==="today"){let t=0;$.forEach(n=>{n.deed.positive?n.answer==="full"?t+=n.deed.points:n.answer==="partial"&&(t+=Math.floor(n.deed.points/2)):n.answer==="full"&&(t-=n.deed.points)}),window.currentCheckInReward||(window.currentCheckInReward=C[Math.floor(Math.random()*C.length)]);const o=window.currentCheckInReward,a=t>=15?{text:"MashaAllah! What an amazing day! 🌟",bg:"#e0f2f1",color:"#00897b"}:t>=8?{text:"Alhamdulillah! Keep it up tomorrow! 😊",bg:"#fff8e1",color:"#f9a825"}:{text:"It's okay. Tomorrow is another chance, InshaAllah. 🌱",bg:"#f5f5f5",color:"#78909c"};i.innerHTML=`
+    `,requestAnimationFrame(()=>{const l=i.querySelector(".checkin-score-widget"),s=i.querySelector("#checkin-btn-group"),c=document.querySelector(".bottom-nav");if(!l||!s||!c)return;const d=i.getBoundingClientRect().top,T=(s.getBoundingClientRect().bottom+c.getBoundingClientRect().top)/2;l.style.bottom="auto",l.style.top=`${T-d+i.scrollTop-l.offsetHeight/2}px`});return}if(window.handleSingleDeedChoice=function(t,o){const a=M.filter(c=>c.isEnabled!==!1),n=a[b],r=document.getElementById("checkin-btn-group");r&&r.querySelectorAll("button").forEach(d=>{d.style.pointerEvents="none",d.style.opacity="0.65"});const l=document.getElementById("chalk-delta-anchor");if(l){const c=document.createElement("div"),d=o>0?"positive":o<0?"negative":"neutral",T=o>0?"+":"";c.className=`chalk-delta-popup ${d}`,c.textContent=`${T}${o} pts`,l.appendChild(c)}const s=document.getElementById("checkin-score-value");if(s){let c=0;$.forEach(d=>{d.deed.positive?d.answer==="full"?c+=d.deed.points:d.answer==="partial"&&(c+=Math.floor(d.deed.points/2)):d.answer==="full"&&(c-=d.deed.points)}),c+=o,s.classList.add("chalk-bump"),setTimeout(()=>{s&&(s.textContent=`${c} pts`)},250)}n.positive?t==="full"?(H("yes"),z("Alhamdulillah!"),G("balloons","Alhamdulillah! Great Job! ✨","🎉")):t==="partial"?(H("tried"),z("MashaAllah!"),G("stars","MashaAllah! Good Effort! 🌱","🌟")):(H("notToday"),z("Tomorrow is another chance, InshaAllah!"),G("droopyRose","Tomorrow is another chance, InshaAllah! 🌱","🥀")):t==="no"?(H("yes"),z("MashaAllah! Excellent self-control!"),G("balloons","MashaAllah! Excellent Self-Control! 💪","🌟")):(H("notToday"),z("Tomorrow is another chance, InshaAllah!"),G("droopyRose","It's okay! Tomorrow is another chance, InshaAllah! 🌱","🥀")),$.push({index:b,deed:n,answer:t}),setTimeout(()=>{b++,b>=a.length&&(A=!1,j=!0),f()},1400)},j&&g==="today"){let t=0;$.forEach(n=>{n.deed.positive?n.answer==="full"?t+=n.deed.points:n.answer==="partial"&&(t+=Math.floor(n.deed.points/2)):n.answer==="full"&&(t-=n.deed.points)}),window.currentCheckInReward||(window.currentCheckInReward=S[Math.floor(Math.random()*S.length)]);const o=window.currentCheckInReward,a=t>=15?{text:"MashaAllah! What an amazing day! 🌟",bg:"#e0f2f1",color:"#00897b"}:t>=8?{text:"Alhamdulillah! Keep it up tomorrow! 😊",bg:"#fff8e1",color:"#f9a825"}:{text:"It's okay. Tomorrow is another chance, InshaAllah. 🌱",bg:"#f5f5f5",color:"#78909c"};i.innerHTML=`
       <div style="text-align:center; padding:12px 0 8px 0;">
         <div style="font-size:48px;">🌟</div>
         <h2 style="font-size:22px; color:var(--text-dark); margin-top:4px;">What a day, ${e.name}!</h2>
@@ -364,15 +366,15 @@
       </div>
 
       <div class="card" style="max-height:160px; overflow-y:auto;">
-        ${$.map(n=>{const l=n.deed.positive?n.answer==="full"?n.deed.points:n.answer==="partial"?Math.floor(n.deed.points/2):0:n.answer==="full"?-n.deed.points:0,r=l>0?"#00897b":l<0?"#e53935":"#9e9e9e";return`<div style="display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid #f0f0f0;">
+        ${$.map(n=>{const r=n.deed.positive?n.answer==="full"?n.deed.points:n.answer==="partial"?Math.floor(n.deed.points/2):0:n.answer==="full"?-n.deed.points:0,l=r>0?"#00897b":r<0?"#e53935":"#9e9e9e";return`<div style="display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid #f0f0f0;">
             <span style="font-size:20px;">${n.deed.emoji}</span>
             <span style="flex:1; font-size:12px;">${n.deed.text}</span>
-            <span style="font-size:12px; font-weight:700; color:${r};">${l>0?"+"+l:l<0?l:"–"}</span>
+            <span style="font-size:12px; font-weight:700; color:${l};">${r>0?"+"+r:r<0?r:"–"}</span>
           </div>`}).join("")}
       </div>
 
       <button class="btn-primary" style="margin-top:12px;" onclick="window.finishCheckIn(${t}, '${o.title}', '${o.emoji}')">🎁 Done — Save & See My Points!</button>
-    `,setTimeout(()=>O("checkin-scratch-canvas"),100),window.finishCheckIn=function(n,l,r){const s=u[y];if(s){s.points+=Math.max(0,n),s.claimedRewards||(s.claimedRewards=[]),s.claimedRewards.push({emoji:r,title:l}),s.checkInHistory||(s.checkInHistory={});const c=$.filter(d=>d.deed.positive&&d.answer!=="no"||!d.deed.positive&&d.answer==="no").map(d=>`${d.deed.emoji} ${d.deed.text}`);s.checkInHistory["2026-09-01"]={completed:!0,score:n,reward:{emoji:r,title:l},details:c}}j=!1,window.currentCheckInReward=null,$=[],b=0,f()};return}if(x==="today"){const o=e.checkInHistory&&e.checkInHistory["2026-09-01"];i.innerHTML=`
+    `,setTimeout(()=>O("checkin-scratch-canvas"),100),window.finishCheckIn=function(n,r,l){const s=u[y];if(s){s.points+=Math.max(0,n),s.claimedRewards||(s.claimedRewards=[]),s.claimedRewards.push({emoji:l,title:r}),s.checkInHistory||(s.checkInHistory={});const c=$.filter(d=>d.deed.positive&&d.answer!=="no"||!d.deed.positive&&d.answer==="no").map(d=>`${d.deed.emoji} ${d.deed.text}`);s.checkInHistory["2026-09-01"]={completed:!0,score:n,reward:{emoji:l,title:r},details:c}}j=!1,window.currentCheckInReward=null,$=[],b=0,f()};return}if(g==="today"){const o=e.checkInHistory&&e.checkInHistory["2026-09-01"];i.innerHTML=`
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
         <button style="border:none; background:var(--soft-teal-bg); color:var(--primary-teal); font-family:var(--font-fredoka); font-size:12px; font-weight:700; padding:6px 12px; border-radius:12px; cursor:pointer;" onclick="cancelKidSelection()">
           🔁 Switch child
@@ -385,7 +387,7 @@
 
       <div class="card greeting-card">
         <div style="width:70px; height:70px; flex-shrink:0;">
-          ${P(e.gender,e.skinTone,e.hairColor,e.hairStyleIndex,e.eyeGlassesIndex,e.headwearColor,e.hasHeadwear)}
+          ${D(e.gender,e.skinTone,e.hairColor,e.hairStyleIndex,e.eyeGlassesIndex,e.headwearColor,e.hasHeadwear)}
         </div>
         <div>
           <div style="font-size:13px; opacity:0.8;">Assalamu Alaikum!</div>
@@ -447,32 +449,32 @@
           <span>🌙</span> Start nightly check-in
         </button>
       `}
-    `;const a=document.getElementById("btn-start-checkin");a&&a.addEventListener("click",()=>{E=!0,j=!1,b=0,$=[],f()})}else if(x==="journey"){const t=new Date(w,m+1,0).getDate(),o=w===2026&&m===8;let a="";if(A&&A.month===m&&A.year===w){const n=A.day,l=`${w}-${String(m+1).padStart(2,"0")}-${String(n).padStart(2,"0")}`,r=e.checkInHistory&&e.checkInHistory[l];a=`
+    `;const a=document.getElementById("btn-start-checkin");a&&a.addEventListener("click",()=>{A=!0,j=!1,b=0,$=[],f()})}else if(g==="journey"){const t=new Date(w,h+1,0).getDate(),o=w===2026&&h===8;let a="";if(E&&E.month===h&&E.year===w){const n=E.day,r=`${w}-${String(h+1).padStart(2,"0")}-${String(n).padStart(2,"0")}`,l=e.checkInHistory&&e.checkInHistory[r];a=`
         <div class="card" style="background:linear-gradient(135deg,#e0f2f1,#fff); border:2px solid var(--primary-teal); position:relative; margin-top:12px;">
           <button style="position:absolute; top:10px; right:12px; border:none; background:none; font-size:16px; cursor:pointer; color:var(--text-muted);" onclick="window.closeDateDetails()">✖️</button>
           
           <div style="font-size:14px; font-weight:700; color:var(--primary-teal); margin-bottom:4px;">
-            📅 Date: ${G[m]} ${n}, ${w}
+            📅 Date: ${N[h]} ${n}, ${w}
           </div>
 
-          ${r?`
+          ${l?`
             <div style="font-size:12px; font-weight:700; color:var(--primary-teal); margin-bottom:6px;">
               Done, Alhamdulillah! 🎉
             </div>
             <div style="display:flex; gap:10px; margin:8px 0;">
               <div style="background:white; padding:6px 12px; border-radius:10px; border:1px solid #b2dfdb;">
                 <span style="font-size:10px; color:var(--text-muted); display:block;">Score Achieved</span>
-                <strong style="font-size:14px; color:var(--primary-teal);">+${r.score} pts ⭐</strong>
+                <strong style="font-size:14px; color:var(--primary-teal);">+${l.score} pts ⭐</strong>
               </div>
               <div style="background:white; padding:6px 12px; border-radius:10px; border:1px solid #ffe082;">
                 <span style="font-size:10px; color:var(--text-muted); display:block;">Reward Unlocked</span>
-                <strong style="font-size:12px; color:#e65100;">${r.reward?r.reward.emoji+" "+r.reward.title:"🍦 Treat"}</strong>
+                <strong style="font-size:12px; color:#e65100;">${l.reward?l.reward.emoji+" "+l.reward.title:"🍦 Treat"}</strong>
               </div>
             </div>
-            ${r.details&&r.details.length>0?`
+            ${l.details&&l.details.length>0?`
               <div style="font-size:11px; font-weight:700; color:var(--text-dark); margin-top:6px; margin-bottom:2px;">Completed Deeds:</div>
               <ul style="font-size:11px; color:var(--text-muted); padding-left:18px; margin:0;">
-                ${r.details.map(s=>`<li>${s}</li>`).join("")}
+                ${l.details.map(s=>`<li>${s}</li>`).join("")}
               </ul>
             `:""}
           `:`
@@ -486,7 +488,7 @@
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Track ${e.name}'s growth and habits</p>
 
       <div class="card" style="background:linear-gradient(135deg, var(--primary-teal), #26a69a); color:white;">
-        <div style="text-align:center; font-size:18px; font-weight:700; margin-bottom:12px;">${G[m]} summary 🌟</div>
+        <div style="text-align:center; font-size:18px; font-weight:700; margin-bottom:12px;">${N[h]} summary 🌟</div>
         <div style="display:flex; justify-content:space-around; text-align:center;">
           <div><div style="font-size:22px; font-weight:700; color:var(--accent-gold);">${e.points}</div><div style="font-size:11px;">Points</div></div>
           <div><div style="font-size:22px; font-weight:700; color:var(--accent-gold);">87</div><div style="font-size:11px;">Good deeds</div></div>
@@ -498,11 +500,11 @@
       <div class="card">
         <strong style="font-size:15px; display:block; margin-bottom:10px;">🌟 Family Stars Leaderboard</strong>
         <div style="display:flex; flex-direction:column; gap:8px;">
-          ${u.slice().sort((n,l)=>l.points-n.points).map((n,l)=>{const r=l===0?"🥇":l===1?"🥈":"🥉",s=["Kindness Champion 🌸","Dua Star 🤲","Helping Hero 🤝","Manners Explorer 🌟"],c=s[l%s.length];return`
-              <div style="display:flex; align-items:center; gap:10px; background:${l===0?"var(--soft-gold-bg)":"#f9f9f9"}; padding:8px 12px; border-radius:14px; border:1px solid ${l===0?"var(--accent-gold)":"#eee"};">
-                <span style="font-size:22px;">${r}</span>
+          ${u.slice().sort((n,r)=>r.points-n.points).map((n,r)=>{const l=r===0?"🥇":r===1?"🥈":"🥉",s=["Kindness Champion 🌸","Dua Star 🤲","Helping Hero 🤝","Manners Explorer 🌟"],c=s[r%s.length];return`
+              <div style="display:flex; align-items:center; gap:10px; background:${r===0?"var(--soft-gold-bg)":"#f9f9f9"}; padding:8px 12px; border-radius:14px; border:1px solid ${r===0?"var(--accent-gold)":"#eee"};">
+                <span style="font-size:22px;">${l}</span>
                 <div style="width:36px; height:36px; flex-shrink:0;">
-                  ${P(n.gender,n.skinTone,n.hairColor,n.hairStyleIndex,n.eyeGlassesIndex,n.headwearColor,n.hasHeadwear)}
+                  ${D(n.gender,n.skinTone,n.hairColor,n.hairStyleIndex,n.eyeGlassesIndex,n.headwearColor,n.hasHeadwear)}
                 </div>
                 <div style="flex:1;">
                   <strong style="font-size:13px; display:block; color:var(--text-dark);">${n.name}</strong>
@@ -518,7 +520,7 @@
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <strong style="font-size:15px;">📊 Achievement trend graph</strong>
-          <span style="font-size:11px; color:var(--primary-teal); font-weight:700;">${G[m]} ${w}</span>
+          <span style="font-size:11px; color:var(--primary-teal); font-weight:700;">${N[h]} ${w}</span>
         </div>
         <div style="position:relative; height:120px; width:100%;">
           <svg style="width:100%; height:100%; overflow:visible;">
@@ -554,14 +556,14 @@
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <button style="border:none; background:var(--soft-teal-bg); color:var(--primary-teal); font-family:var(--font-fredoka); font-size:12px; font-weight:700; padding:4px 10px; border-radius:10px; cursor:pointer;" onclick="window.changeCalendarMonth(-1)">◀ Prev</button>
-          <strong style="font-size:15px; color:var(--text-dark);">${G[m]} ${w}</strong>
+          <strong style="font-size:15px; color:var(--text-dark);">${N[h]} ${w}</strong>
           <button style="border:none; background:var(--soft-teal-bg); color:var(--primary-teal); font-family:var(--font-fredoka); font-size:12px; font-weight:700; padding:4px 10px; border-radius:10px; cursor:pointer;" onclick="window.changeCalendarMonth(1)">Next ▶</button>
         </div>
 
         <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:6px; text-align:center;">
-          ${Array.from({length:t},(n,l)=>l+1).map(n=>{const l=`${w}-${String(m+1).padStart(2,"0")}-${String(n).padStart(2,"0")}`,r=e.checkInHistory&&e.checkInHistory[l],s=o&&n===1;return`
-              <div style="background:${s?"var(--accent-gold)":r?"var(--soft-teal-bg)":"#f5f5f5"}; color:${s?"white":"black"}; border-radius:8px; padding:6px 2px; cursor:pointer; font-size:11px; font-weight:700; border:${s?"2px solid #ff8f00":"none"};" onclick="window.showDateDetails(${n})">
-                ${n}${s?" (Today)":""}<br>${r?"⭐":""}
+          ${Array.from({length:t},(n,r)=>r+1).map(n=>{const r=`${w}-${String(h+1).padStart(2,"0")}-${String(n).padStart(2,"0")}`,l=e.checkInHistory&&e.checkInHistory[r],s=o&&n===1;return`
+              <div style="background:${s?"var(--accent-gold)":l?"var(--soft-teal-bg)":"#f5f5f5"}; color:${s?"white":"black"}; border-radius:8px; padding:6px 2px; cursor:pointer; font-size:11px; font-weight:700; border:${s?"2px solid #ff8f00":"none"};" onclick="window.showDateDetails(${n})">
+                ${n}${s?" (Today)":""}<br>${l?"⭐":""}
               </div>
             `}).join("")}
         </div>
@@ -569,7 +571,7 @@
 
       <!-- INLINE POPUP / CARD FOR SELECTED DATE DETAILS -->
       ${a}
-    `}else if(x==="rewards"){const t=e;t.claimedRewards||(t.claimedRewards=[]),i.innerHTML=`
+    `}else if(g==="rewards"){const t=e;t.claimedRewards||(t.claimedRewards=[]),i.innerHTML=`
       <h2 style="font-size:22px; margin-bottom:4px;">🎁 Surprise Rewards</h2>
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">Earn points to unlock mystery scratch cards!</p>
 
@@ -621,7 +623,7 @@
           </div>
         `}
       </div>
-    `,setTimeout(O,100)}else x==="learn"&&(i.innerHTML=`
+    `,setTimeout(O,100)}else g==="learn"&&(i.innerHTML=`
       <h2 style="font-size:22px; margin-bottom:4px;">📖 Learn & Play</h2>
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">Bitesize Islamic stories, duas & games</p>
 
@@ -693,7 +695,7 @@
           <span style="display:inline-block; font-size:9px; background:#fff3e0; color:#e65100; padding:2px 6px; border-radius:8px; margin-top:6px; font-weight:700;">Coming Soon ✨</span>
         </div>
       </div>
-    `)}window.lockParentGate=function(){B=!1,y=-1,h="",f()};window.selectKidFromGrid=function(i){y=i;const e=u[i];k=[],I=!1,D=null,e.requiresPatternLock=!1,x="today",T(`Assalamu Alaikum ${e.name}! Let's see what you did today!`),f()};window.resetChildPattern=function(i){u[i].patternLock=null,v({title:"Pattern reset",message:`Pattern lock reset for ${u[i].name}! They can draw a new pattern on login.`,icon:"✨"}),f()};window.toggleDeed=function(i){M[i].isEnabled=!M[i].isEnabled,f()};window.deleteDeed=function(i){F({title:"Delete habit",message:`Delete habit "${M[i].text}"?
+    `)}window.lockParentGate=function(){R=!1,y=-1,v="",f()};window.setSoundEnabled=function(i){L=!!i;try{localStorage.setItem(Z,String(L))}catch(e){console.error("Could not save sound preference:",e),x({title:"Sound setting not saved",message:"This browser could not save the setting for your next visit.",icon:"⚠️"})}!L&&"speechSynthesis"in window&&window.speechSynthesis.cancel()};window.testPreviewVoice=function(){if(!L){x({title:"Voice is muted",message:"Turn on sound effects and voice prompts to test the voice.",icon:"🔇"});return}z("Assalamu alaikum! MashaAllah, you are doing great!",{showUnavailable:!0})};window.selectKidFromGrid=function(i){y=i;const e=u[i];k=[],I=!1,B=null,e.requiresPatternLock=!1,g="today",z(`Assalamu Alaikum ${e.name}! Let's see what you did today!`),f()};window.resetChildPattern=function(i){u[i].patternLock=null,x({title:"Pattern reset",message:`Pattern lock reset for ${u[i].name}! They can draw a new pattern on login.`,icon:"✨"}),f()};window.toggleDeed=function(i){M[i].isEnabled=!M[i].isEnabled,f()};window.deleteDeed=function(i){F({title:"Delete habit",message:`Delete habit "${M[i].text}"?
 
 This cannot be undone.`,icon:"🗑️",confirmText:"Delete",cancelText:"Keep",danger:!0,onConfirm:()=>{M.splice(i,1),f()}})};window.addDeedModal=function(){const i=document.createElement("div");i.className="in-app-modal-overlay",i.innerHTML=`
     <div class="in-app-modal-card">
@@ -721,9 +723,9 @@ This cannot be undone.`,icon:"🗑️",confirmText:"Delete",cancelText:"Keep",da
         <button class="btn-primary" id="add-deed-save" style="flex:1; padding:12px; border-radius:16px;">Add habit</button>
       </div>
     </div>
-  `,document.body.appendChild(i);let e=!0;window._setDeedType=function(t){e=t,document.getElementById("deed-type-positive").style.borderColor=t?"var(--primary-teal)":"#ccc",document.getElementById("deed-type-positive").style.background=t?"var(--soft-teal-bg)":"#f9f9f9",document.getElementById("deed-type-positive").style.color=t?"var(--primary-teal)":"#888",document.getElementById("deed-type-negative").style.borderColor=t?"#ccc":"#e53935",document.getElementById("deed-type-negative").style.background=t?"#f9f9f9":"#ffebee",document.getElementById("deed-type-negative").style.color=t?"#888":"#e53935"},document.getElementById("add-deed-save").addEventListener("click",()=>{const t=document.getElementById("add-deed-text").value.trim();if(!t){document.getElementById("add-deed-text").focus();return}const o=Math.abs(parseInt(document.getElementById("add-deed-pts").value,10))||2,a=["⭐","🌟","✨","🤝","💬","❤️","🕌","🌙","🎯","🌱"];M.push({emoji:a[Math.floor(Math.random()*a.length)],text:t,points:o,positive:e,isEnabled:!0}),i.remove(),f()})};window.deleteReward=function(i){F({title:"Delete reward",message:`Delete reward "${C[i].title}"?
+  `,document.body.appendChild(i);let e=!0;window._setDeedType=function(t){e=t,document.getElementById("deed-type-positive").style.borderColor=t?"var(--primary-teal)":"#ccc",document.getElementById("deed-type-positive").style.background=t?"var(--soft-teal-bg)":"#f9f9f9",document.getElementById("deed-type-positive").style.color=t?"var(--primary-teal)":"#888",document.getElementById("deed-type-negative").style.borderColor=t?"#ccc":"#e53935",document.getElementById("deed-type-negative").style.background=t?"#f9f9f9":"#ffebee",document.getElementById("deed-type-negative").style.color=t?"#888":"#e53935"},document.getElementById("add-deed-save").addEventListener("click",()=>{const t=document.getElementById("add-deed-text").value.trim();if(!t){document.getElementById("add-deed-text").focus();return}const o=Math.abs(parseInt(document.getElementById("add-deed-pts").value,10))||2,a=["⭐","🌟","✨","🤝","💬","❤️","🕌","🌙","🎯","🌱"];M.push({emoji:a[Math.floor(Math.random()*a.length)],text:t,points:o,positive:e,isEnabled:!0}),i.remove(),f()})};window.deleteReward=function(i){F({title:"Delete reward",message:`Delete reward "${S[i].title}"?
 
-This cannot be undone.`,icon:"🗑️",confirmText:"Delete",cancelText:"Keep",danger:!0,onConfirm:()=>{C.splice(i,1),f()}})};window.addRewardModal=function(){const i=document.createElement("div");i.className="in-app-modal-overlay",i.innerHTML=`
+This cannot be undone.`,icon:"🗑️",confirmText:"Delete",cancelText:"Keep",danger:!0,onConfirm:()=>{S.splice(i,1),f()}})};window.addRewardModal=function(){const i=document.createElement("div");i.className="in-app-modal-overlay",i.innerHTML=`
     <div class="in-app-modal-card">
       <div class="in-app-modal-icon gold">🎁</div>
       <h3 class="in-app-modal-title">Add new reward</h3>
@@ -746,9 +748,9 @@ This cannot be undone.`,icon:"🗑️",confirmText:"Delete",cancelText:"Keep",da
         <button class="btn-primary" id="add-reward-save" style="flex:1; padding:12px; border-radius:16px;">Add reward</button>
       </div>
     </div>
-  `,document.body.appendChild(i),document.getElementById("add-reward-save").addEventListener("click",()=>{const e=document.getElementById("add-reward-title").value.trim();if(!e){document.getElementById("add-reward-title").focus();return}const t=Math.abs(parseInt(document.getElementById("add-reward-pts").value,10))||50,o=Math.min(100,Math.abs(parseInt(document.getElementById("add-reward-prob").value,10))||25),a=["🎁","🏆","🍦","🍕","🎮","🌳","🎨","🤗","📖","⭐"];C.push({emoji:a[Math.floor(Math.random()*a.length)],title:e,requiredPoints:t,probability:o/100}),i.remove(),f()})};window.deleteChild=function(i){F({title:"Delete profile",message:`Delete ${u[i].name}'s profile?
+  `,document.body.appendChild(i),document.getElementById("add-reward-save").addEventListener("click",()=>{const e=document.getElementById("add-reward-title").value.trim();if(!e){document.getElementById("add-reward-title").focus();return}const t=Math.abs(parseInt(document.getElementById("add-reward-pts").value,10))||50,o=Math.min(100,Math.abs(parseInt(document.getElementById("add-reward-prob").value,10))||25),a=["🎁","🏆","🍦","🍕","🎮","🌳","🎨","🤗","📖","⭐"];S.push({emoji:a[Math.floor(Math.random()*a.length)],title:e,requiredPoints:t,probability:o/100}),i.remove(),f()})};window.deleteChild=function(i){F({title:"Delete profile",message:`Delete ${u[i].name}'s profile?
 
-This cannot be undone.`,icon:"👤",confirmText:"Delete",cancelText:"Cancel",danger:!0,onConfirm:()=>{u.splice(i,1),y>=u.length&&(y=-1),f()}})};window.resetAllAppDataModal=function(){F({title:"Reset all app data?",message:"This will permanently delete all children profiles, points, streaks and restore the app to factory fresh settings.",icon:"⚠️",confirmText:"Reset everything",cancelText:"Cancel",danger:!0,onConfirm:()=>{u=[],y=-1,B=!1,V="1234",h="",f(),v({title:"App reset!",message:"MashaAllah! App has been reset to factory fresh state!",icon:"✨"})}})};window.changeParentPinModal=function(){const i=document.createElement("div");i.className="in-app-modal-overlay",i.innerHTML=`
+This cannot be undone.`,icon:"👤",confirmText:"Delete",cancelText:"Cancel",danger:!0,onConfirm:()=>{u.splice(i,1),y>=u.length&&(y=-1),f()}})};window.resetAllAppDataModal=function(){F({title:"Reset all app data?",message:"This will permanently delete all children profiles, points, streaks and restore the app to factory fresh settings.",icon:"⚠️",confirmText:"Reset everything",cancelText:"Cancel",danger:!0,onConfirm:()=>{u=[],y=-1,R=!1,K="1234",v="",f(),x({title:"App reset!",message:"MashaAllah! App has been reset to factory fresh state!",icon:"✨"})}})};window.changeParentPinModal=function(){const i=document.createElement("div");i.className="in-app-modal-overlay",i.innerHTML=`
     <div class="in-app-modal-card">
       <div class="in-app-modal-icon">🔒</div>
       <h3 class="in-app-modal-title">Change parent PIN</h3>
@@ -762,46 +764,46 @@ This cannot be undone.`,icon:"👤",confirmText:"Delete",cancelText:"Cancel",dan
         <button class="btn-primary" id="change-pin-save" style="flex:1; padding:12px; border-radius:16px;">Save PIN</button>
       </div>
     </div>
-  `,document.body.appendChild(i),document.getElementById("change-pin-save").addEventListener("click",()=>{const e=document.getElementById("new-pin-1").value.trim(),t=document.getElementById("new-pin-2").value.trim();if(!e||e.length!==4||!/^\d{4}$/.test(e)){document.getElementById("new-pin-1").style.borderColor="#e53935",document.getElementById("new-pin-1").focus(),v({title:"Invalid PIN",message:"PIN must be exactly 4 digits!",icon:"⚠️"});return}if(e!==t){document.getElementById("new-pin-2").style.borderColor="#e53935",document.getElementById("new-pin-2").focus(),v({title:"PINs do not match",message:"The two PINs you entered do not match. Please try again.",icon:"❌"});return}V=e,i.remove(),v({title:"PIN updated!",message:"MashaAllah! Your parent PIN has been updated successfully!",icon:"✨"}),f()})};window.changeChildPatternModal=function(i){u[i].patternLock=null,y=i,k=[],D=null,I=!1,f()};function ae(){const i=document.getElementById("pattern-grid"),e=document.getElementById("pattern-path");if(!i||!e)return;const t=document.querySelectorAll(".pattern-dot");function o(l){const r=l.getBoundingClientRect(),s=document.getElementById("pattern-canvas").getBoundingClientRect();return{x:r.left+r.width/2-s.left,y:r.top+r.height/2-s.top}}function a(){if(k.length<2){e.setAttribute("d","");return}let l="";k.forEach((r,s)=>{const c=document.getElementById(`pattern-dot-${r}`);if(c){const d=o(c);l+=s===0?`M ${d.x} ${d.y}`:` L ${d.x} ${d.y}`}}),e.setAttribute("d",l)}function n(l){const r=l.clientX||l.touches&&l.touches[0].clientX,s=l.clientY||l.touches&&l.touches[0].clientY;!r||!s||t.forEach(c=>{const d=c.getBoundingClientRect();if(r>=d.left&&r<=d.right&&s>=d.top&&s<=d.bottom){const S=parseInt(c.dataset.num);k.includes(S)||(k.push(S),c.style.background="var(--accent-gold)",c.style.borderColor="var(--accent-gold)",c.style.color="white",a())}})}i.addEventListener("pointerdown",l=>{N=!0,n(l)}),i.addEventListener("pointermove",l=>{N&&n(l)}),i.addEventListener("pointerup",()=>{N&&(N=!1,re())})}function re(){const i=u[y];if(i)if(i.patternLock)k.join("-")===i.patternLock?(i.requiresPatternLock=!1,x="today",f(),T(`Assalamu Alaikum ${i.name}! Let's see what you did today!`)):(v({title:"Pattern incorrect",message:"That pattern is incorrect. Please try again.",icon:"🔒"}),resetPatternDrawn());else{if(k.length<3){v({title:"Too short",message:"Connect at least 3 stars to set a pattern!",icon:"⭐"}),resetPatternDrawn();return}if(!I)D=k.join("-"),I=!0,v({title:"Pattern recorded!",message:"Great! Now draw the same pattern again to confirm.",icon:"✨"}),resetPatternDrawn(),f();else{const e=k.join("-");e===D?(i.patternLock=e,i.requiresPatternLock=!1,I=!1,D=null,x="today",f(),T(`Assalamu Alaikum ${i.name}! Let's see what you did today!`)):(v({title:"Patterns do not match",message:"The patterns did not match. Please try again from the beginning.",icon:"❌"}),I=!1,D=null,resetPatternDrawn(),f())}}}window.resetPatternDrawn=function(){k=[];const i=document.getElementById("pattern-path");i&&i.setAttribute("d",""),[1,2,3,4,5,6,7,8,9].forEach(e=>{const t=document.getElementById(`pattern-dot-${e}`);t&&(t.style.background="#f0f4f8",t.style.borderColor="var(--primary-teal)",t.style.color="black")})};window.cancelKidSelection=function(){y=-1,f()};window.cancelCheckIn=function(){E=!1,j=!1,$=[],b=0,window.currentCheckInReward=null,f()};window.openAddChildVisualModal=function(i=-1){const e=i>=0?u[i]:null;p={name:e?e.name:"",gender:e?e.gender:"boy",skinTone:e?e.skinTone:"#f5d0a0",hairColor:e?e.hairColor:"#0e0e0e",hairStyleIndex:e?e.hairStyleIndex:1,eyeGlassesIndex:e?e.eyeGlassesIndex:1,headwearColor:e?e.headwearColor:"#ffb300",hasHeadwear:!0},g="hairStyle";const t=document.createElement("div");t.id="visual-avatar-modal",t.style.cssText="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:999; display:flex; align-items:center; justify-content:center; padding:16px;",t.innerHTML=`
+  `,document.body.appendChild(i),document.getElementById("change-pin-save").addEventListener("click",()=>{const e=document.getElementById("new-pin-1").value.trim(),t=document.getElementById("new-pin-2").value.trim();if(!e||e.length!==4||!/^\d{4}$/.test(e)){document.getElementById("new-pin-1").style.borderColor="#e53935",document.getElementById("new-pin-1").focus(),x({title:"Invalid PIN",message:"PIN must be exactly 4 digits!",icon:"⚠️"});return}if(e!==t){document.getElementById("new-pin-2").style.borderColor="#e53935",document.getElementById("new-pin-2").focus(),x({title:"PINs do not match",message:"The two PINs you entered do not match. Please try again.",icon:"❌"});return}K=e,i.remove(),x({title:"PIN updated!",message:"MashaAllah! Your parent PIN has been updated successfully!",icon:"✨"}),f()})};window.changeChildPatternModal=function(i){u[i].patternLock=null,y=i,k=[],B=null,I=!1,f()};function le(){const i=document.getElementById("pattern-grid"),e=document.getElementById("pattern-path");if(!i||!e)return;const t=document.querySelectorAll(".pattern-dot");function o(r){const l=r.getBoundingClientRect(),s=document.getElementById("pattern-canvas").getBoundingClientRect();return{x:l.left+l.width/2-s.left,y:l.top+l.height/2-s.top}}function a(){if(k.length<2){e.setAttribute("d","");return}let r="";k.forEach((l,s)=>{const c=document.getElementById(`pattern-dot-${l}`);if(c){const d=o(c);r+=s===0?`M ${d.x} ${d.y}`:` L ${d.x} ${d.y}`}}),e.setAttribute("d",r)}function n(r){const l=r.clientX||r.touches&&r.touches[0].clientX,s=r.clientY||r.touches&&r.touches[0].clientY;!l||!s||t.forEach(c=>{const d=c.getBoundingClientRect();if(l>=d.left&&l<=d.right&&s>=d.top&&s<=d.bottom){const T=parseInt(c.dataset.num);k.includes(T)||(k.push(T),c.style.background="var(--accent-gold)",c.style.borderColor="var(--accent-gold)",c.style.color="white",a())}})}i.addEventListener("pointerdown",r=>{q=!0,n(r)}),i.addEventListener("pointermove",r=>{q&&n(r)}),i.addEventListener("pointerup",()=>{q&&(q=!1,se())})}function se(){const i=u[y];if(i)if(i.patternLock)k.join("-")===i.patternLock?(i.requiresPatternLock=!1,g="today",f(),z(`Assalamu Alaikum ${i.name}! Let's see what you did today!`)):(x({title:"Pattern incorrect",message:"That pattern is incorrect. Please try again.",icon:"🔒"}),resetPatternDrawn());else{if(k.length<3){x({title:"Too short",message:"Connect at least 3 stars to set a pattern!",icon:"⭐"}),resetPatternDrawn();return}if(!I)B=k.join("-"),I=!0,x({title:"Pattern recorded!",message:"Great! Now draw the same pattern again to confirm.",icon:"✨"}),resetPatternDrawn(),f();else{const e=k.join("-");e===B?(i.patternLock=e,i.requiresPatternLock=!1,I=!1,B=null,g="today",f(),z(`Assalamu Alaikum ${i.name}! Let's see what you did today!`)):(x({title:"Patterns do not match",message:"The patterns did not match. Please try again from the beginning.",icon:"❌"}),I=!1,B=null,resetPatternDrawn(),f())}}}window.resetPatternDrawn=function(){k=[];const i=document.getElementById("pattern-path");i&&i.setAttribute("d",""),[1,2,3,4,5,6,7,8,9].forEach(e=>{const t=document.getElementById(`pattern-dot-${e}`);t&&(t.style.background="#f0f4f8",t.style.borderColor="var(--primary-teal)",t.style.color="black")})};window.cancelKidSelection=function(){y=-1,f()};window.cancelCheckIn=function(){A=!1,j=!1,$=[],b=0,window.currentCheckInReward=null,f()};window.openAddChildVisualModal=function(i=-1){const e=i>=0?u[i]:null;p={name:e?e.name:"",gender:e?e.gender:"boy",skinTone:e?e.skinTone:"#f5d0a0",hairColor:e?e.hairColor:"#0e0e0e",hairStyleIndex:e?e.hairStyleIndex:1,eyeGlassesIndex:e?e.eyeGlassesIndex:1,headwearColor:e?e.headwearColor:"#ffb300",hasHeadwear:!0},m="hairStyle";const t=document.createElement("div");t.id="visual-avatar-modal",t.style.cssText="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:999; display:flex; align-items:center; justify-content:center; padding:16px;",t.innerHTML=`
     <div style="background:white; border-radius:24px; max-width:380px; width:100%; padding:20px; box-shadow:0 10px 25px rgba(0,0,0,0.2); font-family:var(--font-fredoka);" id="modal-content">
       <!-- Rendered dynamically -->
     </div>
-  `,document.body.appendChild(t),L(i)};function L(i){const e=document.getElementById("modal-content");e&&(e.innerHTML=`
+  `,document.body.appendChild(t),P(i)};function P(i){const e=document.getElementById("modal-content");e&&(e.innerHTML=`
     <h3 style="font-size:18px; margin-bottom:12px; text-align:center; color:var(--text-dark);">🎨 Create your avatar</h3>
 
     <div style="width:110px; height:110px; margin:0 auto 14px auto;" id="modal-head-preview">
-      ${P(p.gender,p.skinTone,p.hairColor,p.hairStyleIndex,p.eyeGlassesIndex,p.headwearColor,!0)}
+      ${D(p.gender,p.skinTone,p.hairColor,p.hairStyleIndex,p.eyeGlassesIndex,p.headwearColor,!0)}
     </div>
 
     <input type="text" id="input-modal-name" value="${p.name}" placeholder="Child's Name (e.g. Maryam / Bilal)" style="width:100%; padding:10px 14px; border-radius:14px; border:1px solid #ccc; font-family:var(--font-fredoka); margin-bottom:14px; text-align:center; font-size:15px; font-weight:700;" />
 
     <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:6px; margin-bottom:14px;">
-      <div class="card" style="padding:6px 2px; text-align:center; cursor:pointer; background:${g==="gender"?"var(--primary-teal)":"#f5f5f5"}; color:${g==="gender"?"white":"black"}; border-radius:12px;" onclick="setModalCategory('gender', ${i})">
+      <div class="card" style="padding:6px 2px; text-align:center; cursor:pointer; background:${m==="gender"?"var(--primary-teal)":"#f5f5f5"}; color:${m==="gender"?"white":"black"}; border-radius:12px;" onclick="setModalCategory('gender', ${i})">
         <span style="font-size:18px;">👦👧</span><br><span style="font-size:9px; font-weight:700;">Gender</span>
       </div>
-      <div class="card" style="padding:6px 2px; text-align:center; cursor:pointer; background:${g==="hairStyle"?"var(--primary-teal)":"#f5f5f5"}; color:${g==="hairStyle"?"white":"black"}; border-radius:12px;" onclick="setModalCategory('hairStyle', ${i})">
+      <div class="card" style="padding:6px 2px; text-align:center; cursor:pointer; background:${m==="hairStyle"?"var(--primary-teal)":"#f5f5f5"}; color:${m==="hairStyle"?"white":"black"}; border-radius:12px;" onclick="setModalCategory('hairStyle', ${i})">
         <span style="font-size:18px;">💇‍♂️</span><br><span style="font-size:9px; font-weight:700;">Hair style</span>
       </div>
-      <div class="card" style="padding:6px 2px; text-align:center; cursor:pointer; background:${g==="hairColor"?"var(--primary-teal)":"#f5f5f5"}; color:${g==="hairColor"?"white":"black"}; border-radius:12px;" onclick="setModalCategory('hairColor', ${i})">
+      <div class="card" style="padding:6px 2px; text-align:center; cursor:pointer; background:${m==="hairColor"?"var(--primary-teal)":"#f5f5f5"}; color:${m==="hairColor"?"white":"black"}; border-radius:12px;" onclick="setModalCategory('hairColor', ${i})">
         <span style="font-size:18px;">🎨</span><br><span style="font-size:9px; font-weight:700;">Hair color</span>
       </div>
-      <div class="card" style="padding:6px 2px; text-align:center; cursor:pointer; background:${g==="skinTone"?"var(--primary-teal)":"#f5f5f5"}; color:${g==="skinTone"?"white":"black"}; border-radius:12px;" onclick="setModalCategory('skinTone', ${i})">
+      <div class="card" style="padding:6px 2px; text-align:center; cursor:pointer; background:${m==="skinTone"?"var(--primary-teal)":"#f5f5f5"}; color:${m==="skinTone"?"white":"black"}; border-radius:12px;" onclick="setModalCategory('skinTone', ${i})">
         <span style="font-size:18px;">🖐️</span><br><span style="font-size:9px; font-weight:700;">Skin</span>
       </div>
-      <div class="card" style="padding:6px 2px; text-align:center; cursor:pointer; background:${g==="eyeGlasses"?"var(--primary-teal)":"#f5f5f5"}; color:${g==="eyeGlasses"?"white":"black"}; border-radius:12px;" onclick="setModalCategory('eyeGlasses', ${i})">
+      <div class="card" style="padding:6px 2px; text-align:center; cursor:pointer; background:${m==="eyeGlasses"?"var(--primary-teal)":"#f5f5f5"}; color:${m==="eyeGlasses"?"white":"black"}; border-radius:12px;" onclick="setModalCategory('eyeGlasses', ${i})">
         <span style="font-size:18px;">👓</span><br><span style="font-size:9px; font-weight:700;">Glasses</span>
       </div>
     </div>
 
     <div style="background:#f9f9f9; padding:12px; border-radius:16px; margin-bottom:16px;">
-      ${le(i)}
+      ${de(i)}
     </div>
 
     <div style="display:flex; gap:10px;">
       <button class="btn-secondary" style="flex:1;" onclick="closeModal()">Cancel</button>
       <button class="btn-primary" style="flex:1;" id="btn-save-modal-child">Save avatar 🎨</button>
     </div>
-  `,document.getElementById("btn-save-modal-child").addEventListener("click",()=>{const t=document.getElementById("input-modal-name").value.trim();if(!t){v({title:"Name required",message:"Please enter your child's name!",icon:"👶"});return}i>=0?(u[i].name=t,u[i].gender=p.gender,u[i].skinTone=p.skinTone,u[i].hairColor=p.hairColor,u[i].hairStyleIndex=p.hairStyleIndex,u[i].eyeGlassesIndex=p.eyeGlassesIndex):(u.push({id:Date.now().toString(),name:t,level:1,points:0,streak:1,title:"Good deeds starter 🌟",gender:p.gender,skinTone:p.skinTone,hairColor:p.hairColor,hairStyleIndex:p.hairStyleIndex,eyeGlassesIndex:p.eyeGlassesIndex,outfitColor:p.gender==="girl"?"#e91e63":"#00897b",headwearColor:p.gender==="boy"?"#ffb300":"#81c784",hasHeadwear:!0,patternLock:null}),y=u.length-1),document.getElementById("visual-avatar-modal").remove(),f()}))}function le(i){if(g==="gender")return`
+  `,document.getElementById("btn-save-modal-child").addEventListener("click",()=>{const t=document.getElementById("input-modal-name").value.trim();if(!t){x({title:"Name required",message:"Please enter your child's name!",icon:"👶"});return}i>=0?(u[i].name=t,u[i].gender=p.gender,u[i].skinTone=p.skinTone,u[i].hairColor=p.hairColor,u[i].hairStyleIndex=p.hairStyleIndex,u[i].eyeGlassesIndex=p.eyeGlassesIndex):(u.push({id:Date.now().toString(),name:t,level:1,points:0,streak:1,title:"Good deeds starter 🌟",gender:p.gender,skinTone:p.skinTone,hairColor:p.hairColor,hairStyleIndex:p.hairStyleIndex,eyeGlassesIndex:p.eyeGlassesIndex,outfitColor:p.gender==="girl"?"#e91e63":"#00897b",headwearColor:p.gender==="boy"?"#ffb300":"#81c784",hasHeadwear:!0,patternLock:null}),y=u.length-1),document.getElementById("visual-avatar-modal").remove(),f()}))}function de(i){if(m==="gender")return`
       <div style="display:flex; gap:12px;">
         <div style="flex:1; padding:12px; border-radius:14px; border:2px solid ${p.gender==="boy"?"var(--primary-teal)":"#ccc"}; background:${p.gender==="boy"?"var(--soft-teal-bg)":"white"}; text-align:center; cursor:pointer;" onclick="selectModalGender('boy', ${i})">
           <div style="font-size:36px;">👦</div>
@@ -812,74 +814,74 @@ This cannot be undone.`,icon:"👤",confirmText:"Delete",cancelText:"Cancel",dan
           <strong style="font-size:13px; display:block; margin-top:4px;">Girl</strong>
         </div>
       </div>
-    `;if(g==="hairStyle")return`
+    `;if(m==="hairStyle")return`
       <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
-        ${(p.gender==="girl"?ne:ie).map(t=>`
+        ${(p.gender==="girl"?ae:oe).map(t=>`
           <div style="padding:8px 4px; border-radius:12px; border:2px solid ${p.hairStyleIndex===t.index?"var(--accent-gold)":"#ccc"}; background:${p.hairStyleIndex===t.index?"var(--soft-gold-bg)":"white"}; text-align:center; cursor:pointer;" onclick="selectModalHairStyle(${t.index}, ${i})">
             <div style="font-size:24px;">${t.emoji}</div>
             <span style="font-size:9px; font-weight:700; display:block; margin-top:2px;">${t.label}</span>
           </div>
         `).join("")}
       </div>
-    `;if(g==="hairColor")return`
+    `;if(m==="hairColor")return`
       <div style="display:flex; justify-content:space-around; align-items:center;">
-        ${te.map(e=>`
+        ${ne.map(e=>`
           <div style="text-align:center; cursor:pointer;" onclick="selectModalHairColor('${e.color}', ${i})">
             <div style="width:44px; height:44px; border-radius:50%; background:${e.color}; border:3px solid ${p.hairColor===e.color?"var(--accent-gold)":"#ccc"}; margin:0 auto;"></div>
             <span style="font-size:10px; font-weight:700; display:block; margin-top:4px;">${e.name}</span>
           </div>
         `).join("")}
       </div>
-    `;if(g==="skinTone")return`
+    `;if(m==="skinTone")return`
       <div style="display:flex; justify-content:space-around;">
-        ${ee.map(e=>`
+        ${ie.map(e=>`
           <div style="width:40px; height:40px; border-radius:50%; background:${e.color}; border:3px solid ${p.skinTone===e.color?"var(--accent-gold)":"#ccc"}; cursor:pointer;" onclick="selectModalSkinTone('${e.color}', ${i})"></div>
         `).join("")}
       </div>
-    `;if(g==="eyeGlasses")return`
+    `;if(m==="eyeGlasses")return`
       <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
-        ${oe.map(e=>`
+        ${re.map(e=>`
           <div style="padding:8px 4px; border-radius:12px; border:2px solid ${p.eyeGlassesIndex===e.index?"var(--accent-gold)":"#ccc"}; background:${p.eyeGlassesIndex===e.index?"var(--soft-gold-bg)":"white"}; text-align:center; cursor:pointer;" onclick="selectModalGlasses(${e.index}, ${i})">
             <div style="font-size:24px;">${e.emoji}</div>
             <span style="font-size:9px; font-weight:700; display:block; margin-top:2px;">${e.label}</span>
           </div>
         `).join("")}
       </div>
-    `}window.setModalCategory=function(i,e){g=i,L(e)};window.selectModalGender=function(i,e){p.gender=i,L(e)};window.selectModalHairStyle=function(i,e){p.hairStyleIndex=i,L(e)};window.selectModalHairColor=function(i,e){p.hairColor=i,L(e)};window.selectModalSkinTone=function(i,e){p.skinTone=i,L(e)};window.selectModalGlasses=function(i,e){p.eyeGlassesIndex=i,L(e)};window.closeModal=function(){const i=document.getElementById("visual-avatar-modal");i&&i.remove()};window.showDateDetails=function(i){const e=u[y]?u[y].name:"Child",t=30+i*3%40,o=i%5===0?"🍦 Ice cream treat":"📖 Bedtime story";v({title:`August ${i}, 2026`,message:`👶 Child: ${e}
+    `}window.setModalCategory=function(i,e){m=i,P(e)};window.selectModalGender=function(i,e){p.gender=i,P(e)};window.selectModalHairStyle=function(i,e){p.hairStyleIndex=i,P(e)};window.selectModalHairColor=function(i,e){p.hairColor=i,P(e)};window.selectModalSkinTone=function(i,e){p.skinTone=i,P(e)};window.selectModalGlasses=function(i,e){p.eyeGlassesIndex=i,P(e)};window.closeModal=function(){const i=document.getElementById("visual-avatar-modal");i&&i.remove()};window.showDateDetails=function(i){const e=u[y]?u[y].name:"Child",t=30+i*3%40,o=i%5===0?"🍦 Ice cream treat":"📖 Bedtime story";x({title:`August ${i}, 2026`,message:`👶 Child: ${e}
 🌟 Score earned: +${t} pts
 🎁 Unlocked gift: ${o}
 
 Completed deeds:
 • Morning dua recited 👍
 • Prayed Salah on time 🕌
-• Helped clean up toys 🧸`,icon:"📅",buttonText:"Close"})};function O(i="scratch-canvas"){const e=document.getElementById(i);if(!e)return;const t=e.getContext("2d");e.width=e.offsetWidth||260,e.height=e.offsetHeight||130,t.globalCompositeOperation="source-over";const o=t.createLinearGradient(0,0,e.width,e.height);o.addColorStop(0,"#ffd700"),o.addColorStop(.5,"#fff8e1"),o.addColorStop(1,"#ffb300"),t.fillStyle=o,t.fillRect(0,0,e.width,e.height),t.fillStyle="#5d4037",t.font="bold 13px Fredoka, sans-serif",t.textAlign="center",t.fillText("✨ Scratch to Discover Your Surprise! ✨",e.width/2,e.height/2+5);let a=!1;function n(r,s){t.globalCompositeOperation="destination-out",t.beginPath(),t.arc(r,s,20,0,Math.PI*2),t.fill()}function l(r){const s=e.getBoundingClientRect(),c=r.touches?r.touches[0].clientX:r.clientX,d=r.touches?r.touches[0].clientY:r.clientY;return{x:c-s.left,y:d-s.top}}e.onmousedown=r=>{a=!0;const s=l(r);n(s.x,s.y)},e.onmousemove=r=>{if(a){const s=l(r);n(s.x,s.y)}},window.onmouseup=()=>{a=!1},e.ontouchstart=r=>{a=!0;const s=l(r);n(s.x,s.y)},e.ontouchmove=r=>{if(a){const s=l(r);n(s.x,s.y)}},window.ontouchend=()=>{a=!1}}window.resetScratchFoil=function(){const i=C[Math.floor(Math.random()*C.length)],e=document.getElementById("scratch-prize-emoji"),t=document.getElementById("scratch-prize-title");e&&(e.innerText=i.emoji),t&&(t.innerText=i.title),O()};window.unlockScratchCardModal=function(){if(y<0)return;const i=u[y];if(i.points<40){v({title:"Not enough points",message:`You need 40 points to unlock a scratch card!
+• Helped clean up toys 🧸`,icon:"📅",buttonText:"Close"})};function O(i="scratch-canvas"){const e=document.getElementById(i);if(!e)return;const t=e.getContext("2d");e.width=e.offsetWidth||260,e.height=e.offsetHeight||130,t.globalCompositeOperation="source-over";const o=t.createLinearGradient(0,0,e.width,e.height);o.addColorStop(0,"#ffd700"),o.addColorStop(.5,"#fff8e1"),o.addColorStop(1,"#ffb300"),t.fillStyle=o,t.fillRect(0,0,e.width,e.height),t.fillStyle="#5d4037",t.font="bold 13px Fredoka, sans-serif",t.textAlign="center",t.fillText("✨ Scratch to Discover Your Surprise! ✨",e.width/2,e.height/2+5);let a=!1;function n(l,s){t.globalCompositeOperation="destination-out",t.beginPath(),t.arc(l,s,20,0,Math.PI*2),t.fill()}function r(l){const s=e.getBoundingClientRect(),c=l.touches?l.touches[0].clientX:l.clientX,d=l.touches?l.touches[0].clientY:l.clientY;return{x:c-s.left,y:d-s.top}}e.onmousedown=l=>{a=!0;const s=r(l);n(s.x,s.y)},e.onmousemove=l=>{if(a){const s=r(l);n(s.x,s.y)}},window.onmouseup=()=>{a=!1},e.ontouchstart=l=>{a=!0;const s=r(l);n(s.x,s.y)},e.ontouchmove=l=>{if(a){const s=r(l);n(s.x,s.y)}},window.ontouchend=()=>{a=!1}}window.resetScratchFoil=function(){const i=S[Math.floor(Math.random()*S.length)],e=document.getElementById("scratch-prize-emoji"),t=document.getElementById("scratch-prize-title");e&&(e.innerText=i.emoji),t&&(t.innerText=i.title),O()};window.unlockScratchCardModal=function(){if(y<0)return;const i=u[y];if(i.points<40){x({title:"Not enough points",message:`You need 40 points to unlock a scratch card!
 
-Your current points: ${i.points} ⭐`,icon:"⭐"});return}i.points-=40;const e=C[Math.floor(Math.random()*C.length)];i.claimedRewards||(i.claimedRewards=[]),i.claimedRewards.push(e),f(),v({title:"Scratch card unlocked! 🎉",message:`MashaAllah! You unlocked "${e.emoji} ${e.title}"!
+Your current points: ${i.points} ⭐`,icon:"⭐"});return}i.points-=40;const e=S[Math.floor(Math.random()*S.length)];i.claimedRewards||(i.claimedRewards=[]),i.claimedRewards.push(e),f(),x({title:"Scratch card unlocked! 🎉",message:`MashaAllah! You unlocked "${e.emoji} ${e.title}"!
 
-40 points have been used.`,icon:"🎁",buttonText:"Awesome!"})};window.playDuaAudio=function(i,e){T(i)};let z=0;const q=[{icon:"🌟",title:"Welcome to Kids Good-Deeds",text:"A fun nightly adventure encouraging daily good deeds, Islamic manners, and family rituals without shaming or punishment."},{icon:"🎨",title:"Faceless Vector Avatars",text:"Adheres strictly to faceless visual rules! Customize gender, hijab/kufi colors, skin tone, hair style, and glasses."},{icon:"🌙",title:"Nightly Family Check-In",text:"Swipeable card deck flow with gentle encouragement. Earn points for positive habits, try again tomorrow for mistakes!"},{icon:"🎁",title:"Scratch-to-Reveal Rewards",text:"Children spend earned points to scratch surprise rewards customizable by parents (e.g. bedtime stories, ice cream)."},{icon:"👨‍👩‍👧",title:"Parent PIN & Pattern Locks",text:"Protect parent settings with a 4-digit PIN (default: 1234). Children use 3x3 star pattern locks to access their profiles."}];window.openAppGuideModal=function(){z=0;const i=document.createElement("div");i.id="guide-walkthrough-modal",i.style.cssText="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:999; display:flex; align-items:center; justify-content:center; padding:16px;",i.innerHTML=`
+40 points have been used.`,icon:"🎁",buttonText:"Awesome!"})};window.playDuaAudio=function(i,e){z(i)};let C=0;const V=[{icon:"🌟",title:"Welcome to Kids Good-Deeds",text:"A fun nightly adventure encouraging daily good deeds, Islamic manners, and family rituals without shaming or punishment."},{icon:"🎨",title:"Faceless Vector Avatars",text:"Adheres strictly to faceless visual rules! Customize gender, hijab/kufi colors, skin tone, hair style, and glasses."},{icon:"🌙",title:"Nightly Family Check-In",text:"Swipeable card deck flow with gentle encouragement. Earn points for positive habits, try again tomorrow for mistakes!"},{icon:"🎁",title:"Scratch-to-Reveal Rewards",text:"Children spend earned points to scratch surprise rewards customizable by parents (e.g. bedtime stories, ice cream)."},{icon:"👨‍👩‍👧",title:"Parent PIN & Pattern Locks",text:"Protect parent settings with a 4-digit PIN (default: 1234). Children use 3x3 star pattern locks to access their profiles."}];window.openAppGuideModal=function(){C=0;const i=document.createElement("div");i.id="guide-walkthrough-modal",i.style.cssText="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:999; display:flex; align-items:center; justify-content:center; padding:16px;",i.innerHTML=`
     <div style="background:white; border-radius:24px; max-width:380px; width:100%; padding:24px; box-shadow:0 10px 25px rgba(0,0,0,0.2); font-family:var(--font-fredoka); text-align:center;" id="guide-modal-content">
       <!-- Content populated dynamically -->
     </div>
-  `,document.body.appendChild(i),W()};function W(){const i=document.getElementById("guide-modal-content");if(!i)return;const e=q[z];i.innerHTML=`
+  `,document.body.appendChild(i),Y()};function Y(){const i=document.getElementById("guide-modal-content");if(!i)return;const e=V[C];i.innerHTML=`
     <div style="font-size:54px; margin-bottom:10px;">${e.icon}</div>
     <h3 style="font-size:18px; color:var(--text-dark); margin-bottom:8px;">${e.title}</h3>
     <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:18px; min-height:60px;">${e.text}</p>
 
     <!-- Slide Indicators -->
     <div style="display:flex; justify-content:center; gap:6px; margin-bottom:20px;">
-      ${q.map((t,o)=>`
-        <div style="width:${o===z?"20px":"8px"}; height:8px; border-radius:4px; background:${o===z?"var(--primary-teal)":"#e0e0e0"}; transition:all 0.3s ease;"></div>
+      ${V.map((t,o)=>`
+        <div style="width:${o===C?"20px":"8px"}; height:8px; border-radius:4px; background:${o===C?"var(--primary-teal)":"#e0e0e0"}; transition:all 0.3s ease;"></div>
       `).join("")}
     </div>
 
     <div style="display:flex; gap:10px;">
-      ${z>0?`
+      ${C>0?`
         <button class="btn-secondary" style="flex:1;" onclick="prevGuideSlide()">⬅️ Back</button>
       `:""}
-      ${z<q.length-1?`
+      ${C<V.length-1?`
         <button class="btn-primary" style="flex:1;" onclick="nextGuideSlide()">Next ➡️</button>
       `:`
         <button class="btn-primary" style="flex:1; background:linear-gradient(135deg,#43a047,#2e7d32);" onclick="closeGuideModal()">Got it! 🚀</button>
       `}
     </div>
-  `}window.nextGuideSlide=function(){z<q.length-1&&(z++,W())};window.prevGuideSlide=function(){z>0&&(z--,W())};window.changeCalendarMonth=function(i){m+=i,m<0?(m=11,w--):m>11&&(m=0,w++),A=null,f()};window.showDateDetails=function(i){A={day:i,month:m,year:w},f()};window.closeDateDetails=function(){A=null,f()};f();
+  `}window.nextGuideSlide=function(){C<V.length-1&&(C++,Y())};window.prevGuideSlide=function(){C>0&&(C--,Y())};window.changeCalendarMonth=function(i){h+=i,h<0?(h=11,w--):h>11&&(h=0,w++),E=null,f()};window.showDateDetails=function(i){E={day:i,month:h,year:w},f()};window.closeDateDetails=function(){E=null,f()};f();

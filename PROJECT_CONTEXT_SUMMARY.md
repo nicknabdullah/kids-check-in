@@ -46,7 +46,7 @@ Before starting a task, record it under **Active work** and note the last verifi
 ### Planned and pending work
 
 - [ ] Calculate journey summaries from recorded check-ins instead of demo values.
-- [ ] Keep the web prototype aligned with Flutter flows where it is used for review.
+- [ ] Continue aligning remaining web-preview flows with the Flutter app.
 - [ ] Bundle licensed voice recordings if consistent narration is needed across devices.
 
 ### Recently completed
@@ -54,3 +54,4 @@ Before starting a task, record it under **Active work** and note the last verifi
 - [x] Reorganize the project docs, add current preview screenshots to the README, and clarify implementation status (2026-10-06).
 - [x] Persist profiles, settings, deeds, rewards, active child, parent PIN, and check-in history with SharedPreferences; verify restore and reset behavior (2026-10-06).
 - [x] Add device text-to-speech voice feedback and a test-voice control; prefer an identifiable male English voice when available (2026-10-07).
+- [x] Mirror the sound toggle and test-voice control in the web preview; verify settings persistence and browser feedback behavior (2026-10-07).
