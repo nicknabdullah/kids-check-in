@@ -11,17 +11,17 @@ This file is a concise engineering handoff. The [README](README.md) is the proje
 | Onboarding, child profiles, avatars, pattern locks | Implemented | Flutter screens and state actions are present.                                              |
 | Nightly check-in and results                       | Implemented | Responses calculate points and record entries in app state.                                 |
 | Parent, habit, and reward controls                 | Partial     | Core screens and persistent settings exist; some dashboard/report features remain limited. |
-| Scratch rewards and learning screens               | Partial     | Interactive screens and device text-to-speech feedback exist; recorded audio is not bundled. |
+| Scratch rewards and learning screens               | Partial     | Interactive screens use bundled voice clips for selected feedback; some learning prompts still need recordings. |
 | Journey and reports                                | Partial     | Monthly summaries, weekly trends, and date details use child-scoped check-ins; the family leaderboard remains demo data. |
 | Device persistence                                 | Implemented | Profiles, settings, deeds, rewards, active child, PIN, and child-scoped check-in history use SharedPreferences; version 1 history migrates to the active profile. PIN is stored unencrypted. |
-| Voice feedback                                     | Partial     | Flutter uses device text-to-speech and prefers a male-sounding English voice when available; voice varies by device. |
+| Voice feedback                                     | Partial     | Eight supplied MP3 clips are being integrated; prompts without a matching recording will not be synthesized. |
 
 ## Architecture
 
 - `lib/` is the Flutter application.
 - `lib/providers/app_state_provider.dart` owns app state and restores/saves it with SharedPreferences; check-in history is scoped by child and existing version 1 history is migrated to the active profile.
 - `lib/screens/` contains the main child, parent, check-in, rewards, journey, and learning flows.
-- `lib/services/audio_service.dart` uses platform text-to-speech for voice prompts; it does not play bundled recordings.
+- `lib/services/audio_service.dart` plays bundled voice clips for supported prompts; no text-to-speech engine is used.
 - `web_preview/` is a separate Vite/JavaScript prototype with seeded sample data.
 - `docs/screenshots/` contains screenshots captured from the web preview for the README.
 
@@ -41,11 +41,13 @@ Before starting a task, record it under **Active work** and note the last verifi
 
 ### Active work
 
-None. The last task was committed and pushed; choose the next item from Planned and pending.
+- Replace text-to-speech with the eight user-supplied voice clips.
+  - Checkpoint: all eight MP3s are present under `assets/sounds/`; exact filenames were inspected. Flutter currently uses `flutter_tts` and web preview uses browser speech synthesis; several game/Quran prompts are dynamic and have no matching clip yet.
+  - Resume after interruption: wire shared clip mappings to Flutter and web audio playback; remove TTS dependencies, platform configuration, controls, and messaging; test mute/playback/missing-clip behavior and update docs. Then list remaining app texts needing recordings for the user.
 
 ### Planned and pending work
 
-- [ ] Review and integrate child-friendly voice clips for the app prompts. Eight MP3s are present in `assets/sounds/` but are not yet reviewed or wired into Flutter/web playback; earlier auditions were rejected as too robotic.
+- [ ] Record voice clips for remaining app interactions, especially Quran recitation and dynamic learning/game prompts.
 - [ ] Continue aligning remaining web-preview flows with the Flutter app.
 
 ### Recently completed

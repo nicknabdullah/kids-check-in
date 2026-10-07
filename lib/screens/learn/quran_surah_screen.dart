@@ -47,7 +47,6 @@ class QuranSurahScreen extends StatefulWidget {
 
 class _QuranSurahScreenState extends State<QuranSurahScreen> {
   int _selectedSurahIndex = 0;
-  bool _isPlayingAudio = false;
   bool _isLooping = false;
 
   final List<QuranSurahItem> _surahs = [
@@ -123,28 +122,13 @@ class _QuranSurahScreenState extends State<QuranSurahScreen> {
     ),
   ];
 
-  void _playMaleQariRecitation() {
-    final currentSurah = _surahs[_selectedSurahIndex];
-    setState(() => _isPlayingAudio = true);
-
-    AudioService.instance.playMaleQariRecitation(
-      context,
-      currentSurah.title,
-      currentSurah.verses.first.arabic,
-    );
-
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) setState(() => _isPlayingAudio = false);
-    });
-  }
-
   void _markAsMemorized() {
     final appState = Provider.of<AppStateProvider>(context, listen: false);
     final currentSurah = _surahs[_selectedSurahIndex];
 
-    AudioService.instance.playMaleVoiceFeedback(
+    AudioService.instance.playVoiceFeedback(
       context,
-      'MashaAllah! You memorized ${currentSurah.title}! +20 Stars! ✨',
+      'Alhamdulillah! You made your family proud.',
     );
 
     showDialog(
@@ -213,10 +197,7 @@ class _QuranSurahScreenState extends State<QuranSurahScreen> {
                     final isSelected = index == _selectedSurahIndex;
                     return GestureDetector(
                       onTap: () {
-                        setState(() {
-                          _selectedSurahIndex = index;
-                          _isPlayingAudio = false;
-                        });
+                        setState(() => _selectedSurahIndex = index);
                       },
                       child: Container(
                         margin: const EdgeInsets.only(right: 10),
@@ -287,7 +268,7 @@ class _QuranSurahScreenState extends State<QuranSurahScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Male Qari Audio Player Control Bar
+                    // Recitation recordings have not been added yet.
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -297,9 +278,9 @@ class _QuranSurahScreenState extends State<QuranSurahScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                           ),
-                          icon: Icon(_isPlayingAudio ? Icons.pause_rounded : Icons.record_voice_over_rounded),
-                          label: Text(_isPlayingAudio ? 'Reciting...' : '🎙️ Male Qari Recitation'),
-                          onPressed: _playMaleQariRecitation,
+                          icon: const Icon(Icons.record_voice_over_rounded),
+                          label: const Text('Recitation audio coming soon'),
+                          onPressed: null,
                         ),
                         IconButton(
                           icon: Icon(
@@ -373,10 +354,12 @@ class _QuranSurahScreenState extends State<QuranSurahScreen> {
                               ),
                             ),
                             IconButton(
-                              icon: const Icon(Icons.play_circle_fill_rounded, color: AppColors.primaryTeal),
-                              onPressed: () {
-                                AudioService.instance.playMaleVoiceFeedback(context, verse.transliteration);
-                              },
+                              icon: const Icon(
+                                Icons.play_circle_fill_rounded,
+                                color: AppColors.textMuted,
+                              ),
+                              tooltip: 'Recitation audio coming soon',
+                              onPressed: null,
                             ),
                           ],
                         ),

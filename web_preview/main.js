@@ -5,6 +5,7 @@ const initialCalendarDate = new Date();
 let calendarViewYear = initialCalendarDate.getFullYear();
 let calendarViewMonth = initialCalendarDate.getMonth();
 let selectedDateDetails = null;
+let currentVoiceClip = null;
 const SOUND_ENABLED_KEY = "kids-good-deeds-sound-enabled";
 let isSoundEnabled = (() => {
   try {
@@ -349,83 +350,62 @@ const eyeGlassesList = [
   { index: 5, label: "Star ⭐", emoji: "⭐" },
 ];
 
-// SPEECH SYNTHESIS VOICE OVER FEEDBACK
-function getBrowserSpeechVoices() {
-  const voices = window.speechSynthesis.getVoices();
-  if (voices.length > 0) return Promise.resolve(voices);
+const voiceClips = {
+  "alhamdulillah you did a good deed":
+    "[cheerfully] Alhamdulillah! You did a good deed!.mp3",
+  alhamdulillah:
+    "[cheerfully] Alhamdulillah! You did a good deed!.mp3",
+  "mashaa allah wonderful job":
+    "[excited] Mashaa Allah! Wonderful job!.mp3",
+  "mashaa allah": "[excited] Mashaa Allah! Wonderful job!.mp3",
+  mashaallah: "[excited] Mashaa Allah! Wonderful job!.mp3",
+  "alhamdulillah you remembered your salah":
+    "[warmly] Alhamdulillah! You remembered your Salah!.mp3",
+  "mashaa allah you helped someone today":
+    "[warmly] Mashaa Allah! You helped someone today!.mp3",
+  "alhamdulillah you earned points for your kindness":
+    "[cheerfully] Alhamdulillah! You earned points for.mp3",
+  "mashaa allah keep doing your best":
+    "[cheerfully] Mashaa Allah! Keep doing your best!.mp3",
+  "alhamdulillah you made your family proud":
+    "[warmly] Alhamdulillah! You made your family proud.mp3",
+  "subhanallah that was so kind of you":
+    "[excited] SubhanAllah! That was so kind of you!.mp3",
+};
 
-  return new Promise((resolve) => {
-    let finished = false;
-    const finish = () => {
-      if (finished) return;
-      finished = true;
-      clearTimeout(timeout);
-      window.speechSynthesis.removeEventListener("voiceschanged", finish);
-      resolve(window.speechSynthesis.getVoices());
-    };
+async function playVoiceClip(text, { showUnavailable = false } = {}) {
+  if (!isSoundEnabled) return false;
 
-    const timeout = setTimeout(finish, 1500);
-    window.speechSynthesis.addEventListener("voiceschanged", finish);
-  });
-}
-
-async function speakGreeting(text, { showUnavailable = false } = {}) {
-  if (!isSoundEnabled) return;
-  if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+  const normalized = text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const filename = voiceClips[normalized];
+  if (!filename) {
+    console.warn(`No recorded voice clip is available for: "${text}".`);
     if (showUnavailable) {
       showInAppAlert({
-        title: "No browser voice available",
-        message: "This browser does not support speech synthesis.",
+        title: "Recording coming soon",
+        message: "There is no recorded clip for this sample yet.",
         icon: "🔇",
       });
     }
-    return;
+    return false;
   }
 
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.pitch = 0.85;
-  utterance.rate = 0.9;
-
-  const voices = await getBrowserSpeechVoices();
-  const englishVoices = voices.filter((voice) =>
-    voice.lang.toLowerCase().startsWith("en"),
-  );
-  if (voices.length === 0 || englishVoices.length === 0) {
-    console.warn("No English speech synthesis voices are available.");
+  currentVoiceClip?.pause();
+  currentVoiceClip = new Audio(`/sounds/${encodeURIComponent(filename)}`);
+  try {
+    await currentVoiceClip.play();
+    return true;
+  } catch (error) {
+    console.error("Recorded voice clip could not play:", error);
     if (showUnavailable) {
       showInAppAlert({
-        title: "No browser voice available",
-        message:
-          "This browser has no English speech voices available. Enable or install an English text-to-speech voice in your device settings, then restart the browser.",
+        title: "Recorded audio could not play",
+        message: "Check your device volume and try the clip again.",
         icon: "🔇",
       });
     }
-    return;
+    return false;
   }
-
-  const maleVoice = englishVoices.find((voice) =>
-    /(^|[^a-z])(male|man|david|daniel|alex|guy)([^a-z]|$)/i.test(voice.name),
-  );
-  if (maleVoice) {
-    utterance.voice = maleVoice;
-    utterance.lang = maleVoice.lang;
-  } else {
-    utterance.lang = "en-US";
-  }
-
-  utterance.onerror = (event) => {
-    console.error("Browser speech synthesis failed:", event.error);
-    if (showUnavailable) {
-      showInAppAlert({
-        title: "Browser voice could not play",
-        message:
-          `The browser could not start speech playback (${event.error}). Check the device speech settings and try again.`,
-        icon: "🔇",
-      });
-    }
-  };
-  window.speechSynthesis.speak(utterance);
 }
 
 // SYNTHESIZED SOUND EFFECTS VIA WEB AUDIO API
@@ -1026,8 +1006,8 @@ function renderViewport() {
       <div class="card">
         <strong style="display:block; margin-bottom:10px; font-size:15px;">⚙️ Settings</strong>
         <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f0f0f0; font-size:13px;"><span>🔊 Sound effects and voice prompts</span><input id="sound-enabled-toggle" type="checkbox" ${isSoundEnabled ? "checked" : ""} aria-label="Enable sound effects and voice prompts" onchange="setSoundEnabled(this.checked)" style="width:18px; height:18px;"></div>
-        <p style="font-size:11px; color:var(--text-muted); margin:6px 0;">Uses browser voices; prefers a male-sounding English voice when identifiable.</p>
-        <button class="btn-primary" style="margin:4px 0 10px;" onclick="testPreviewVoice()">🔊 Test voice</button>
+        <p style="font-size:11px; color:var(--text-muted); margin:6px 0;">Plays recorded voice clips for selected prompts.</p>
+        <button class="btn-primary" style="margin:4px 0 10px;" onclick="testPreviewAudio()">🔊 Test recorded audio</button>
         <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f0f0f0; font-size:13px;"><span>🏆 Family leaderboard</span><input type="checkbox" checked style="width:18px; height:18px;"></div>
         <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:13px;"><span>🔥 Streak counter</span><input type="checkbox" checked style="width:18px; height:18px;"></div>
         <button class="btn-primary" style="margin-top:10px;" onclick="changeParentPinModal()">🔒 Change parent PIN</button>
@@ -1283,15 +1263,15 @@ function renderViewport() {
     if (deed.positive) {
       if (answer === "full") {
         playAudioFeedback("yes");
-        speakGreeting("Alhamdulillah!");
+        playVoiceClip("Alhamdulillah! You did a good deed!");
         showCheerfulOverlay("balloons", "Alhamdulillah! Great Job! ✨", "🎉");
       } else if (answer === "partial") {
         playAudioFeedback("tried");
-        speakGreeting("MashaAllah!");
+        playVoiceClip("Mashaa Allah! Wonderful job!");
         showCheerfulOverlay("stars", "MashaAllah! Good Effort! 🌱", "🌟");
       } else {
         playAudioFeedback("notToday");
-        speakGreeting("Tomorrow is another chance, InshaAllah!");
+        // No voice clip for "Tomorrow is another chance, InshaAllah!" yet
         showCheerfulOverlay(
           "droopyRose",
           "Tomorrow is another chance, InshaAllah! 🌱",
@@ -1301,7 +1281,7 @@ function renderViewport() {
     } else {
       if (answer === "no") {
         playAudioFeedback("yes");
-        speakGreeting("MashaAllah! Excellent self-control!");
+        playVoiceClip("Mashaa Allah! Keep doing your best!");
         showCheerfulOverlay(
           "balloons",
           "MashaAllah! Excellent Self-Control! 💪",
@@ -1309,7 +1289,7 @@ function renderViewport() {
         );
       } else {
         playAudioFeedback("notToday");
-        speakGreeting("Tomorrow is another chance, InshaAllah!");
+        // No voice clip for "Tomorrow is another chance, InshaAllah!" yet
         showCheerfulOverlay(
           "droopyRose",
           "It's okay! Tomorrow is another chance, InshaAllah! 🌱",
@@ -1948,22 +1928,19 @@ window.setSoundEnabled = function (enabled) {
       icon: "⚠️",
     });
   }
-  if (!isSoundEnabled && "speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-  }
 };
 
-window.testPreviewVoice = function () {
+window.testPreviewAudio = function () {
   if (!isSoundEnabled) {
     showInAppAlert({
       title: "Voice is muted",
-      message: "Turn on sound effects and voice prompts to test the voice.",
+      message: "Turn on sound effects and voice prompts to test the audio.",
       icon: "🔇",
     });
     return;
   }
-  speakGreeting(
-    "Assalamu alaikum! MashaAllah, you are doing great!",
+  playVoiceClip(
+    "Mashaa Allah! Keep doing your best!",
     { showUnavailable: true },
   );
 };
@@ -1976,7 +1953,7 @@ window.selectKidFromGrid = function (idx) {
   patternFirstStep = null;
   child.requiresPatternLock = false;
   activeTab = "today";
-  speakGreeting(
+  playVoiceClip(
     `Assalamu Alaikum ${child.name}! Let's see what you did today!`,
   );
   renderViewport();
@@ -2372,11 +2349,9 @@ function submitPatternDrawn() {
       if (secondStep === patternFirstStep) {
         child.patternLock = secondStep;
         child.requiresPatternLock = false;
-        isPatternConfirming = false;
-        patternFirstStep = null;
         activeTab = "today";
         renderViewport();
-        speakGreeting(
+        playVoiceClip(
           `Assalamu Alaikum ${child.name}! Let's see what you did today!`,
         );
       } else {
@@ -2398,7 +2373,7 @@ function submitPatternDrawn() {
       child.requiresPatternLock = false;
       activeTab = "today";
       renderViewport();
-      speakGreeting(
+      playVoiceClip(
         `Assalamu Alaikum ${child.name}! Let's see what you did today!`,
       );
     } else {
@@ -2796,7 +2771,8 @@ window.unlockScratchCardModal = function () {
 };
 
 window.playDuaAudio = function (text, label) {
-  speakGreeting(text);
+  // Qari recitations not yet available; would need Arabic/Quran recitation clips
+  console.log(`Would play recitation for: ${label} - ${text}`);
 };
 
 // 5-SLIDE ONBOARDING WALKTHROUGH GUIDE MODAL

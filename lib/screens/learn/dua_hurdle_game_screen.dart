@@ -114,8 +114,6 @@ class _DuaHurdleGameScreenState extends State<DuaHurdleGameScreen>
       _lastRecitationScore = null;
     });
 
-    AudioService.instance.playVoiceFeedback(context, 'Listening to your Dua recitation...');
-
     Future.delayed(const Duration(seconds: 3), () {
       if (!mounted) return;
 
@@ -135,9 +133,10 @@ class _DuaHurdleGameScreenState extends State<DuaHurdleGameScreen>
 
         // Trigger Leap Jump Animation
         _jumpController.forward().then((_) => _jumpController.reverse());
-        AudioService.instance.playVoiceFeedback(context, 'MashaAllah! $randomScore% Accuracy! Hurdle Overcome! ✨');
-      } else {
-        AudioService.instance.playVoiceFeedback(context, 'So close! Try listening to the audio once more.');
+        AudioService.instance.playVoiceFeedback(
+          context,
+          'Mashaa Allah! Wonderful job!',
+        );
       }
     });
   }
@@ -390,7 +389,7 @@ class _DuaHurdleGameScreenState extends State<DuaHurdleGameScreen>
                     ),
                     const SizedBox(height: 20),
 
-                    // Audio Listen Practice Button
+                    // Dua recitation recordings have not been added yet.
                     OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.primaryTeal,
@@ -398,15 +397,9 @@ class _DuaHurdleGameScreenState extends State<DuaHurdleGameScreen>
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
-                      icon: Icon(_isPlayingAudio ? Icons.volume_up_rounded : Icons.play_arrow_rounded),
-                      label: Text(_isPlayingAudio ? 'Playing Pronunciation...' : '🎧 Listen & Practice'),
-                      onPressed: () {
-                        setState(() => _isPlayingAudio = true);
-                        AudioService.instance.playVoiceFeedback(context, currentDua.transliteration);
-                        Future.delayed(const Duration(seconds: 3), () {
-                          if (mounted) setState(() => _isPlayingAudio = false);
-                        });
-                      },
+                      icon: const Icon(Icons.play_arrow_rounded),
+                      label: const Text('Dua audio coming soon'),
+                      onPressed: null,
                     ),
                   ],
                 ),

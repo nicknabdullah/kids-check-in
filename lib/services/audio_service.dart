@@ -1,6 +1,6 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 import '../providers/app_state_provider.dart';
 
@@ -9,123 +9,75 @@ class AudioService {
 
   AudioService._internal();
 
-  final FlutterTts _tts = FlutterTts();
-  String? _configuredLocale;
-  Future<void>? _configuration;
+  final AudioPlayer _player = AudioPlayer();
 
-  Future<void> _configureVoice(String locale) async {
-    if (_configuredLocale == locale) {
-      await _configuration;
-      return;
-    }
-    final configuration = _configureVoiceOnce(locale);
-    _configuration = configuration;
-    await configuration;
-    _configuredLocale = locale;
+  static const Map<String, String> _voiceClips = {
+    'alhamdulillah you did a good deed':
+        '[cheerfully] Alhamdulillah! You did a good deed!.mp3',
+    'alhamdulillah': '[cheerfully] Alhamdulillah! You did a good deed!.mp3',
+    'mashaa allah wonderful job':
+        '[excited] Mashaa Allah! Wonderful job!.mp3',
+    'mashaa allah': '[excited] Mashaa Allah! Wonderful job!.mp3',
+    'mashaallah': '[excited] Mashaa Allah! Wonderful job!.mp3',
+    'alhamdulillah you remembered your salah':
+        '[warmly] Alhamdulillah! You remembered your Salah!.mp3',
+    'mashaa allah you helped someone today':
+        '[warmly] Mashaa Allah! You helped someone today!.mp3',
+    'alhamdulillah you earned points for your kindness':
+        '[cheerfully] Alhamdulillah! You earned points for.mp3',
+    'mashaa allah keep doing your best':
+        '[cheerfully] Mashaa Allah! Keep doing your best!.mp3',
+    'alhamdulillah you made your family proud':
+        '[warmly] Alhamdulillah! You made your family proud.mp3',
+    'subhanallah that was so kind of you':
+        '[excited] SubhanAllah! That was so kind of you!.mp3',
+  };
+
+  static String? assetForText(String phrase) {
+    final normalized = phrase
+        .toLowerCase()
+        .replaceAll(RegExp(r'[^a-z0-9]+'), ' ')
+        .trim();
+    final filename = _voiceClips[normalized];
+    return filename == null ? null : 'sounds/$filename';
   }
 
-  Future<void> _configureVoiceOnce(String locale) async {
-    await _tts.awaitSpeakCompletion(true);
-    await _tts.setLanguage(locale);
-    await _tts.setSpeechRate(0.45);
-    await _tts.setPitch(0.85);
-    await _tts.setVolume(1.0);
-
-    final supportsVoiceSelection = kIsWeb ||
-        defaultTargetPlatform == TargetPlatform.android ||
-        defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.macOS;
-    if (!supportsVoiceSelection) return;
-
-    final voices = await _tts.getVoices;
-    if (voices is! List) return;
-
-    final englishVoices = voices
-        .whereType<Map>()
-        .map((voice) => Map<String, dynamic>.from(voice))
-        .where((voice) => (voice['locale'] as String? ?? '')
-            .toLowerCase()
-            .startsWith(locale.substring(0, 2).toLowerCase()))
-        .toList();
-    if (englishVoices.isEmpty || !locale.toLowerCase().startsWith('en')) {
-      return;
-    }
-
-    Map<String, dynamic>? maleVoice;
-    for (final voice in englishVoices) {
-      if (_looksMale(voice)) {
-        maleVoice = voice;
-        break;
-      }
-    }
-    if (maleVoice != null) {
-      await _tts.setVoice({
-        'name': maleVoice['name'] as String,
-        'locale': maleVoice['locale'] as String,
-      });
-    }
-  }
-
-  bool _looksMale(Map<String, dynamic> voice) {
-    final gender = (voice['gender'] as String? ?? '').toLowerCase();
-    if (gender == 'male') return true;
-
-    final name = (voice['name'] as String? ?? '').toLowerCase();
-    return RegExp(r'(^|[^a-z])(male|man|david|daniel|alex|guy)([^a-z]|$)')
-        .hasMatch(name);
-  }
-
-  Future<void> _speak(
+  Future<bool> playVoiceFeedback(
     BuildContext context,
-    String phrase, {
-    String locale = 'en-US',
-  }) async {
-    if (!context.mounted) return;
+    String phrase,
+  ) async {
+    if (!context.mounted || phrase.trim().isEmpty) return false;
     final appState = Provider.of<AppStateProvider>(context, listen: false);
-    if (!appState.isSoundEnabled || phrase.trim().isEmpty) return;
+    if (!appState.isSoundEnabled) return false;
+
+    final assetPath = assetForText(phrase);
+    if (assetPath == null) {
+      debugPrint('No recorded voice clip is available for: "$phrase".');
+      return false;
+    }
 
     try {
-      await _configureVoice(locale);
-      await _tts.stop();
-      final result = await _tts.speak(phrase);
-      if (result != 1) {
-        throw StateError('The device text-to-speech engine did not start.');
-      }
+      await _player.stop();
+      await _player.play(AssetSource(assetPath));
+      return true;
     } catch (error, stackTrace) {
       FlutterError.reportError(FlutterErrorDetails(
         exception: error,
         stack: stackTrace,
         library: 'voice feedback',
-        context: ErrorDescription('while speaking "$phrase"'),
+        context: ErrorDescription('while playing "$phrase"'),
       ));
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text(
-              'Voice playback is unavailable. Check the device speech settings.',
-            ),
+            content: Text('The recorded voice clip could not be played.'),
           ),
         );
       }
+      return false;
     }
   }
 
-  Future<void> playMaleVoiceFeedback(BuildContext context, String phrase) =>
-      _speak(context, phrase);
-
-  Future<void> playMaleQariRecitation(
-    BuildContext context,
-    String title,
-    String arabicText,
-  ) {
-    final text = arabicText.trim().isEmpty ? title : arabicText;
-    final locale = arabicText.trim().isEmpty ? 'en-US' : 'ar-SA';
-    return _speak(context, text, locale: locale);
-  }
-
-  Future<void> playSparkleSound(BuildContext context) =>
-      _speak(context, 'MashaAllah!');
-
-  Future<void> playVoiceFeedback(BuildContext context, String phrase) =>
-      _speak(context, phrase);
+  Future<bool> playSparkleSound(BuildContext context) =>
+      playVoiceFeedback(context, 'Mashaa Allah! Wonderful job!');
 }

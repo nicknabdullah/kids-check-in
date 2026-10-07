@@ -110,7 +110,10 @@ class _AlphabetBubbleGameScreenState extends State<AlphabetBubbleGameScreen> {
       setState(() {
         _score += 10;
       });
-      AudioService.instance.playVoiceFeedback(context, 'MashaAllah! You popped $_targetPhonics! ✨');
+      AudioService.instance.playVoiceFeedback(
+        context,
+        'Mashaa Allah! Wonderful job!',
+      );
       _pickNewTarget();
       _spawnBubbles();
     } else {

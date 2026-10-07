@@ -44,25 +44,39 @@ class _NightlyCheckInScreenState extends State<NightlyCheckInScreen> {
       if (deed.isPositive) {
         if (response == ResponseType.great) {
           _animationType = _AnimationType.balloons;
-          AudioService.instance
-              .playMaleVoiceFeedback(context, 'Alhamdulillah!');
+          final deedDescription =
+              '${deed.title} ${deed.description} ${deed.category}'
+                  .toLowerCase();
+          final praise = deedDescription.contains('salah') ||
+                  deedDescription.contains('prayer')
+              ? 'Alhamdulillah! You remembered your Salah!'
+              : deedDescription.contains('kindness')
+                  ? 'Alhamdulillah! You earned points for your kindness!'
+                  : deedDescription.contains('help')
+                      ? 'Mashaa Allah! You helped someone today!'
+                      : 'Alhamdulillah! You did a good deed!';
+          AudioService.instance.playVoiceFeedback(
+            context,
+            praise,
+          );
         } else if (response == ResponseType.tried) {
           _animationType = _AnimationType.stars;
-          AudioService.instance.playMaleVoiceFeedback(context, 'MashaAllah!');
+          AudioService.instance.playVoiceFeedback(
+            context,
+            'Mashaa Allah! Wonderful job!',
+          );
         } else {
           _animationType = _AnimationType.droopyRose;
-          AudioService.instance.playMaleVoiceFeedback(
-              context, 'Tomorrow is another chance, InshaAllah!');
         }
       } else {
         if (response == ResponseType.negativeAvoided) {
           _animationType = _AnimationType.balloons;
-          AudioService.instance.playMaleVoiceFeedback(
-              context, 'MashaAllah! Excellent self-control!');
+          AudioService.instance.playVoiceFeedback(
+            context,
+            'Mashaa Allah! Keep doing your best!',
+          );
         } else {
           _animationType = _AnimationType.droopyRose;
-          AudioService.instance.playMaleVoiceFeedback(
-              context, 'Tomorrow is another chance, InshaAllah!');
         }
       }
     });

@@ -406,14 +406,14 @@ class ParentDashboardScreen extends StatelessWidget {
                       Icons.record_voice_over_rounded,
                       color: AppColors.primaryTeal,
                     ),
-                    title: const Text('Test voice'),
+                    title: const Text('Test recorded audio'),
                     subtitle: const Text(
-                      'Hear how the selected device voice sounds',
+                      'Play a sample of the recorded voice clips',
                     ),
                     trailing: const Icon(Icons.play_arrow_rounded),
-                    onTap: () => AudioService.instance.playMaleVoiceFeedback(
+                    onTap: () => AudioService.instance.playVoiceFeedback(
                       context,
-                      'Assalamu alaikum! MashaAllah, you are doing great!',
+                      'Mashaa Allah! Keep doing your best!',
                     ),
                   ),
                   const Divider(height: 1),
