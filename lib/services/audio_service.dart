@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/deed_model.dart';
 import '../providers/app_state_provider.dart';
 
 class AudioService {
@@ -15,8 +16,7 @@ class AudioService {
     'alhamdulillah you did a good deed':
         '[cheerfully] Alhamdulillah! You did a good deed!.mp3',
     'alhamdulillah': '[cheerfully] Alhamdulillah! You did a good deed!.mp3',
-    'mashaa allah wonderful job':
-        '[excited] Mashaa Allah! Wonderful job!.mp3',
+    'mashaa allah wonderful job': '[excited] Mashaa Allah! Wonderful job!.mp3',
     'mashaa allah': '[excited] Mashaa Allah! Wonderful job!.mp3',
     'mashaallah': '[excited] Mashaa Allah! Wonderful job!.mp3',
     'alhamdulillah you remembered your salah':
@@ -34,12 +34,30 @@ class AudioService {
   };
 
   static String? assetForText(String phrase) {
-    final normalized = phrase
-        .toLowerCase()
-        .replaceAll(RegExp(r'[^a-z0-9]+'), ' ')
-        .trim();
+    final normalized =
+        phrase.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]+'), ' ').trim();
     final filename = _voiceClips[normalized];
     return filename == null ? null : 'sounds/$filename';
+  }
+
+  static String feedbackForDeed(DeedModel deed) {
+    final task = '${deed.title} ${deed.description}'.toLowerCase();
+    if (RegExp(r'\b(salah|prayer|prayers|pray)\b').hasMatch(task)) {
+      return 'Alhamdulillah! You remembered your Salah!';
+    }
+    if (RegExp(r'\b(help|helped|helping)\b').hasMatch(task)) {
+      return 'Mashaa Allah! You helped someone today!';
+    }
+    if (RegExp(r'\b(salam|greet|manners)\b').hasMatch(task)) {
+      return 'SubhanAllah! That was so kind of you!';
+    }
+    if (RegExp(r'\b(parent|parents|family)\b').hasMatch(task)) {
+      return 'Alhamdulillah! You made your family proud';
+    }
+    if (RegExp(r'\b(kindness|share|sharing)\b').hasMatch(task)) {
+      return 'Alhamdulillah! You earned points for your kindness!';
+    }
+    return 'Alhamdulillah! You did a good deed!';
   }
 
   Future<bool> playVoiceFeedback(

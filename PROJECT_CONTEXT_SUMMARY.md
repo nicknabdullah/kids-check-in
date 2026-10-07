@@ -37,13 +37,11 @@ npm --prefix web_preview run dev
 
 ## Work tracking
 
-Before starting a task, record it under **Active work** and note the last verified checkpoint. Review the pending list before each change. After validation and commit, move the task to **Recently completed** and refresh the pending priorities. If work stops midway, leave the active task and checkpoint here.
+Before starting a task, record it under **Active work** and note the last verified checkpoint. Review the pending list before each change. When work is complete, remove it from **Active work** rather than keeping a completed-work archive. If work stops midway, leave the active task and checkpoint here.
 
 ### Active work
 
-- [ ] Test Flutter build and playback with audioplayers integration; verify no compilation errors and sound mute behavior.
-- [ ] Test web preview build with clip playback; verify `/sounds/` asset path resolution in Vite dev and production.
-- [ ] Remove `flutter_tts` from `pubspec.yaml` and Android manifest after testing confirms no lingering references.
+- No active work.
 
 ### Planned and pending work
 
@@ -53,17 +51,3 @@ Before starting a task, record it under **Active work** and note the last verifi
   - Phonics letters (28 Arabic letter names)
   - Dynamic accuracy feedback (variable percentages, optional)
 - [ ] Continue aligning remaining web-preview flows with the Flutter app.
-
-### Recently completed
-
-- [x] Replace text-to-speech with eight user-supplied bundled voice clips across Flutter and web (2026-10-07).
-  - Integrated audioplayers package into Flutter; rewrote audio_service.dart with clip lookup and playback.
-  - Replaced browser speechSynthesis with HTML5 Audio element playback in web preview.
-  - Unified clip mappings across platforms; disabled unrecorded interactions with "coming soon" UI or silent fallback.
-  - Commit: refactor: replace text-to-speech with bundled voice clips across flutter and web
-- [x] Calculate Journey monthly totals, weekly trends, and date details from child-scoped check-ins; migrate version 1 history and align web-preview summaries (2026-10-07).
-- [x] Reorganize the project docs, add current preview screenshots to the README, and clarify implementation status (2026-10-06).
-- [x] Persist profiles, settings, deeds, rewards, active child, parent PIN, and check-in history with SharedPreferences; verify restore and reset behavior (2026-10-06).
-- [x] Add device text-to-speech voice feedback and a test-voice control; prefer an identifiable male English voice when available (2026-10-07).
-- [x] Mirror the sound toggle and test-voice control in the web preview; verify settings persistence and browser feedback behavior (2026-10-07).
-- [x] Handle browsers with no speech voices: wait for late-loaded voices and explain how to enable an English voice rather than reporting a generic playback failure (2026-10-07).

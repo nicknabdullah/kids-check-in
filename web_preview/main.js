@@ -1,5 +1,14 @@
 // Web Interactive Prototype for Kids Islamic Good-Deeds App
 
+import didGoodDeedClip from "../assets/sounds/[cheerfully] Alhamdulillah! You did a good deed!.mp3";
+import earnedKindnessPointsClip from "../assets/sounds/[cheerfully] Alhamdulillah! You earned points for.mp3";
+import keepDoingYourBestClip from "../assets/sounds/[cheerfully] Mashaa Allah! Keep doing your best!.mp3";
+import wonderfulJobClip from "../assets/sounds/[excited] Mashaa Allah! Wonderful job!.mp3";
+import kindClip from "../assets/sounds/[excited] SubhanAllah! That was so kind of you!.mp3";
+import familyProudClip from "../assets/sounds/[warmly] Alhamdulillah! You made your family proud.mp3";
+import rememberedSalahClip from "../assets/sounds/[warmly] Alhamdulillah! You remembered your Salah!.mp3";
+import helpedSomeoneClip from "../assets/sounds/[warmly] Mashaa Allah! You helped someone today!.mp3";
+
 let activeTab = "today";
 const initialCalendarDate = new Date();
 let calendarViewYear = initialCalendarDate.getFullYear();
@@ -352,33 +361,52 @@ const eyeGlassesList = [
 
 const voiceClips = {
   "alhamdulillah you did a good deed":
-    "[cheerfully] Alhamdulillah! You did a good deed!.mp3",
-  alhamdulillah:
-    "[cheerfully] Alhamdulillah! You did a good deed!.mp3",
+    didGoodDeedClip,
+  alhamdulillah: didGoodDeedClip,
   "mashaa allah wonderful job":
-    "[excited] Mashaa Allah! Wonderful job!.mp3",
-  "mashaa allah": "[excited] Mashaa Allah! Wonderful job!.mp3",
-  mashaallah: "[excited] Mashaa Allah! Wonderful job!.mp3",
+    wonderfulJobClip,
+  "mashaa allah": wonderfulJobClip,
+  mashaallah: wonderfulJobClip,
   "alhamdulillah you remembered your salah":
-    "[warmly] Alhamdulillah! You remembered your Salah!.mp3",
+    rememberedSalahClip,
   "mashaa allah you helped someone today":
-    "[warmly] Mashaa Allah! You helped someone today!.mp3",
+    helpedSomeoneClip,
   "alhamdulillah you earned points for your kindness":
-    "[cheerfully] Alhamdulillah! You earned points for.mp3",
+    earnedKindnessPointsClip,
   "mashaa allah keep doing your best":
-    "[cheerfully] Mashaa Allah! Keep doing your best!.mp3",
+    keepDoingYourBestClip,
   "alhamdulillah you made your family proud":
-    "[warmly] Alhamdulillah! You made your family proud.mp3",
+    familyProudClip,
   "subhanallah that was so kind of you":
-    "[excited] SubhanAllah! That was so kind of you!.mp3",
+    kindClip,
 };
+
+function voiceFeedbackForDeed(deed) {
+  const task = `${deed.text ?? ""} ${deed.description ?? ""}`.toLowerCase();
+  if (/\b(salah|prayer|prayers|pray)\b/.test(task)) {
+    return "Alhamdulillah! You remembered your Salah!";
+  }
+  if (/\b(help|helped|helping)\b/.test(task)) {
+    return "Mashaa Allah! You helped someone today!";
+  }
+  if (/\b(salam|greet|manners)\b/.test(task)) {
+    return "SubhanAllah! That was so kind of you!";
+  }
+  if (/\b(parent|parents|family)\b/.test(task)) {
+    return "Alhamdulillah! You made your family proud";
+  }
+  if (/\b(kindness|share|sharing)\b/.test(task)) {
+    return "Alhamdulillah! You earned points for your kindness!";
+  }
+  return "Alhamdulillah! You did a good deed!";
+}
 
 async function playVoiceClip(text, { showUnavailable = false } = {}) {
   if (!isSoundEnabled) return false;
 
   const normalized = text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  const filename = voiceClips[normalized];
-  if (!filename) {
+  const clipUrl = voiceClips[normalized];
+  if (!clipUrl) {
     console.warn(`No recorded voice clip is available for: "${text}".`);
     if (showUnavailable) {
       showInAppAlert({
@@ -391,7 +419,7 @@ async function playVoiceClip(text, { showUnavailable = false } = {}) {
   }
 
   currentVoiceClip?.pause();
-  currentVoiceClip = new Audio(`/sounds/${encodeURIComponent(filename)}`);
+  currentVoiceClip = new Audio(clipUrl);
   try {
     await currentVoiceClip.play();
     return true;
@@ -1263,7 +1291,7 @@ function renderViewport() {
     if (deed.positive) {
       if (answer === "full") {
         playAudioFeedback("yes");
-        playVoiceClip("Alhamdulillah! You did a good deed!");
+        playVoiceClip(voiceFeedbackForDeed(deed));
         showCheerfulOverlay("balloons", "Alhamdulillah! Great Job! ✨", "🎉");
       } else if (answer === "partial") {
         playAudioFeedback("tried");

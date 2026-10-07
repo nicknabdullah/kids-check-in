@@ -44,20 +44,9 @@ class _NightlyCheckInScreenState extends State<NightlyCheckInScreen> {
       if (deed.isPositive) {
         if (response == ResponseType.great) {
           _animationType = _AnimationType.balloons;
-          final deedDescription =
-              '${deed.title} ${deed.description} ${deed.category}'
-                  .toLowerCase();
-          final praise = deedDescription.contains('salah') ||
-                  deedDescription.contains('prayer')
-              ? 'Alhamdulillah! You remembered your Salah!'
-              : deedDescription.contains('kindness')
-                  ? 'Alhamdulillah! You earned points for your kindness!'
-                  : deedDescription.contains('help')
-                      ? 'Mashaa Allah! You helped someone today!'
-                      : 'Alhamdulillah! You did a good deed!';
           AudioService.instance.playVoiceFeedback(
             context,
-            praise,
+            AudioService.feedbackForDeed(deed),
           );
         } else if (response == ResponseType.tried) {
           _animationType = _AnimationType.stars;
