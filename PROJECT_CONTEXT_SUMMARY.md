@@ -41,17 +41,16 @@ Before starting a task, record it under **Active work** and note the last verifi
 
 ### Active work
 
-- Calculate Journey summaries from recorded check-ins.
-  - Checkpoint: child-scoped check-in history, version 1 migration, monthly totals, weekly trends, calendar details, and web-preview summaries are implemented. Focused Flutter tests and the Vite production build pass; the task is waiting for commit-message approval.
-  - Resume after interruption: get approval for the proposed commit, commit and push the validated changes, then move this item to Recently completed.
+None. The last task was committed and pushed; choose the next item from Planned and pending.
 
 ### Planned and pending work
 
-- [ ] Bundle real, child-friendly voice recordings for the app prompts. The generated Piper sample and TTSMaker audition were both rejected as too robotic; no audio files have been added.
+- [ ] Review and integrate child-friendly voice clips for the app prompts. Eight MP3s are present in `assets/sounds/` but are not yet reviewed or wired into Flutter/web playback; earlier auditions were rejected as too robotic.
 - [ ] Continue aligning remaining web-preview flows with the Flutter app.
 
 ### Recently completed
 
+- [x] Calculate Journey monthly totals, weekly trends, and date details from child-scoped check-ins; migrate version 1 history and align web-preview summaries (2026-10-07).
 - [x] Reorganize the project docs, add current preview screenshots to the README, and clarify implementation status (2026-10-06).
 - [x] Persist profiles, settings, deeds, rewards, active child, parent PIN, and check-in history with SharedPreferences; verify restore and reset behavior (2026-10-06).
 - [x] Add device text-to-speech voice feedback and a test-voice control; prefer an identifiable male English voice when available (2026-10-07).
