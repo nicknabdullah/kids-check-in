@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/app_state_provider.dart';
+import '../../services/audio_service.dart';
 import '../../models/child_model.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/faceless_avatar.dart';
@@ -26,7 +27,8 @@ class ParentDashboardScreen extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return Dialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28)),
               child: Padding(
                 padding: const EdgeInsets.all(22.0),
                 child: SingleChildScrollView(
@@ -35,7 +37,10 @@ class ParentDashboardScreen extends StatelessWidget {
                     children: [
                       const Text(
                         '👶 Add sibling or child',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textDark),
                       ),
                       const SizedBox(height: 16),
                       FacelessAvatarWidget(config: avatarConfig, size: 84),
@@ -46,7 +51,9 @@ class ParentDashboardScreen extends StatelessWidget {
                           labelText: 'Child name',
                           filled: true,
                           fillColor: AppColors.softTealBg,
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide.none),
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -57,7 +64,9 @@ class ParentDashboardScreen extends StatelessWidget {
                           labelText: 'Age',
                           filled: true,
                           fillColor: AppColors.softTealBg,
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide.none),
                         ),
                       ),
                       const SizedBox(height: 14),
@@ -67,13 +76,17 @@ class ParentDashboardScreen extends StatelessWidget {
                           ChoiceChip(
                             label: const Text('Boy 👦'),
                             selected: avatarConfig.gender == 'boy',
-                            onSelected: (_) => setDialogState(() => avatarConfig = avatarConfig.copyWith(gender: 'boy')),
+                            onSelected: (_) => setDialogState(() =>
+                                avatarConfig =
+                                    avatarConfig.copyWith(gender: 'boy')),
                           ),
                           const SizedBox(width: 10),
                           ChoiceChip(
                             label: const Text('Girl 👧'),
                             selected: avatarConfig.gender == 'girl',
-                            onSelected: (_) => setDialogState(() => avatarConfig = avatarConfig.copyWith(gender: 'girl')),
+                            onSelected: (_) => setDialogState(() =>
+                                avatarConfig =
+                                    avatarConfig.copyWith(gender: 'girl')),
                           ),
                         ],
                       ),
@@ -91,17 +104,24 @@ class ParentDashboardScreen extends StatelessWidget {
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryTeal,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16)),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
                               ),
                               onPressed: () {
                                 if (nameController.text.trim().isNotEmpty) {
-                                  final appState = Provider.of<AppStateProvider>(context, listen: false);
+                                  final appState =
+                                      Provider.of<AppStateProvider>(context,
+                                          listen: false);
                                   appState.addChild(
                                     ChildModel(
-                                      id: DateTime.now().millisecondsSinceEpoch.toString(),
+                                      id: DateTime.now()
+                                          .millisecondsSinceEpoch
+                                          .toString(),
                                       name: nameController.text.trim(),
-                                      age: int.tryParse(ageController.text) ?? 6,
+                                      age:
+                                          int.tryParse(ageController.text) ?? 6,
                                       avatar: avatarConfig,
                                       specialTitle: 'Good deeds explorer 🌟',
                                     ),
@@ -149,20 +169,23 @@ class ParentDashboardScreen extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.help_outline_rounded, color: AppColors.primaryTeal),
+                      icon: const Icon(Icons.help_outline_rounded,
+                          color: AppColors.primaryTeal),
                       tooltip: 'App guide and walkthrough',
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const SplashWalkthroughScreen(isHelpMode: true),
+                            builder: (_) =>
+                                const SplashWalkthroughScreen(isHelpMode: true),
                           ),
                         );
                       },
                     ),
                     TextButton.icon(
                       icon: const Icon(Icons.lock_rounded, color: Colors.red),
-                      label: const Text('Lock', style: TextStyle(color: Colors.red)),
+                      label: const Text('Lock',
+                          style: TextStyle(color: Colors.red)),
                       onPressed: () => appState.logoutParent(),
                     ),
                   ],
@@ -182,12 +205,19 @@ class ParentDashboardScreen extends StatelessWidget {
               children: [
                 const Text(
                   '👶 Children profiles',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textDark),
                 ),
                 ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryTeal, padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8)),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryTeal,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8)),
                   icon: const Icon(Icons.add_rounded, size: 18),
-                  label: const Text('Add child', style: TextStyle(fontSize: 13)),
+                  label:
+                      const Text('Add child', style: TextStyle(fontSize: 13)),
                   onPressed: () => _showAddChildDialog(context),
                 ),
               ],
@@ -226,42 +256,56 @@ class ParentDashboardScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         child.name,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.textDark),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: AppColors.textDark),
                       ),
                       Text(
                         'Age ${child.age} • ${child.patternLock != null ? '🔒 Pattern' : '🔓 No pattern'}',
-                        style: const TextStyle(fontSize: 11, color: AppColors.textMuted),
+                        style: const TextStyle(
+                            fontSize: 11, color: AppColors.textMuted),
                       ),
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.palette_rounded, color: AppColors.primaryTeal, size: 20),
+                            icon: const Icon(Icons.palette_rounded,
+                                color: AppColors.primaryTeal, size: 20),
                             tooltip: 'Customize avatar',
                             onPressed: () {
                               appState.setActiveChild(child.id);
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (_) => const AvatarCustomizerScreen()),
+                                MaterialPageRoute(
+                                    builder: (_) =>
+                                        const AvatarCustomizerScreen()),
                               );
                             },
                           ),
                           IconButton(
-                            icon: const Icon(Icons.gesture_rounded, color: AppColors.accentGold, size: 20),
+                            icon: const Icon(Icons.gesture_rounded,
+                                color: AppColors.accentGold, size: 20),
                             tooltip: 'Set pattern lock',
                             onPressed: () {
                               showDialog(
                                 context: context,
                                 builder: (_) => Dialog(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(28)),
                                   child: PatternLockWidget(
-                                    title: 'Set pattern lock for ${child.name} ⭐',
+                                    title:
+                                        'Set pattern lock for ${child.name} ⭐',
                                     onPatternComplete: (pattern) {
-                                      appState.setChildPatternLock(child.id, pattern);
+                                      appState.setChildPatternLock(
+                                          child.id, pattern);
                                       Navigator.pop(context);
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('Pattern lock set for ${child.name}! 🎉')),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Pattern lock set for ${child.name}! 🎉')),
                                       );
                                     },
                                   ),
@@ -270,7 +314,8 @@ class ParentDashboardScreen extends StatelessWidget {
                             },
                           ),
                           IconButton(
-                            icon: const Icon(Icons.delete_outline_rounded, color: Colors.red, size: 20),
+                            icon: const Icon(Icons.delete_outline_rounded,
+                                color: Colors.red, size: 20),
                             onPressed: () => appState.deleteChild(child.id),
                           ),
                         ],
@@ -286,13 +331,15 @@ class ParentDashboardScreen extends StatelessWidget {
             _DashboardCard(
               icon: Icons.checklist_rtl_rounded,
               title: 'Customize daily habits and deeds',
-              subtitle: 'Add, edit, reorder or adjust points for daily check-in.',
+              subtitle:
+                  'Add, edit, reorder or adjust points for daily check-in.',
               color: AppColors.softTealBg,
               iconColor: AppColors.primaryTeal,
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const HabitCustomizationScreen()),
+                  MaterialPageRoute(
+                      builder: (_) => const HabitCustomizationScreen()),
                 );
               },
             ),
@@ -306,7 +353,8 @@ class ParentDashboardScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const RewardCustomizationScreen()),
+                  MaterialPageRoute(
+                      builder: (_) => const RewardCustomizationScreen()),
                 );
               },
             ),
@@ -346,13 +394,32 @@ class ParentDashboardScreen extends StatelessWidget {
                   const Divider(height: 1),
                   SwitchListTile(
                     title: const Text('Sound effects and voice prompts'),
-                    subtitle: const Text('Play gentle encouraging audio tones'),
+                    subtitle: const Text(
+                      'Uses the device voice; prefers male English when available',
+                    ),
                     value: appState.isSoundEnabled,
                     onChanged: (val) => appState.toggleSound(val),
                   ),
                   const Divider(height: 1),
                   ListTile(
-                    leading: const Icon(Icons.lock_reset_rounded, color: AppColors.primaryTeal),
+                    leading: const Icon(
+                      Icons.record_voice_over_rounded,
+                      color: AppColors.primaryTeal,
+                    ),
+                    title: const Text('Test voice'),
+                    subtitle: const Text(
+                      'Hear how the selected device voice sounds',
+                    ),
+                    trailing: const Icon(Icons.play_arrow_rounded),
+                    onTap: () => AudioService.instance.playMaleVoiceFeedback(
+                      context,
+                      'Assalamu alaikum! MashaAllah, you are doing great!',
+                    ),
+                  ),
+                  const Divider(height: 1),
+                  ListTile(
+                    leading: const Icon(Icons.lock_reset_rounded,
+                        color: AppColors.primaryTeal),
                     title: const Text('Change parent security PIN'),
                     subtitle: const Text('Update the 4-digit security PIN'),
                     trailing: const Icon(Icons.chevron_right_rounded),
@@ -366,36 +433,53 @@ class ParentDashboardScreen extends StatelessWidget {
                         builder: (ctx) => StatefulBuilder(
                           builder: (ctx, setDialogState) {
                             return Dialog(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(28)),
                               child: Padding(
                                 padding: const EdgeInsets.all(24.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
-                                      isConfirmStep ? '🔒 Confirm new parent PIN' : '🔒 Change parent PIN',
-                                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                                      isConfirmStep
+                                          ? '🔒 Confirm new parent PIN'
+                                          : '🔒 Change parent PIN',
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.textDark),
                                     ),
                                     const SizedBox(height: 12),
                                     Text(
                                       isConfirmStep
                                           ? 'Re-enter your new 4-digit PIN to confirm:'
                                           : 'Enter a new 4-digit security code:',
-                                      style: const TextStyle(fontSize: 13, color: AppColors.textMuted),
+                                      style: const TextStyle(
+                                          fontSize: 13,
+                                          color: AppColors.textMuted),
                                     ),
                                     const SizedBox(height: 16),
                                     TextField(
-                                      controller: isConfirmStep ? confirmController : pinController,
+                                      controller: isConfirmStep
+                                          ? confirmController
+                                          : pinController,
                                       keyboardType: TextInputType.number,
                                       maxLength: 4,
                                       autofocus: true,
                                       textAlign: TextAlign.center,
-                                      style: const TextStyle(fontSize: 28, letterSpacing: 10, fontWeight: FontWeight.bold, color: AppColors.primaryTeal),
+                                      style: const TextStyle(
+                                          fontSize: 28,
+                                          letterSpacing: 10,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.primaryTeal),
                                       decoration: InputDecoration(
                                         hintText: '••••',
                                         filled: true,
                                         fillColor: AppColors.softTealBg,
-                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                            borderSide: BorderSide.none),
                                       ),
                                     ),
                                     const SizedBox(height: 16),
@@ -412,23 +496,36 @@ class ParentDashboardScreen extends StatelessWidget {
                                           child: ElevatedButton(
                                             onPressed: () {
                                               if (!isConfirmStep) {
-                                                if (pinController.text.length == 4) {
-                                                  setDialogState(() => isConfirmStep = true);
+                                                if (pinController.text.length ==
+                                                    4) {
+                                                  setDialogState(() =>
+                                                      isConfirmStep = true);
                                                 } else {
-                                                  ScaffoldMessenger.of(context).showSnackBar(
-                                                    const SnackBar(content: Text('PIN must be exactly 4 digits!')),
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                        content: Text(
+                                                            'PIN must be exactly 4 digits!')),
                                                   );
                                                 }
                                               } else {
-                                                if (confirmController.text == pinController.text) {
-                                                  appState.updateParentPin(confirmController.text);
+                                                if (confirmController.text ==
+                                                    pinController.text) {
+                                                  appState.updateParentPin(
+                                                      confirmController.text);
                                                   Navigator.pop(ctx);
-                                                  ScaffoldMessenger.of(context).showSnackBar(
-                                                    const SnackBar(content: Text('✨ MashaAllah! Parent PIN updated successfully!')),
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                        content: Text(
+                                                            '✨ MashaAllah! Parent PIN updated successfully!')),
                                                   );
                                                 } else {
-                                                  ScaffoldMessenger.of(context).showSnackBar(
-                                                    const SnackBar(content: Text('❌ PINs do not match! Please try again.')),
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                        content: Text(
+                                                            '❌ PINs do not match! Please try again.')),
                                                   );
                                                   setDialogState(() {
                                                     pinController.clear();
@@ -439,11 +536,19 @@ class ParentDashboardScreen extends StatelessWidget {
                                               }
                                             },
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: AppColors.primaryTeal,
-                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                              padding: const EdgeInsets.symmetric(vertical: 12),
+                                              backgroundColor:
+                                                  AppColors.primaryTeal,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          16)),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 12),
                                             ),
-                                            child: Text(isConfirmStep ? 'Confirm PIN' : 'Next step'),
+                                            child: Text(isConfirmStep
+                                                ? 'Confirm PIN'
+                                                : 'Next step'),
                                           ),
                                         ),
                                       ],
@@ -459,31 +564,42 @@ class ParentDashboardScreen extends StatelessWidget {
                   ),
                   const Divider(height: 1),
                   ListTile(
-                    leading: const Icon(Icons.delete_forever_rounded, color: Colors.red),
-                    title: const Text('Reset all application data', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-                    subtitle: const Text('Clear all children profiles, points, history and restore app to fresh'),
-                    trailing: const Icon(Icons.chevron_right_rounded, color: Colors.red),
+                    leading: const Icon(Icons.delete_forever_rounded,
+                        color: Colors.red),
+                    title: const Text('Reset all application data',
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.bold)),
+                    subtitle: const Text(
+                        'Clear all children profiles, points, history and restore app to fresh'),
+                    trailing: const Icon(Icons.chevron_right_rounded,
+                        color: Colors.red),
                     onTap: () {
                       showDialog(
                         context: context,
                         builder: (ctx) => Dialog(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(28)),
                           child: Padding(
                             padding: const EdgeInsets.all(24.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.warning_amber_rounded, color: Colors.red, size: 48),
+                                const Icon(Icons.warning_amber_rounded,
+                                    color: Colors.red, size: 48),
                                 const SizedBox(height: 12),
                                 const Text(
                                   'Reset all data?',
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.textDark),
                                 ),
                                 const SizedBox(height: 12),
                                 const Text(
                                   'Are you sure you want to reset all data?\n\nThis will permanently delete all children profiles, streak history, and custom rewards, restoring the app to factory fresh state.',
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 13, color: AppColors.textMuted),
+                                  style: TextStyle(
+                                      fontSize: 13, color: AppColors.textMuted),
                                 ),
                                 const SizedBox(height: 20),
                                 Row(
@@ -499,8 +615,11 @@ class ParentDashboardScreen extends StatelessWidget {
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.red,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                          padding: const EdgeInsets.symmetric(vertical: 12),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16)),
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 12),
                                         ),
                                         onPressed: () {
                                           Navigator.pop(ctx);
@@ -588,12 +707,14 @@ class _DashboardCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
-                    style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                    style: const TextStyle(
+                        fontSize: 12, color: AppColors.textMuted),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: AppColors.textMuted),
+            const Icon(Icons.arrow_forward_ios_rounded,
+                size: 16, color: AppColors.textMuted),
           ],
         ),
       ),

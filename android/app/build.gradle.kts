@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.kids_good_deeds_app"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

@@ -8,17 +8,18 @@ The app is built as a **fun daily adventure**, rather than a school task, chore 
 
 ## Implementation status snapshot
 
-Reviewed 2026-10-06 against the Flutter source and interactive web preview.
+Reviewed 2026-10-07 against the Flutter source and interactive web preview.
 
 | Area                                                        | Status      | Current implementation                                                                                                                                         |
 | ----------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Onboarding, child profiles, faceless avatars, pattern locks | Implemented | Flutter screens and state actions are present.                                                                                                                 |
 | Nightly check-in and daily results                          | Implemented | Scored answers, feedback, and result flow are present.                                                                                                         |
 | Parent dashboard, habit and reward controls                 | Partial     | Main UI and editing flows exist; some dashboard/report features remain limited.                                                                                |
-| Scratch rewards and learning screens                        | Partial     | Interactive screens exist; real audio playback is incomplete.                                                                                                  |
+| Scratch rewards and learning screens                        | Partial     | Interactive screens and device text-to-speech feedback exist; recorded audio is not bundled.                                                                   |
 | Journey and reports                                         | Partial     | Trend chart and date details use demo values.                                                                                                                  |
 | Device persistence                                          | Implemented | Profiles, settings, deeds, rewards, active child, PIN, and check-in history persist with SharedPreferences; PIN is stored unencrypted.                          |
-| Voice feedback                                              | Partial     | Web preview uses browser speech synthesis and generated chimes; Flutter currently shows a snackbar instead of playing a recording. No audio clips are bundled. |
+| Voice feedback                                              | Partial     | Flutter uses device text-to-speech and prefers a male-sounding English voice when available; voice varies by device. The web preview has separate browser speech. |
+| Consistent recorded narration                               | Planned     | No licensed voice recordings are bundled; device voice and availability vary.                                                                              |
 
 Treat the remaining sections as product requirements unless the implementation status above says otherwise.
 
