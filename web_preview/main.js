@@ -342,12 +342,31 @@ const eyeGlassesList = [
 ];
 
 // SPEECH SYNTHESIS VOICE OVER FEEDBACK
-function speakGreeting(text, { showUnavailable = false } = {}) {
+function getBrowserSpeechVoices() {
+  const voices = window.speechSynthesis.getVoices();
+  if (voices.length > 0) return Promise.resolve(voices);
+
+  return new Promise((resolve) => {
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timeout);
+      window.speechSynthesis.removeEventListener("voiceschanged", finish);
+      resolve(window.speechSynthesis.getVoices());
+    };
+
+    const timeout = setTimeout(finish, 1500);
+    window.speechSynthesis.addEventListener("voiceschanged", finish);
+  });
+}
+
+async function speakGreeting(text, { showUnavailable = false } = {}) {
   if (!isSoundEnabled) return;
   if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
     if (showUnavailable) {
       showInAppAlert({
-        title: "Voice playback unavailable",
+        title: "No browser voice available",
         message: "This browser does not support speech synthesis.",
         icon: "🔇",
       });
@@ -360,10 +379,23 @@ function speakGreeting(text, { showUnavailable = false } = {}) {
   utterance.pitch = 0.85;
   utterance.rate = 0.9;
 
-  const voices = window.speechSynthesis.getVoices();
+  const voices = await getBrowserSpeechVoices();
   const englishVoices = voices.filter((voice) =>
     voice.lang.toLowerCase().startsWith("en"),
   );
+  if (voices.length === 0 || englishVoices.length === 0) {
+    console.warn("No English speech synthesis voices are available.");
+    if (showUnavailable) {
+      showInAppAlert({
+        title: "No browser voice available",
+        message:
+          "This browser has no English speech voices available. Enable or install an English text-to-speech voice in your device settings, then restart the browser.",
+        icon: "🔇",
+      });
+    }
+    return;
+  }
+
   const maleVoice = englishVoices.find((voice) =>
     /(^|[^a-z])(male|man|david|daniel|alex|guy)([^a-z]|$)/i.test(voice.name),
   );
@@ -378,9 +410,9 @@ function speakGreeting(text, { showUnavailable = false } = {}) {
     console.error("Browser speech synthesis failed:", event.error);
     if (showUnavailable) {
       showInAppAlert({
-        title: "Voice playback unavailable",
+        title: "Browser voice could not play",
         message:
-          "The browser could not start its voice. Check the device speech settings and try again.",
+          `The browser could not start speech playback (${event.error}). Check the device speech settings and try again.`,
         icon: "🔇",
       });
     }

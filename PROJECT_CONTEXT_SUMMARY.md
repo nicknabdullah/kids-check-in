@@ -55,3 +55,4 @@ Before starting a task, record it under **Active work** and note the last verifi
 - [x] Persist profiles, settings, deeds, rewards, active child, parent PIN, and check-in history with SharedPreferences; verify restore and reset behavior (2026-10-06).
 - [x] Add device text-to-speech voice feedback and a test-voice control; prefer an identifiable male English voice when available (2026-10-07).
 - [x] Mirror the sound toggle and test-voice control in the web preview; verify settings persistence and browser feedback behavior (2026-10-07).
+- [x] Handle browsers with no speech voices: wait for late-loaded voices and explain how to enable an English voice rather than reporting a generic playback failure (2026-10-07).
