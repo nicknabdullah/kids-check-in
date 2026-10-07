@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/deed_model.dart';
 import '../models/child_model.dart';
 import '../models/reward_model.dart';
@@ -6,12 +10,13 @@ import '../models/achievement_model.dart';
 import '../models/daily_entry_model.dart';
 
 /// Central State Management Provider using standard Flutter [ChangeNotifier].
-/// Supports local persistent storage modeling & first-time parent onboarding.
+/// Persists app state locally and supports first-time parent onboarding.
 class AppStateProvider extends ChangeNotifier {
+  static const String _storageKey = 'kids_good_deeds_app_state';
+
   // Children list starts empty if first time setup, or pre-configured upon setup
   List<ChildModel> _children = [];
   String? _activeChildId;
-  bool _isFirstTimeLaunch = true;
 
   List<DeedModel> _deeds = [
     DeedModel(
@@ -134,6 +139,8 @@ class AppStateProvider extends ChangeNotifier {
       isUnlocked: true,
     ),
   ];
+  late final List<DeedModel> _defaultDeeds;
+  late final List<RewardModel> _defaultRewards;
 
   // Settings & Security
   bool _isLeaderboardEnabled = true;
@@ -141,21 +148,24 @@ class AppStateProvider extends ChangeNotifier {
   String _parentPinCode = '1234';
   bool _isParentAuthenticated = false;
   Map<String, List<DeedCheckResult>> _dailyHistory = {};
+  SharedPreferences? _preferences;
+  bool _isLoading = true;
+  Object? _initializationError;
+  late final Future<void> initialized;
+  Future<void> _saveQueue = Future<void>.value();
 
   AppStateProvider() {
-    // Check if initial children exist; if empty, app asks parent setup first
-    if (_children.isEmpty) {
-      _isFirstTimeLaunch = true;
-    } else {
-      _activeChildId = _children.first.id;
-      _isFirstTimeLaunch = false;
-    }
+    _defaultDeeds = List.of(_deeds);
+    _defaultRewards = List.of(_rewards);
+    initialized = _loadState();
   }
 
   // -------------------------------------------------------------
   // Getters
   // -------------------------------------------------------------
   bool get isFirstTimeLaunch => _children.isEmpty;
+  bool get isLoading => _isLoading;
+  Object? get initializationError => _initializationError;
   List<ChildModel> get children => List.unmodifiable(_children);
 
   ChildModel get activeChild {
@@ -177,10 +187,106 @@ class AppStateProvider extends ChangeNotifier {
   List<DeedModel> get activeDeeds => _deeds.where((d) => d.isEnabled).toList();
   List<RewardModel> get rewards => List.unmodifiable(_rewards);
   List<AchievementModel> get achievements => List.unmodifiable(_achievements);
+  Map<String, List<DeedCheckResult>> get dailyHistory => Map.unmodifiable(
+        _dailyHistory.map(
+          (date, entries) =>
+              MapEntry(date, List<DeedCheckResult>.unmodifiable(entries)),
+        ),
+      );
 
   bool get isLeaderboardEnabled => _isLeaderboardEnabled;
   bool get isSoundEnabled => _isSoundEnabled;
   bool get isParentAuthenticated => _isParentAuthenticated;
+
+  Future<void> _loadState() async {
+    try {
+      _preferences = await SharedPreferences.getInstance();
+      final savedState = _preferences!.getString(_storageKey);
+      if (savedState != null) {
+        final state = Map<String, dynamic>.from(jsonDecode(savedState) as Map);
+        if (state['version'] != 1) {
+          throw const FormatException('Unsupported saved app data version.');
+        }
+
+        _children = (state['children'] as List<dynamic>)
+            .map((child) =>
+                ChildModel.fromMap(Map<String, dynamic>.from(child as Map)))
+            .toList();
+        _activeChildId = state['activeChildId'] as String?;
+        _deeds = (state['deeds'] as List<dynamic>)
+            .map((deed) =>
+                DeedModel.fromMap(Map<String, dynamic>.from(deed as Map)))
+            .toList();
+        _rewards = (state['rewards'] as List<dynamic>)
+            .map((reward) =>
+                RewardModel.fromMap(Map<String, dynamic>.from(reward as Map)))
+            .toList();
+        _isLeaderboardEnabled = state['isLeaderboardEnabled'] as bool;
+        _isSoundEnabled = state['isSoundEnabled'] as bool;
+        _parentPinCode = state['parentPinCode'] as String;
+
+        final history = Map<String, dynamic>.from(state['dailyHistory'] as Map);
+        _dailyHistory = history.map((date, entries) => MapEntry(
+              date,
+              (entries as List<dynamic>)
+                  .map((entry) => DeedCheckResult.fromMap(
+                      Map<String, dynamic>.from(entry as Map)))
+                  .toList(),
+            ));
+        if (!_children.any((child) => child.id == _activeChildId)) {
+          _activeChildId = _children.isEmpty ? null : _children.first.id;
+        }
+      }
+    } catch (error) {
+      _initializationError = error;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Map<String, dynamic> _serializeState() {
+    return {
+      'version': 1,
+      'children': _children.map((child) => child.toMap()).toList(),
+      'activeChildId': _activeChildId,
+      'deeds': _deeds.map((deed) => deed.toMap()).toList(),
+      'rewards': _rewards.map((reward) => reward.toMap()).toList(),
+      'isLeaderboardEnabled': _isLeaderboardEnabled,
+      'isSoundEnabled': _isSoundEnabled,
+      'parentPinCode': _parentPinCode,
+      'dailyHistory': _dailyHistory.map(
+        (date, entries) =>
+            MapEntry(date, entries.map((entry) => entry.toMap()).toList()),
+      ),
+    };
+  }
+
+  void _notifyAndPersist() {
+    notifyListeners();
+    if (_isLoading || _initializationError != null) return;
+
+    _saveQueue = _saveQueue.then((_) async {
+      final preferences = _preferences ?? await SharedPreferences.getInstance();
+      _preferences = preferences;
+      final saved = await preferences.setString(
+        _storageKey,
+        jsonEncode(_serializeState()),
+      );
+      if (!saved) {
+        throw StateError('Failed to persist application data.');
+      }
+    }).catchError((Object error, StackTrace stackTrace) {
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: error,
+        stack: stackTrace,
+        library: 'app state persistence',
+        context: ErrorDescription('while saving application data'),
+      ));
+    });
+  }
+
+  Future<void> flushPersistence() => _saveQueue;
 
   // -------------------------------------------------------------
   // Onboarding & Children Management
@@ -189,16 +295,13 @@ class AppStateProvider extends ChangeNotifier {
     _parentPinCode = pin;
     _children.add(initialChild);
     _activeChildId = initialChild.id;
-    _isFirstTimeLaunch = false;
-    notifyListeners();
+    _notifyAndPersist();
   }
 
   void addChild(ChildModel newChild) {
     _children.add(newChild);
-    if (_activeChildId == null) {
-      _activeChildId = newChild.id;
-    }
-    notifyListeners();
+    _activeChildId ??= newChild.id;
+    _notifyAndPersist();
   }
 
   void deleteChild(String childId) {
@@ -207,21 +310,20 @@ class AppStateProvider extends ChangeNotifier {
       _activeChildId = _children.first.id;
     } else {
       _activeChildId = null;
-      _isFirstTimeLaunch = true;
     }
-    notifyListeners();
+    _notifyAndPersist();
   }
 
   void setActiveChild(String childId) {
     _activeChildId = childId;
-    notifyListeners();
+    _notifyAndPersist();
   }
 
   void updateAvatar(String childId, AvatarConfig newConfig) {
     final index = _children.indexWhere((c) => c.id == childId);
     if (index != -1) {
       _children[index] = _children[index].copyWith(avatar: newConfig);
-      notifyListeners();
+      _notifyAndPersist();
     }
   }
 
@@ -229,7 +331,7 @@ class AppStateProvider extends ChangeNotifier {
     final index = _children.indexWhere((c) => c.id == childId);
     if (index != -1) {
       _children[index] = _children[index].copyWith(patternLock: pattern);
-      notifyListeners();
+      _notifyAndPersist();
     }
   }
 
@@ -237,7 +339,7 @@ class AppStateProvider extends ChangeNotifier {
     final index = _children.indexWhere((c) => c.id == childId);
     if (index != -1) {
       _children[index] = _children[index].copyWith(patternLock: null);
-      notifyListeners();
+      _notifyAndPersist();
     }
   }
 
@@ -251,7 +353,8 @@ class AppStateProvider extends ChangeNotifier {
     if (index != -1) {
       final child = _children[index];
       final updatedPoints = (child.currentPoints + totalEarned).clamp(0, 9999);
-      final updatedLifetime = child.lifetimePoints + (totalEarned > 0 ? totalEarned : 0);
+      final updatedLifetime =
+          child.lifetimePoints + (totalEarned > 0 ? totalEarned : 0);
 
       _children[index] = child.copyWith(
         currentPoints: updatedPoints,
@@ -262,7 +365,7 @@ class AppStateProvider extends ChangeNotifier {
       final dateKey = DateTime.now().toIso8601String().split('T')[0];
       _dailyHistory[dateKey] = results;
 
-      notifyListeners();
+      _notifyAndPersist();
     }
   }
 
@@ -277,14 +380,14 @@ class AppStateProvider extends ChangeNotifier {
 
   void updateParentPin(String newPin) {
     _parentPinCode = newPin;
-    notifyListeners();
+    _notifyAndPersist();
   }
 
   void updateChildProfile(ChildModel updatedChild) {
     final index = _children.indexWhere((c) => c.id == updatedChild.id);
     if (index != -1) {
       _children[index] = updatedChild;
-      notifyListeners();
+      _notifyAndPersist();
     }
   }
 
@@ -295,40 +398,44 @@ class AppStateProvider extends ChangeNotifier {
 
   void toggleLeaderboard(bool enabled) {
     _isLeaderboardEnabled = enabled;
-    notifyListeners();
+    _notifyAndPersist();
   }
 
   void toggleSound(bool enabled) {
     _isSoundEnabled = enabled;
-    notifyListeners();
+    _notifyAndPersist();
   }
 
   void addDeed(DeedModel deed) {
     _deeds.add(deed);
-    notifyListeners();
+    _notifyAndPersist();
   }
 
   void toggleDeedEnabled(String deedId) {
     final index = _deeds.indexWhere((d) => d.id == deedId);
     if (index != -1) {
-      _deeds[index] = _deeds[index].copyWith(isEnabled: !_deeds[index].isEnabled);
-      notifyListeners();
+      _deeds[index] =
+          _deeds[index].copyWith(isEnabled: !_deeds[index].isEnabled);
+      _notifyAndPersist();
     }
   }
 
   void addReward(RewardModel reward) {
     _rewards.add(reward);
-    notifyListeners();
+    _notifyAndPersist();
   }
 
   /// Reset all application data back to factory fresh state
   void resetAllData() {
     _children = [];
     _activeChildId = null;
-    _isFirstTimeLaunch = true;
+    _deeds = List.of(_defaultDeeds);
+    _rewards = List.of(_defaultRewards);
+    _isLeaderboardEnabled = true;
+    _isSoundEnabled = true;
     _isParentAuthenticated = false;
     _parentPinCode = '1234';
     _dailyHistory.clear();
-    notifyListeners();
+    _notifyAndPersist();
   }
 }

@@ -19,6 +19,22 @@ class DeedCheckResult {
     required this.response,
     required this.pointsEarned,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'deed': deed.toMap(),
+      'response': response.name,
+      'pointsEarned': pointsEarned,
+    };
+  }
+
+  factory DeedCheckResult.fromMap(Map<String, dynamic> map) {
+    return DeedCheckResult(
+      deed: DeedModel.fromMap(Map<String, dynamic>.from(map['deed'] as Map)),
+      response: ResponseType.values.byName(map['response'] as String),
+      pointsEarned: map['pointsEarned'] as int,
+    );
+  }
 }
 
 /// Summary record of a single day's completed check-in.

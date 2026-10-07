@@ -10,16 +10,16 @@ This file is a concise engineering handoff. The [README](README.md) is the proje
 | -------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------- |
 | Onboarding, child profiles, avatars, pattern locks | Implemented | Flutter screens and state actions are present.                                              |
 | Nightly check-in and results                       | Implemented | Responses calculate points and record entries in app state.                                 |
-| Parent, habit, and reward controls                 | Partial     | Core screens exist; state is not persisted.                                                 |
+| Parent, habit, and reward controls                 | Partial     | Core screens and persistent settings exist; some dashboard/report features remain limited. |
 | Scratch rewards and learning screens               | Partial     | Screens and interactions exist; audio playback is incomplete.                               |
 | Journey and reports                                | Partial     | Trend values and date details are demo data.                                                |
-| Device persistence                                 | Planned     | `AppStateProvider` stores data in memory only.                                              |
+| Device persistence                                 | Implemented | Profiles, settings, deeds, rewards, active child, PIN, and check-in history use SharedPreferences. PIN is stored unencrypted. |
 | Voice feedback                                     | Partial     | Flutter shows a snackbar; web speech depends on browser voices. No audio clips are bundled. |
 
 ## Architecture
 
 - `lib/` is the Flutter application.
-- `lib/providers/app_state_provider.dart` owns in-memory app state.
+- `lib/providers/app_state_provider.dart` owns app state and restores/saves it with SharedPreferences.
 - `lib/screens/` contains the main child, parent, check-in, rewards, journey, and learning flows.
 - `lib/services/audio_service.dart` currently presents voice prompts as snackbars; it does not play audio files.
 - `web_preview/` is a separate Vite/JavaScript prototype with seeded sample data.
@@ -45,7 +45,6 @@ Before starting a task, record it under **Active work** and note the last verifi
 
 ### Planned and pending work
 
-- [ ] Add local persistence for child profiles, settings, check-in history, and rewards.
 - [ ] Implement Flutter audio playback and bundle or configure licensed voice recordings.
 - [ ] Calculate journey summaries from recorded check-ins instead of demo values.
 - [ ] Keep the web prototype aligned with Flutter flows where it is used for review.
@@ -53,3 +52,4 @@ Before starting a task, record it under **Active work** and note the last verifi
 ### Recently completed
 
 - [x] Reorganize the project docs, add current preview screenshots to the README, and clarify implementation status (2026-10-06).
+- [x] Persist profiles, settings, deeds, rewards, active child, parent PIN, and check-in history with SharedPreferences; verify restore and reset behavior (2026-10-06).

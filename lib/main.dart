@@ -31,6 +31,25 @@ class KidsGoodDeedsApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         home: Consumer<AppStateProvider>(
           builder: (context, appState, child) {
+            if (appState.isLoading) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
+            if (appState.initializationError != null) {
+              return Scaffold(
+                body: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Text(
+                      'Unable to load saved app data. Please close and reopen the app.\n\n'
+                      '${appState.initializationError}',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              );
+            }
             if (appState.isFirstTimeLaunch) {
               return const SplashWalkthroughScreen();
             }
@@ -68,7 +87,9 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
       const MonthlyJourneyScreen(),
       const FamilyLeaderboardScreen(),
       const LearnScreen(),
-      appState.isParentAuthenticated ? const ParentDashboardScreen() : const ParentAuthScreen(),
+      appState.isParentAuthenticated
+          ? const ParentDashboardScreen()
+          : const ParentAuthScreen(),
     ];
 
     return Scaffold(

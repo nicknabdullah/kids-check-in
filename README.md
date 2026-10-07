@@ -16,10 +16,11 @@ A Flutter app and interactive web prototype for a gentle family check-in about d
 - A one-question-at-a-time nightly check-in with scored answers, gentle feedback, and a results screen.
 - Parent PIN, child management, habit and reward editing, and a scratch-card reward screen.
 - Learning screens for short surahs, duas, Arabic letters, and a sticker garden.
+- Local persistence for child profiles, settings, deeds, rewards, and check-in history.
 
 ## Current limitations
 
-- Flutter app state is held in memory and is not saved across app restarts.
+- The parent PIN is stored in ordinary local preferences and is not encrypted.
 - Journey charts and date details contain demo data rather than summaries calculated from check-ins.
 - Flutter voice feedback currently displays a snackbar; it does not play a recording. The web preview uses browser speech synthesis and generated chimes, so voice playback depends on available browser voices.
 - The web preview is a separate prototype and can differ from Flutter behavior.

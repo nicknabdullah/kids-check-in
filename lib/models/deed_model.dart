@@ -47,4 +47,32 @@ class DeedModel {
       islamicReference: islamicReference ?? this.islamicReference,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'category': category,
+      'points': points,
+      'isPositive': isPositive,
+      'isEnabled': isEnabled,
+      'iconEmoji': iconEmoji,
+      'islamicReference': islamicReference,
+    };
+  }
+
+  factory DeedModel.fromMap(Map<String, dynamic> map) {
+    return DeedModel(
+      id: map['id'] as String,
+      title: map['title'] as String,
+      description: map['description'] as String,
+      category: map['category'] as String,
+      points: map['points'] as int,
+      isPositive: map['isPositive'] as bool? ?? true,
+      isEnabled: map['isEnabled'] as bool? ?? true,
+      iconEmoji: map['iconEmoji'] as String? ?? '⭐',
+      islamicReference: map['islamicReference'] as String?,
+    );
+  }
 }

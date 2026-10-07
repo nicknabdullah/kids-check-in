@@ -2,7 +2,8 @@
 /// Rewards are fully customizable by parents with point thresholds & probabilities.
 class RewardModel {
   final String id;
-  final String title; // e.g. "Ice Cream Treat", "Hug from Dad", "Choose Tonight's Story"
+  final String
+      title; // e.g. "Ice Cream Treat", "Hug from Dad", "Choose Tonight's Story"
   final String iconEmoji;
   final int requiredPoints; // e.g. 50 points to scratch
   final double probability; // Probability weight e.g. 0.20 (20%)
@@ -36,6 +37,30 @@ class RewardModel {
       probability: probability ?? this.probability,
       isUnlocked: isUnlocked ?? this.isUnlocked,
       isClaimed: isClaimed ?? this.isClaimed,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'iconEmoji': iconEmoji,
+      'requiredPoints': requiredPoints,
+      'probability': probability,
+      'isUnlocked': isUnlocked,
+      'isClaimed': isClaimed,
+    };
+  }
+
+  factory RewardModel.fromMap(Map<String, dynamic> map) {
+    return RewardModel(
+      id: map['id'] as String,
+      title: map['title'] as String,
+      iconEmoji: map['iconEmoji'] as String,
+      requiredPoints: map['requiredPoints'] as int,
+      probability: (map['probability'] as num?)?.toDouble() ?? 0.20,
+      isUnlocked: map['isUnlocked'] as bool? ?? false,
+      isClaimed: map['isClaimed'] as bool? ?? false,
     );
   }
 }
