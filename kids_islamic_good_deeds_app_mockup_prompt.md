@@ -16,7 +16,7 @@ Reviewed 2026-10-07 against the Flutter source and interactive web preview.
 | Nightly check-in and daily results                          | Implemented | Scored answers, feedback, and result flow are present.                                                                                                         |
 | Parent dashboard, habit and reward controls                 | Partial     | Main UI and editing flows exist; some dashboard/report features remain limited.                                                                                |
 | Scratch rewards and learning screens                        | Partial     | Interactive screens and device text-to-speech feedback exist; recorded audio is not bundled.                                                                   |
-| Journey and reports                                         | Partial     | Trend chart and date details use demo values.                                                                                                                  |
+| Journey and reports                                         | Partial     | Monthly totals, weekly trends, and date details use saved check-ins; the family leaderboard remains demo data.                                                |
 | Device persistence                                          | Implemented | Profiles, settings, deeds, rewards, active child, PIN, and check-in history persist with SharedPreferences; PIN is stored unencrypted.                          |
 | Voice feedback                                              | Partial     | Flutter uses device TTS and the web preview uses browser speech synthesis; both prefer a male-sounding English voice when identifiable, but voice availability varies. |
 | Consistent recorded narration                               | Planned     | No licensed voice recordings are bundled; device voice and availability vary.                                                                              |
@@ -445,6 +445,8 @@ Allow the child/parent to tap a date and see:
 - Notes from parents
 
 Also show monthly statistics:
+
+The figures below are illustrative examples; the implemented Journey summary uses the selected child's recorded check-ins.
 
 **Total points:** 342  
 **Good deeds:** 87  

@@ -21,7 +21,7 @@ A Flutter app and interactive web prototype for a gentle family check-in about d
 ## Current limitations
 
 - The parent PIN is stored in ordinary local preferences and is not encrypted.
-- Journey charts and date details contain demo data rather than summaries calculated from check-ins.
+- Journey monthly points, completed deeds, check-in days, weekly trends, and date details are calculated from saved check-ins. The family leaderboard and seeded web-preview profiles remain sample data.
 - Flutter voice feedback uses device text-to-speech; the web preview has a matching Parent settings → Test voice control using browser speech synthesis. Both prefer a male-sounding English voice when identifiable, but available voices vary by device/browser and recordings are not bundled. If the preview reports no browser voice, enable an English text-to-speech voice in device settings or test on a device/browser that provides one.
 - The web preview is a separate prototype and can differ from Flutter behavior.
 

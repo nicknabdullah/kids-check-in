@@ -13,6 +13,7 @@ import '../models/daily_entry_model.dart';
 /// Persists app state locally and supports first-time parent onboarding.
 class AppStateProvider extends ChangeNotifier {
   static const String _storageKey = 'kids_good_deeds_app_state';
+  static const int _currentStorageVersion = 2;
 
   // Children list starts empty if first time setup, or pre-configured upon setup
   List<ChildModel> _children = [];
@@ -147,7 +148,7 @@ class AppStateProvider extends ChangeNotifier {
   bool _isSoundEnabled = true;
   String _parentPinCode = '1234';
   bool _isParentAuthenticated = false;
-  Map<String, List<DeedCheckResult>> _dailyHistory = {};
+  Map<String, Map<String, List<DeedCheckResult>>> _dailyHistoryByChildId = {};
   SharedPreferences? _preferences;
   bool _isLoading = true;
   Object? _initializationError;
@@ -187,8 +188,11 @@ class AppStateProvider extends ChangeNotifier {
   List<DeedModel> get activeDeeds => _deeds.where((d) => d.isEnabled).toList();
   List<RewardModel> get rewards => List.unmodifiable(_rewards);
   List<AchievementModel> get achievements => List.unmodifiable(_achievements);
-  Map<String, List<DeedCheckResult>> get dailyHistory => Map.unmodifiable(
-        _dailyHistory.map(
+  Map<String, List<DeedCheckResult>> get dailyHistory =>
+      dailyHistoryForChild(activeChild.id);
+  Map<String, List<DeedCheckResult>> dailyHistoryForChild(String childId) =>
+      Map.unmodifiable(
+        (_dailyHistoryByChildId[childId] ?? {}).map(
           (date, entries) =>
               MapEntry(date, List<DeedCheckResult>.unmodifiable(entries)),
         ),
@@ -199,12 +203,15 @@ class AppStateProvider extends ChangeNotifier {
   bool get isParentAuthenticated => _isParentAuthenticated;
 
   Future<void> _loadState() async {
+    var shouldPersistMigration = false;
+    Map<String, List<DeedCheckResult>>? legacyHistory;
     try {
       _preferences = await SharedPreferences.getInstance();
       final savedState = _preferences!.getString(_storageKey);
       if (savedState != null) {
         final state = Map<String, dynamic>.from(jsonDecode(savedState) as Map);
-        if (state['version'] != 1) {
+        final version = state['version'] as int?;
+        if (version != 1 && version != _currentStorageVersion) {
           throw const FormatException('Unsupported saved app data version.');
         }
 
@@ -225,29 +232,55 @@ class AppStateProvider extends ChangeNotifier {
         _isSoundEnabled = state['isSoundEnabled'] as bool;
         _parentPinCode = state['parentPinCode'] as String;
 
-        final history = Map<String, dynamic>.from(state['dailyHistory'] as Map);
-        _dailyHistory = history.map((date, entries) => MapEntry(
-              date,
-              (entries as List<dynamic>)
-                  .map((entry) => DeedCheckResult.fromMap(
-                      Map<String, dynamic>.from(entry as Map)))
-                  .toList(),
-            ));
+        if (version == 1) {
+          legacyHistory = _decodeDailyHistory(state['dailyHistory']);
+          shouldPersistMigration = true;
+        } else {
+          final histories =
+              Map<String, dynamic>.from(state['dailyHistoryByChildId'] as Map);
+          _dailyHistoryByChildId = histories.map(
+            (childId, history) =>
+                MapEntry(childId, _decodeDailyHistory(history)),
+          );
+        }
         if (!_children.any((child) => child.id == _activeChildId)) {
           _activeChildId = _children.isEmpty ? null : _children.first.id;
+        }
+        if (legacyHistory != null &&
+            legacyHistory.isNotEmpty &&
+            _activeChildId != null) {
+          // Version 1 did not associate history with a child profile.
+          _dailyHistoryByChildId[_activeChildId!] = legacyHistory;
         }
       }
     } catch (error) {
       _initializationError = error;
     } finally {
       _isLoading = false;
-      notifyListeners();
+      if (shouldPersistMigration && _initializationError == null) {
+        _notifyAndPersist();
+      } else {
+        notifyListeners();
+      }
     }
+  }
+
+  Map<String, List<DeedCheckResult>> _decodeDailyHistory(Object? value) {
+    final history = Map<String, dynamic>.from(value as Map);
+    return history.map(
+      (date, entries) => MapEntry(
+        date,
+        (entries as List<dynamic>)
+            .map((entry) => DeedCheckResult.fromMap(
+                Map<String, dynamic>.from(entry as Map)))
+            .toList(),
+      ),
+    );
   }
 
   Map<String, dynamic> _serializeState() {
     return {
-      'version': 1,
+      'version': _currentStorageVersion,
       'children': _children.map((child) => child.toMap()).toList(),
       'activeChildId': _activeChildId,
       'deeds': _deeds.map((deed) => deed.toMap()).toList(),
@@ -255,9 +288,14 @@ class AppStateProvider extends ChangeNotifier {
       'isLeaderboardEnabled': _isLeaderboardEnabled,
       'isSoundEnabled': _isSoundEnabled,
       'parentPinCode': _parentPinCode,
-      'dailyHistory': _dailyHistory.map(
-        (date, entries) =>
-            MapEntry(date, entries.map((entry) => entry.toMap()).toList()),
+      'dailyHistoryByChildId': _dailyHistoryByChildId.map(
+        (childId, history) => MapEntry(
+          childId,
+          history.map(
+            (date, entries) =>
+                MapEntry(date, entries.map((entry) => entry.toMap()).toList()),
+          ),
+        ),
       ),
     };
   }
@@ -306,6 +344,7 @@ class AppStateProvider extends ChangeNotifier {
 
   void deleteChild(String childId) {
     _children.removeWhere((c) => c.id == childId);
+    _dailyHistoryByChildId.remove(childId);
     if (_children.isNotEmpty) {
       _activeChildId = _children.first.id;
     } else {
@@ -363,7 +402,8 @@ class AppStateProvider extends ChangeNotifier {
       );
 
       final dateKey = DateTime.now().toIso8601String().split('T')[0];
-      _dailyHistory[dateKey] = results;
+      _dailyHistoryByChildId.putIfAbsent(childId, () => {})[dateKey] =
+          List.of(results);
 
       _notifyAndPersist();
     }
@@ -435,7 +475,7 @@ class AppStateProvider extends ChangeNotifier {
     _isSoundEnabled = true;
     _isParentAuthenticated = false;
     _parentPinCode = '1234';
-    _dailyHistory.clear();
+    _dailyHistoryByChildId.clear();
     _notifyAndPersist();
   }
 }

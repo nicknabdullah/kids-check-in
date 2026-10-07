@@ -1,8 +1,9 @@
 // Web Interactive Prototype for Kids Islamic Good-Deeds App
 
 let activeTab = "today";
-let calendarViewYear = 2026;
-let calendarViewMonth = 8; // 8 = September (0-indexed: 0=Jan, 8=Sept)
+const initialCalendarDate = new Date();
+let calendarViewYear = initialCalendarDate.getFullYear();
+let calendarViewMonth = initialCalendarDate.getMonth();
 let selectedDateDetails = null;
 const SOUND_ENABLED_KEY = "kids-good-deeds-sound-enabled";
 let isSoundEnabled = (() => {
@@ -27,6 +28,13 @@ const monthNames = [
   "November",
   "December",
 ];
+
+function getLocalDateKey(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 
 let childrenList = [
   {
@@ -1429,12 +1437,15 @@ function renderViewport() {
           )
           .map((r) => `${r.deed.emoji} ${r.deed.text}`);
 
-        child.checkInHistory["2026-09-01"] = {
+        child.checkInHistory[getLocalDateKey()] = {
           completed: true,
           score: pts,
           reward: { emoji: rewardEmoji, title: rewardTitle },
           details: deedTitles,
         };
+        const today = new Date();
+        calendarViewYear = today.getFullYear();
+        calendarViewMonth = today.getMonth();
       }
 
       isShowingResults = false;
@@ -1448,7 +1459,7 @@ function renderViewport() {
 
   // STEP 5: Main Active Child Tabs ('today', 'journey', 'rewards', 'learn')
   if (activeTab === "today") {
-    const todayStr = "2026-09-01";
+    const todayStr = getLocalDateKey();
     const todayCheckIn =
       activeChild.checkInHistory && activeChild.checkInHistory[todayStr];
 
@@ -1550,7 +1561,86 @@ function renderViewport() {
       calendarViewMonth + 1,
       0,
     ).getDate();
-    const isCurrentMonth = calendarViewYear === 2026 && calendarViewMonth === 8;
+    const now = new Date();
+    const isCurrentMonth =
+      calendarViewYear === now.getFullYear() &&
+      calendarViewMonth === now.getMonth();
+    const monthEntries = Object.entries(activeChild.checkInHistory || {}).filter(
+      ([dateKey, record]) => {
+        const date = new Date(`${dateKey}T00:00:00`);
+        return (
+          !Number.isNaN(date.getTime()) &&
+          record.completed !== false &&
+          date.getFullYear() === calendarViewYear &&
+          date.getMonth() === calendarViewMonth
+        );
+      },
+    );
+    const monthPoints = monthEntries.reduce(
+      (total, [, record]) => total + (Number(record.score) || 0),
+      0,
+    );
+    const goodDeeds = monthEntries.reduce(
+      (total, [, record]) =>
+        total + (Array.isArray(record.details) ? record.details.length : 0),
+      0,
+    );
+    const checkInDays = monthEntries.filter(
+      ([, record]) => record.completed !== false,
+    ).length;
+    const weeklyPoints = Array(Math.ceil(daysInMonth / 7)).fill(0);
+    monthEntries.forEach(([dateKey, record]) => {
+      const day = Number(dateKey.slice(8, 10));
+      if (Number.isInteger(day) && day >= 1 && day <= daysInMonth) {
+        weeklyPoints[Math.floor((day - 1) / 7)] +=
+          Number(record.score) || 0;
+      }
+    });
+
+    const minimumPoints = Math.min(0, ...weeklyPoints);
+    const maximumPoints = Math.max(0, ...weeklyPoints);
+    const pointRange = maximumPoints - minimumPoints;
+    const chartPoints = weeklyPoints.map((points, index) => ({
+      x: 20 + (index * 240) / Math.max(weeklyPoints.length - 1, 1),
+      y:
+        pointRange === 0
+          ? 52
+          : 14 + ((maximumPoints - points) / pointRange) * 76,
+      points,
+    }));
+    const chartLine = chartPoints
+      .map(
+        (point, index) =>
+          `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`,
+      )
+      .join(" ");
+    const chartArea = `M ${chartPoints[0].x} 94 ${chartPoints
+      .map((point) => `L ${point.x} ${point.y}`)
+      .join(" ")} L ${chartPoints[chartPoints.length - 1].x} 94 Z`;
+    const chartMarkup =
+      checkInDays === 0
+        ? '<div style="padding:28px 0; text-align:center; color:var(--text-muted); font-size:12px;">No check-ins recorded for this month yet.</div>'
+        : `
+          <svg style="width:100%; height:100%; overflow:visible;" viewBox="0 0 280 120" role="img" aria-label="Weekly points trend">
+            <defs>
+              <linearGradient id="line-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--primary-teal)" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="var(--primary-teal)" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="${chartArea}" fill="url(#line-grad)"/>
+            <path d="${chartLine}" stroke="var(--primary-teal)" stroke-width="4" fill="none" stroke-linecap="round"/>
+            ${chartPoints
+              .map(
+                (point, index) => `
+                  <circle cx="${point.x}" cy="${point.y}" r="5" fill="var(--accent-gold)"/>
+                  <text x="${point.x}" y="${point.y - 9}" font-size="9" font-weight="bold" fill="var(--primary-teal)" text-anchor="middle">${point.points}</text>
+                  <text x="${point.x}" y="115" font-size="9" fill="var(--text-muted)" text-anchor="middle">W${index + 1}</text>
+                `,
+              )
+              .join("")}
+          </svg>
+        `;
 
     // Check if selected date details are available
     let selectedDetailsMarkup = "";
@@ -1614,11 +1704,11 @@ function renderViewport() {
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Track ${activeChild.name}'s growth and habits</p>
 
       <div class="card" style="background:linear-gradient(135deg, var(--primary-teal), #26a69a); color:white;">
-        <div style="text-align:center; font-size:18px; font-weight:700; margin-bottom:12px;">${monthNames[calendarViewMonth]} summary 🌟</div>
+        <div style="text-align:center; font-size:18px; font-weight:700; margin-bottom:12px;">${monthNames[calendarViewMonth]} ${calendarViewYear} summary 🌟</div>
         <div style="display:flex; justify-content:space-around; text-align:center;">
-          <div><div style="font-size:22px; font-weight:700; color:var(--accent-gold);">${activeChild.points}</div><div style="font-size:11px;">Points</div></div>
-          <div><div style="font-size:22px; font-weight:700; color:var(--accent-gold);">87</div><div style="font-size:11px;">Good deeds</div></div>
-          <div><div style="font-size:22px; font-weight:700; color:var(--accent-gold);">${(activeChild.claimedRewards || []).length}</div><div style="font-size:11px;">Rewards</div></div>
+          <div><div style="font-size:22px; font-weight:700; color:var(--accent-gold);">${monthPoints}</div><div style="font-size:11px;">Points</div></div>
+          <div><div style="font-size:22px; font-weight:700; color:var(--accent-gold);">${goodDeeds}</div><div style="font-size:11px;">Good deeds</div></div>
+          <div><div style="font-size:22px; font-weight:700; color:var(--accent-gold);">${checkInDays}</div><div style="font-size:11px;">Check-in days</div></div>
         </div>
       </div>
 
@@ -1662,34 +1752,7 @@ function renderViewport() {
           <strong style="font-size:15px;">📊 Achievement trend graph</strong>
           <span style="font-size:11px; color:var(--primary-teal); font-weight:700;">${monthNames[calendarViewMonth]} ${calendarViewYear}</span>
         </div>
-        <div style="position:relative; height:120px; width:100%;">
-          <svg style="width:100%; height:100%; overflow:visible;">
-            <defs>
-              <linearGradient id="line-grad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="var(--primary-teal)" stop-opacity="0.4"/>
-                <stop offset="100%" stop-color="var(--primary-teal)" stop-opacity="0.0"/>
-              </linearGradient>
-            </defs>
-            <path d="M 20 80 L 100 65 L 180 40 L 260 15 L 260 100 L 20 100 Z" fill="url(#line-grad)" />
-            <path d="M 20 80 L 100 65 L 180 40 L 260 15" stroke="var(--primary-teal)" stroke-width="4" fill="none" stroke-linecap="round" />
-            
-            <circle cx="20" cy="80" r="5" fill="var(--accent-gold)" />
-            <text x="20" y="70" font-size="10" font-weight="bold" fill="var(--primary-teal)" text-anchor="middle">210</text>
-            <text x="20" y="115" font-size="10" fill="var(--text-muted)" text-anchor="middle">Wk 1</text>
-
-            <circle cx="100" cy="65" r="5" fill="var(--accent-gold)" />
-            <text x="100" y="55" font-size="10" font-weight="bold" fill="var(--primary-teal)" text-anchor="middle">245</text>
-            <text x="100" y="115" font-size="10" fill="var(--text-muted)" text-anchor="middle">Wk 2</text>
-
-            <circle cx="180" cy="40" r="5" fill="var(--accent-gold)" />
-            <text x="180" y="30" font-size="10" font-weight="bold" fill="var(--primary-teal)" text-anchor="middle">280</text>
-            <text x="180" y="115" font-size="10" fill="var(--text-muted)" text-anchor="middle">Wk 3</text>
-
-            <circle cx="260" cy="15" r="6" fill="var(--accent-gold)" />
-            <text x="260" y="5" font-size="10" font-weight="bold" fill="var(--primary-teal)" text-anchor="middle">310</text>
-            <text x="260" y="115" font-size="10" fill="var(--text-muted)" text-anchor="middle">Wk 4</text>
-          </svg>
-        </div>
+        <div style="position:relative; height:120px; width:100%;">${chartMarkup}</div>
       </div>
 
       <!-- Interactive Calendar with Month Traversal -->
@@ -1707,7 +1770,7 @@ function renderViewport() {
               const hasCheckin =
                 activeChild.checkInHistory &&
                 activeChild.checkInHistory[dateKey];
-              const isToday = isCurrentMonth && d === 1;
+              const isToday = isCurrentMonth && d === now.getDate();
 
               return `
               <div style="background:${isToday ? "var(--accent-gold)" : hasCheckin ? "var(--soft-teal-bg)" : "#f5f5f5"}; color:${isToday ? "white" : "black"}; border-radius:8px; padding:6px 2px; cursor:pointer; font-size:11px; font-weight:700; border:${isToday ? "2px solid #ff8f00" : "none"};" onclick="window.showDateDetails(${d})">

@@ -1,83 +1,160 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:provider/provider.dart';
+import '../../models/daily_entry_model.dart';
+import '../../models/monthly_journey_summary.dart';
 import '../../providers/app_state_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/islamic_pattern_background.dart';
 
 /// Screen 6 — Monthly Journey & Visual Calendar View
-class MonthlyJourneyScreen extends StatelessWidget {
-  const MonthlyJourneyScreen({Key? key}) : super(key: key);
+class MonthlyJourneyScreen extends StatefulWidget {
+  const MonthlyJourneyScreen({super.key});
 
-  void _showDateDetailDialog(BuildContext context, int dayNum, String childName) {
-    final int score = 30 + (dayNum * 3) % 40;
-    final String reward = dayNum % 5 == 0 ? '🍦 Ice cream treat' : (dayNum % 3 == 0 ? '📖 Bedtime story' : '✨ 30 Min play time');
+  @override
+  State<MonthlyJourneyScreen> createState() => _MonthlyJourneyScreenState();
+}
+
+class _MonthlyJourneyScreenState extends State<MonthlyJourneyScreen> {
+  late DateTime _selectedMonth;
+
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    _selectedMonth = DateTime(now.year, now.month);
+  }
+
+  void _changeMonth(int delta) {
+    final target = DateTime(_selectedMonth.year, _selectedMonth.month + delta);
+    final now = DateTime.now();
+    if (target.isAfter(DateTime(now.year, now.month))) return;
+    setState(() => _selectedMonth = target);
+  }
+
+  void _showDateDetailDialog(
+    BuildContext context,
+    DateTime date,
+    List<DeedCheckResult>? results,
+  ) {
+    final dailyPoints =
+        results?.fold<int>(0, (total, result) => total + result.pointsEarned) ??
+            0;
 
     showDialog(
       context: context,
       builder: (_) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-        child: Padding(
-          padding: const EdgeInsets.all(22.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.calendar_today_rounded, color: AppColors.primaryTeal),
-                  const SizedBox(width: 10),
-                  Text('August $dayNum, 2026', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textDark)),
-                ],
-              ),
-              const SizedBox(height: 14),
-              Text('Child: $childName', style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryTeal)),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.softGoldBg,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 460, maxHeight: 560),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(22),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    const Text('Daily score earned:', style: TextStyle(fontSize: 13)),
-                    Text('🌟 +$score pts', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textGold)),
+                    const Icon(Icons.calendar_today_rounded,
+                        color: AppColors.primaryTeal),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        DateFormat.yMMMMd().format(date),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textDark,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.softTealBg,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  children: [
-                    const Text('🎁 Gift unlocked: ', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                    Expanded(child: Text(reward, style: const TextStyle(fontSize: 13, color: AppColors.primaryTeal))),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 14),
-              const Text('Completed deeds:', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 6),
-              const Text('• Morning Dua recited 👍\n• Prayed Salah on time 🕌\n• Helped clean up toys 🧸', style: TextStyle(fontSize: 12, color: AppColors.textMuted, height: 1.5)),
-              const SizedBox(height: 18),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryTeal,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                const SizedBox(height: 14),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.softGoldBg,
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Text('Close'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Points earned:',
+                          style: TextStyle(fontSize: 13)),
+                      Text(
+                        '${dailyPoints > 0 ? '+' : ''}$dailyPoints pts ⭐',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textGold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 14),
+                const Text(
+                  'Check-in results:',
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 6),
+                if (results == null || results.isEmpty)
+                  const Text(
+                    'No check-in recorded for this date.',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textMuted,
+                      height: 1.5,
+                    ),
+                  )
+                else
+                  ...results.map(
+                    (result) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        children: [
+                          Text(result.deed.iconEmoji),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              result.deed.title,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColors.textMuted,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            '${result.pointsEarned > 0 ? '+' : ''}${result.pointsEarned}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: result.pointsEarned < 0
+                                  ? Colors.red
+                                  : AppColors.primaryTeal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 18),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryTeal,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: const Text('Close'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -88,10 +165,17 @@ class MonthlyJourneyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final appState = Provider.of<AppStateProvider>(context);
     final activeChild = appState.activeChild;
-
-    // Daily trends mock data (Point totals for 4 weeks)
-    final List<int> weeklyTrends = [210, 245, 280, 310];
-    final List<String> weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+    final history = appState.dailyHistoryForChild(activeChild.id);
+    final summary = MonthlyJourneySummary.fromHistory(history, _selectedMonth);
+    final monthName = DateFormat.yMMMM().format(_selectedMonth);
+    final daysInMonth =
+        DateTime(_selectedMonth.year, _selectedMonth.month + 1, 0).day;
+    final firstDayOffset =
+        DateTime(_selectedMonth.year, _selectedMonth.month, 1).weekday % 7;
+    final calendarCellCount = ((firstDayOffset + daysInMonth + 6) ~/ 7) * 7;
+    final now = DateTime.now();
+    final isCurrentMonth =
+        _selectedMonth.year == now.year && _selectedMonth.month == now.month;
 
     return IslamicPatternBackground(
       child: SingleChildScrollView(
@@ -130,9 +214,9 @@ class MonthlyJourneyScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  const Text(
-                    'August summary 🌟',
-                    style: TextStyle(
+                  Text(
+                    '$monthName summary 🌟',
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -142,9 +226,18 @@ class MonthlyJourneyScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _StatColumn(title: 'Total points', value: '${activeChild.lifetimePoints}'),
-                      _StatColumn(title: 'Good deeds', value: '87'),
-                      _StatColumn(title: 'Rewards', value: '6'),
+                      _StatColumn(
+                        title: 'Points',
+                        value: '${summary.totalPoints}',
+                      ),
+                      _StatColumn(
+                        title: 'Good deeds',
+                        value: '${summary.completedGoodDeeds}',
+                      ),
+                      _StatColumn(
+                        title: 'Check-in days',
+                        value: '${summary.checkInDays}',
+                      ),
                     ],
                   ),
                 ],
@@ -171,24 +264,51 @@ class MonthlyJourneyScreen extends StatelessWidget {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         '📊 Achievement trend graph',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textDark),
                       ),
-                      Text('August 2026', style: TextStyle(fontSize: 12, color: AppColors.primaryTeal, fontWeight: FontWeight.bold)),
+                      Text(
+                        monthName,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.primaryTeal,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
 
                   // Visual Line Chart
-                  SizedBox(
-                    height: 140,
-                    width: double.infinity,
-                    child: CustomPaint(
-                      painter: _LineChartPainter(dataPoints: weeklyTrends, labels: weeks),
+                  if (summary.checkInDays == 0)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24),
+                      child: Center(
+                        child: Text(
+                          'No check-ins recorded for this month yet.',
+                          style: TextStyle(color: AppColors.textMuted),
+                        ),
+                      ),
+                    )
+                  else
+                    SizedBox(
+                      height: 140,
+                      width: double.infinity,
+                      child: CustomPaint(
+                        painter: _LineChartPainter(
+                          dataPoints: summary.weeklyPoints,
+                          labels: List.generate(
+                            summary.weeklyPoints.length,
+                            (index) => 'W${index + 1}',
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -211,16 +331,39 @@ class MonthlyJourneyScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        '📅 August calendar (Tap date for details)',
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '📅 Calendar (Tap a date for details)',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textDark,
                         ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            tooltip: 'Previous month',
+                            onPressed: () => _changeMonth(-1),
+                            icon: const Icon(Icons.chevron_left_rounded),
+                          ),
+                          Text(
+                            monthName,
+                            style: const TextStyle(
+                              color: AppColors.primaryTeal,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            tooltip: 'Next month',
+                            onPressed:
+                                isCurrentMonth ? null : () => _changeMonth(1),
+                            icon: const Icon(Icons.chevron_right_rounded),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -242,29 +385,54 @@ class MonthlyJourneyScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
 
-                  // 31 Days Clickable Grid
+                  // Calendar days are aligned to their weekday.
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 7,
                       mainAxisSpacing: 8,
                       crossAxisSpacing: 8,
                     ),
-                    itemCount: 31,
+                    itemCount: calendarCellCount,
                     itemBuilder: (context, index) {
-                      final dayNum = index + 1;
-                      String emoji = '⭐';
-                      if (dayNum % 5 == 0) emoji = '🎁';
-                      if (dayNum % 7 == 0) emoji = '🏆';
+                      if (index < firstDayOffset ||
+                          index >= firstDayOffset + daysInMonth) {
+                        return const SizedBox.shrink();
+                      }
 
-                      return GestureDetector(
-                        onTap: () => _showDateDetailDialog(context, dayNum, activeChild.name),
+                      final dayNum = index - firstDayOffset + 1;
+                      final date = DateTime(
+                        _selectedMonth.year,
+                        _selectedMonth.month,
+                        dayNum,
+                      );
+                      final dateKey = DateFormat('yyyy-MM-dd').format(date);
+                      final dayResults = history[dateKey];
+                      final isToday = isCurrentMonth && dayNum == now.day;
+
+                      return InkWell(
+                        borderRadius: BorderRadius.circular(14),
+                        onTap: () => _showDateDetailDialog(
+                          context,
+                          date,
+                          dayResults,
+                        ),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: dayNum <= 24 ? AppColors.softTealBg : Colors.grey.shade50,
+                            color: dayResults != null
+                                ? AppColors.softTealBg
+                                : Colors.grey.shade50,
                             borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: dayNum <= 24 ? AppColors.primaryTeal.withOpacity(0.3) : Colors.transparent),
+                            border: Border.all(
+                              color: isToday
+                                  ? AppColors.accentGold
+                                  : dayResults != null
+                                      ? AppColors.primaryTeal.withOpacity(0.3)
+                                      : Colors.transparent,
+                              width: isToday ? 2 : 1,
+                            ),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -277,8 +445,8 @@ class MonthlyJourneyScreen extends StatelessWidget {
                                   color: AppColors.textDark,
                                 ),
                               ),
-                              if (dayNum <= 24)
-                                Text(emoji, style: const TextStyle(fontSize: 12)),
+                              if (dayResults != null)
+                                const Text('⭐', style: TextStyle(fontSize: 12)),
                             ],
                           ),
                         ),
@@ -336,12 +504,22 @@ class _LineChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (dataPoints.isEmpty) return;
 
-    final double margin = 20.0;
+    const double margin = 20.0;
     final double chartWidth = size.width - margin * 2;
     final double chartHeight = size.height - 40.0;
-
-    final double maxVal = 350.0;
-    final double stepX = chartWidth / (dataPoints.length - 1);
+    final lowestPoint = dataPoints.reduce((a, b) => a < b ? a : b);
+    final highestPoint = dataPoints.reduce((a, b) => a > b ? a : b);
+    var minValue = lowestPoint < 0 ? lowestPoint.toDouble() : 0.0;
+    var maxValue = highestPoint > 0 ? highestPoint.toDouble() : 0.0;
+    if (minValue == maxValue) {
+      minValue -= 1;
+      maxValue += 1;
+    }
+    final valueRange = maxValue - minValue;
+    final baseline =
+        chartHeight - ((0 - minValue) / valueRange * chartHeight) + 10;
+    final stepX =
+        dataPoints.length == 1 ? 0.0 : chartWidth / (dataPoints.length - 1);
 
     final linePaint = Paint()
       ..color = AppColors.primaryTeal
@@ -359,30 +537,27 @@ class _LineChartPainter extends CustomPainter {
         ],
       ).createShader(Rect.fromLTWH(0, 0, size.width, chartHeight));
 
-    final path = Path();
-    final fillPath = Path();
-
     final List<Offset> points = [];
 
     for (int i = 0; i < dataPoints.length; i++) {
       final x = margin + i * stepX;
-      final y = chartHeight - (dataPoints[i] / maxVal * chartHeight) + 10;
+      final y = chartHeight -
+          ((dataPoints[i] - minValue) / valueRange * chartHeight) +
+          10;
       points.add(Offset(x, y));
-
-      if (i == 0) {
-        path.moveTo(x, y);
-        fillPath.moveTo(x, chartHeight + 10);
-        fillPath.lineTo(x, y);
-      } else {
-        path.lineTo(x, y);
-        fillPath.lineTo(x, y);
-      }
-
-      if (i == dataPoints.length - 1) {
-        fillPath.lineTo(x, chartHeight + 10);
-        fillPath.close();
-      }
     }
+
+    final path = Path()..moveTo(points.first.dx, points.first.dy);
+    final fillPath = Path()
+      ..moveTo(points.first.dx, baseline)
+      ..lineTo(points.first.dx, points.first.dy);
+    for (final point in points.skip(1)) {
+      path.lineTo(point.dx, point.dy);
+      fillPath.lineTo(point.dx, point.dy);
+    }
+    fillPath
+      ..lineTo(points.last.dx, baseline)
+      ..close();
 
     // Draw Fill Area and Line
     canvas.drawPath(fillPath, fillPaint);
@@ -402,10 +577,14 @@ class _LineChartPainter extends CustomPainter {
       // Value label
       textPainter.text = TextSpan(
         text: '${dataPoints[i]}',
-        style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppColors.primaryTeal),
+        style: const TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryTeal),
       );
       textPainter.layout();
-      textPainter.paint(canvas, Offset(pt.dx - textPainter.width / 2, pt.dy - 18));
+      textPainter.paint(
+          canvas, Offset(pt.dx - textPainter.width / 2, pt.dy - 18));
 
       // Week label
       textPainter.text = TextSpan(
@@ -413,12 +592,13 @@ class _LineChartPainter extends CustomPainter {
         style: const TextStyle(fontSize: 11, color: AppColors.textMuted),
       );
       textPainter.layout();
-      textPainter.paint(canvas, Offset(pt.dx - textPainter.width / 2, chartHeight + 16));
+      textPainter.paint(
+          canvas, Offset(pt.dx - textPainter.width / 2, chartHeight + 16));
     }
   }
 
   @override
   bool shouldRepaint(covariant _LineChartPainter oldDelegate) {
-    return oldDelegate.dataPoints != dataPoints;
+    return oldDelegate.dataPoints != dataPoints || oldDelegate.labels != labels;
   }
 }

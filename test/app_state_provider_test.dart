@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kids_good_deeds_app/models/child_model.dart';
 import 'package:kids_good_deeds_app/models/daily_entry_model.dart';
@@ -86,5 +88,131 @@ void main() {
       resetProvider.rewards.any((reward) => reward.id == 'custom-reward'),
       isFalse,
     );
+  });
+
+  test('keeps recorded check-ins separate for each child', () async {
+    SharedPreferences.setMockInitialValues({});
+    final provider = AppStateProvider();
+    await provider.initialized;
+    final firstChild = ChildModel(
+      id: 'child-1',
+      name: 'Amina',
+      age: 7,
+      avatar: AvatarConfig(),
+    );
+    final secondChild = ChildModel(
+      id: 'child-2',
+      name: 'Omar',
+      age: 8,
+      avatar: AvatarConfig(),
+    );
+    provider.completeFirstTimeSetup('2580', firstChild);
+    provider.addChild(secondChild);
+
+    provider.recordCheckInResult(firstChild.id, [
+      DeedCheckResult(
+        deed: provider.deeds.first,
+        response: ResponseType.great,
+        pointsEarned: 3,
+      ),
+    ]);
+    provider.recordCheckInResult(secondChild.id, [
+      DeedCheckResult(
+        deed: provider.deeds.first,
+        response: ResponseType.tried,
+        pointsEarned: 1,
+      ),
+    ]);
+
+    expect(
+        provider
+            .dailyHistoryForChild(firstChild.id)
+            .values
+            .single
+            .single
+            .pointsEarned,
+        3);
+    expect(
+        provider
+            .dailyHistoryForChild(secondChild.id)
+            .values
+            .single
+            .single
+            .pointsEarned,
+        1);
+
+    await provider.flushPersistence();
+    final restored = AppStateProvider();
+    await restored.initialized;
+    expect(
+        restored
+            .dailyHistoryForChild(firstChild.id)
+            .values
+            .single
+            .single
+            .pointsEarned,
+        3);
+    expect(
+        restored
+            .dailyHistoryForChild(secondChild.id)
+            .values
+            .single
+            .single
+            .pointsEarned,
+        1);
+  });
+
+  test('migrates version 1 history to the saved active child', () async {
+    final child = ChildModel(
+      id: 'child-1',
+      name: 'Amina',
+      age: 7,
+      avatar: AvatarConfig(),
+    );
+    final deed = DeedModel(
+      id: 'deed-1',
+      title: 'Morning Dua',
+      description: 'Recited a dua',
+      category: 'Prayer',
+      points: 3,
+    );
+    final result = DeedCheckResult(
+      deed: deed,
+      response: ResponseType.great,
+      pointsEarned: 3,
+    );
+    SharedPreferences.setMockInitialValues({
+      'kids_good_deeds_app_state': jsonEncode({
+        'version': 1,
+        'children': [child.toMap()],
+        'activeChildId': child.id,
+        'deeds': [],
+        'rewards': [],
+        'isLeaderboardEnabled': true,
+        'isSoundEnabled': true,
+        'parentPinCode': '1234',
+        'dailyHistory': {
+          '2026-10-07': [result.toMap()],
+        },
+      }),
+    });
+
+    final provider = AppStateProvider();
+    await provider.initialized;
+
+    expect(
+      provider
+          .dailyHistoryForChild(child.id)['2026-10-07']!
+          .single
+          .pointsEarned,
+      3,
+    );
+    await provider.flushPersistence();
+    final preferences = await SharedPreferences.getInstance();
+    final savedState = jsonDecode(
+      preferences.getString('kids_good_deeds_app_state')!,
+    ) as Map<String, dynamic>;
+    expect(savedState['version'], 2);
+    expect(savedState['dailyHistoryByChildId'][child.id], isNotNull);
   });
 }
