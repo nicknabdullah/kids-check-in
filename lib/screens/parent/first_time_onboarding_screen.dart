@@ -24,6 +24,14 @@ class _FirstTimeOnboardingScreenState extends State<FirstTimeOnboardingScreen> {
   String _errorMessage = '';
 
   @override
+  void dispose() {
+    _pinController.dispose();
+    _nameController.dispose();
+    _ageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppStateProvider>(context);
 
@@ -152,6 +160,7 @@ class _FirstTimeOnboardingScreenState extends State<FirstTimeOnboardingScreen> {
                             specialTitle: 'Good Deeds Starter 🌟',
                           );
                           appState.completeFirstTimeSetup(_pinController.text, newChild);
+                          Navigator.of(context).pop();
                         } else {
                           setState(() => _errorMessage = 'Please enter your child\'s name!');
                         }

@@ -75,7 +75,7 @@ class _SplashWalkthroughScreenState extends State<SplashWalkthroughScreen> {
     if (widget.isHelpMode) {
       Navigator.pop(context);
     } else {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => const FirstTimeOnboardingScreen()),
       );

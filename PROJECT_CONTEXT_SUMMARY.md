@@ -44,11 +44,12 @@ Before starting a task, record it under **Active work** and note the last verifi
 - Before any commit, always get approval for the commit message.
 - Prefix the commit title with relevant keywords such as `feat:`, `ui:`, `fix:`, `docs:`, or other appropriate scopes.
 - Add a commit description with short bulleted points summarizing the change.
+- After every coherent chunk of relevant changes, commit and push it before starting the next chunk.
 - Do not add a `Co-authored by` trailer to the commit message.
 
 ### Active work
 
-- No active work.
+- Align web prototype behavior with Flutter onboarding and audit/remove redundant web targets or unused code. Last verified checkpoint: Flutter onboarding fix passes tests and Android/web builds.
 
 ### Planned and pending work
 
