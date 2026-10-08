@@ -39,6 +39,13 @@ npm --prefix web_preview run dev
 
 Before starting a task, record it under **Active work** and note the last verified checkpoint. Review the pending list before each change. When work is complete, remove it from **Active work** rather than keeping a completed-work archive. If work stops midway, leave the active task and checkpoint here.
 
+## Commit workflow
+
+- Before any commit, always get approval for the commit message.
+- Prefix the commit title with relevant keywords such as `feat:`, `ui:`, `fix:`, `docs:`, or other appropriate scopes.
+- Add a commit description with short bulleted points summarizing the change.
+- Do not add a `Co-authored by` trailer to the commit message.
+
 ### Active work
 
 - No active work.
