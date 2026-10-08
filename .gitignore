@@ -12,6 +12,8 @@
 .swiftpm/
 migrate_working_dir/
 web_preview/node_modules/
+/release/assets/
+/release/index.html
 
 # IntelliJ related
 *.iml
