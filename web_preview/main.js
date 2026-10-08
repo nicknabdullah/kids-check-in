@@ -191,11 +191,46 @@ let childrenList = [
   },
 ];
 
-let activeChildIndex = 0; // Default to first child for instant testability
+const ONBOARDING_COMPLETE_KEY = "kids-good-deeds-onboarding-complete";
+let savedOnboardingState = null;
+let onboardingStage = (() => {
+  try {
+    const savedState = localStorage.getItem(ONBOARDING_COMPLETE_KEY);
+    if (!savedState) return "walkthrough";
+    const parsedState = JSON.parse(savedState);
+    if (
+      Array.isArray(parsedState.childrenList) &&
+      parsedState.childrenList.length > 0 &&
+      /^\d{4}$/.test(parsedState.parentPinCode)
+    ) {
+      savedOnboardingState = parsedState;
+      childrenList = parsedState.childrenList;
+      return null;
+    }
+    return "walkthrough";
+  } catch (error) {
+    console.warn("Could not read onboarding state:", error);
+    return "walkthrough";
+  }
+})();
+if (onboardingStage) childrenList = [];
+
+let activeChildIndex = onboardingStage ? -1 : 0;
 let isParentPinUnlocked = false;
-let parentPinCode = "1234";
+let parentPinCode = savedOnboardingState?.parentPinCode ?? "1234";
 let enteredPinText = "";
 let activePressedPinKey = null;
+
+function persistOnboardingState() {
+  try {
+    localStorage.setItem(
+      ONBOARDING_COMPLETE_KEY,
+      JSON.stringify({ parentPinCode, childrenList }),
+    );
+  } catch (error) {
+    console.warn("Could not save onboarding state:", error);
+  }
+}
 
 let patternDrawn = [];
 let patternFirstStep = null;
@@ -858,6 +893,7 @@ function updatePinDisplay() {
 function updateBottomNavFilter() {
   const navContainer = document.querySelector(".bottom-nav");
   if (!navContainer) return;
+  navContainer.style.display = onboardingStage ? "none" : "flex";
 
   const isChildActive = activeChildIndex >= 0;
 
@@ -912,6 +948,40 @@ function renderViewport() {
     "checkin-active",
     isCheckingIn && activeTab === "today",
   );
+
+  if (onboardingStage === "parentPin") {
+    viewport.innerHTML = `
+      <div style="text-align:center; padding:24px 0 14px;">
+        <div style="font-size:54px;">🔒</div>
+        <h2 style="font-size:22px; margin-top:8px;">Create your parent PIN</h2>
+        <p style="font-size:13px; color:var(--text-muted); margin-top:6px; line-height:1.5;">Choose a 4-digit PIN to protect parent settings. Keep it somewhere safe.</p>
+      </div>
+      <div class="card">
+        <label for="onboarding-pin" style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;">4-digit PIN</label>
+        <input id="onboarding-pin" class="in-app-input" type="password" inputmode="numeric" autocomplete="new-password" maxlength="4" placeholder="Enter PIN" style="text-align:center; font-size:20px; letter-spacing:8px;">
+        <label for="onboarding-pin-confirm" style="display:block; font-size:13px; font-weight:700; margin:14px 0 6px;">Confirm PIN</label>
+        <input id="onboarding-pin-confirm" class="in-app-input" type="password" inputmode="numeric" autocomplete="new-password" maxlength="4" placeholder="Re-enter PIN" style="text-align:center; font-size:20px; letter-spacing:8px;">
+        <button class="btn-primary" style="margin-top:18px;" onclick="window.saveInitialParentPin()">Continue to child profile ➡️</button>
+      </div>
+    `;
+    return;
+  }
+
+  if (onboardingStage === "childProfile") {
+    viewport.innerHTML = `
+      <div style="text-align:center; padding:24px 0 14px;">
+        <div style="font-size:54px;">👶</div>
+        <h2 style="font-size:22px; margin-top:8px;">Create your child's profile</h2>
+        <p style="font-size:13px; color:var(--text-muted); margin:8px 0 18px; line-height:1.5;">Add a name and personalize a faceless avatar. You can add more children later from the parent menu.</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:42px; margin-bottom:8px;">🎨</div>
+        <strong style="display:block; margin-bottom:14px;">Your family adventure starts here</strong>
+        <button class="btn-primary" onclick="window.openAddChildVisualModal()">Create child profile ➡️</button>
+      </div>
+    `;
+    return;
+  }
 
   // STEP 1: Parent PIN Login Screen (Only when activeTab === 'parent' AND PIN is locked)
   if (activeTab === "parent" && !isParentPinUnlocked) {
@@ -2193,6 +2263,11 @@ window.resetAllAppDataModal = function () {
       isParentPinUnlocked = false;
       parentPinCode = "1234";
       enteredPinText = "";
+      try {
+        localStorage.removeItem(ONBOARDING_COMPLETE_KEY);
+      } catch (error) {
+        console.warn("Could not clear onboarding state:", error);
+      }
       renderViewport();
       showInAppAlert({
         title: "App reset!",
@@ -2247,6 +2322,7 @@ window.changeParentPinModal = function () {
       return;
     }
     parentPinCode = pin1;
+    persistOnboardingState();
     overlay.remove();
     showInAppAlert({
       title: "PIN updated!",
@@ -2377,6 +2453,10 @@ function submitPatternDrawn() {
       if (secondStep === patternFirstStep) {
         child.patternLock = secondStep;
         child.requiresPatternLock = false;
+        if (onboardingStage === "pattern") {
+          onboardingStage = null;
+          persistOnboardingState();
+        }
         activeTab = "today";
         renderViewport();
         playVoiceClip(
@@ -2430,6 +2510,15 @@ window.resetPatternDrawn = function () {
 };
 
 window.cancelKidSelection = function () {
+  if (onboardingStage === "pattern") {
+    activeChildIndex = -1;
+    onboardingStage = "childProfile";
+    patternDrawn = [];
+    patternFirstStep = null;
+    isPatternConfirming = false;
+    renderViewport();
+    return;
+  }
   activeChildIndex = -1;
   renderViewport();
 };
@@ -2479,7 +2568,7 @@ function renderModalContent(editIndex) {
   if (!container) return;
 
   container.innerHTML = `
-    <h3 style="font-size:18px; margin-bottom:12px; text-align:center; color:var(--text-dark);">🎨 Create your avatar</h3>
+    <h3 style="font-size:18px; margin-bottom:12px; text-align:center; color:var(--text-dark);">${onboardingStage === "childProfile" ? "👶 Create your child's profile" : "🎨 Create your avatar"}</h3>
 
     <div style="width:110px; height:110px; margin:0 auto 14px auto;" id="modal-head-preview">
       ${renderFacelessHeadSVG(tempAvatarConfig.gender, tempAvatarConfig.skinTone, tempAvatarConfig.hairColor, tempAvatarConfig.hairStyleIndex, tempAvatarConfig.eyeGlassesIndex, tempAvatarConfig.headwearColor, true)}
@@ -2510,8 +2599,8 @@ function renderModalContent(editIndex) {
     </div>
 
     <div style="display:flex; gap:10px;">
-      <button class="btn-secondary" style="flex:1;" onclick="closeModal()">Cancel</button>
-      <button class="btn-primary" style="flex:1;" id="btn-save-modal-child">Save avatar 🎨</button>
+      <button class="btn-secondary" style="flex:1;" onclick="closeModal()">${onboardingStage === "childProfile" ? "Back" : "Cancel"}</button>
+      <button class="btn-primary" style="flex:1;" id="btn-save-modal-child">${onboardingStage === "childProfile" ? "Save & Start 🚀" : "Save avatar 🎨"}</button>
     </div>
   `;
 
@@ -2560,6 +2649,7 @@ function renderModalContent(editIndex) {
           patternLock: null,
         });
         activeChildIndex = childrenList.length - 1;
+        if (onboardingStage === "childProfile") onboardingStage = "pattern";
       }
 
       document.getElementById("visual-avatar-modal").remove();
@@ -2850,6 +2940,40 @@ window.openAppGuideModal = function () {
   renderGuideSlide();
 };
 
+window.closeGuideModal = function () {
+  document.getElementById("guide-walkthrough-modal")?.remove();
+  if (onboardingStage === "walkthrough") {
+    onboardingStage = "parentPin";
+    renderViewport();
+  }
+};
+
+window.saveInitialParentPin = function () {
+  const pin = document.getElementById("onboarding-pin")?.value.trim() ?? "";
+  const confirmation =
+    document.getElementById("onboarding-pin-confirm")?.value.trim() ?? "";
+  if (!/^\d{4}$/.test(pin)) {
+    showInAppAlert({
+      title: "Invalid PIN",
+      message: "Choose a PIN made up of exactly 4 digits.",
+      icon: "⚠️",
+    });
+    return;
+  }
+  if (pin !== confirmation) {
+    showInAppAlert({
+      title: "PINs do not match",
+      message: "Please enter the same 4-digit PIN in both fields.",
+      icon: "🔒",
+    });
+    return;
+  }
+
+  parentPinCode = pin;
+  onboardingStage = "childProfile";
+  renderViewport();
+};
+
 function renderGuideSlide() {
   const container = document.getElementById("guide-modal-content");
   if (!container) return;
@@ -2934,3 +3058,4 @@ window.closeDateDetails = function () {
 };
 
 renderViewport();
+if (onboardingStage === "walkthrough") window.openAppGuideModal();
